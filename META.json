@@ -1,6 +1,6 @@
 {
     "name": "Calendar-List",
-    "version": "0.23",
+    "version": "0.24",
     "abstract": "A module for creating date lists.",
     "author": ["Barbie <barbie@cpan.org>"],
 
@@ -48,11 +48,11 @@
     "provides": {
         "Calendar::List": {
             "file": "lib/Calendar/List.pm",
-            "version": "0.23"
+            "version": "0.24"
         },
         "Calendar::Functions": {
             "file": "lib/Calendar/Functions.pm",
-            "version": "0.23"
+            "version": "0.24"
         }
     },
     "no_index": {
