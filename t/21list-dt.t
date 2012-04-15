@@ -10,8 +10,6 @@ use Calendar::List;
 eval "use DateTime";
 if($@) {
 	plan skip_all => "DateTime not installed.";
-} elsif(defined $DateTime::VERSION && $DateTime::VERSION > 0.16) {
-	plan skip_all => "DateTime after 0.16 is not supported.";
 }
 
 plan tests => 13;
@@ -26,7 +24,7 @@ plan tests => 13;
 
 # 1. testing the returned array
 foreach my $test (1..4,9,10,11,13) {
-	my @args = ();
+	my @args;
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
 	push @args, $tests{$test}->{hash}	if $tests{$test}->{hash};

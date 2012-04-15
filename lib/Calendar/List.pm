@@ -1,11 +1,10 @@
 package Calendar::List;
 
-use 5.006;
 use strict;
 use warnings;
 
-use vars qw($VERSION);
-$VERSION = '0.18';
+use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT_OK @EXPORT);
+$VERSION = '0.19';
 
 #----------------------------------------------------------------------------
 
@@ -72,15 +71,15 @@ snippet for use as a HTML Form field select box.
 
 require Exporter;
 
-our @ISA = qw(Exporter);
+@ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [ qw(
+%EXPORT_TAGS = ( 'all' => [ qw(
 	calendar_list
 	calendar_selectbox
 ) ] );
 
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-our @EXPORT    = ( @{ $EXPORT_TAGS{'all'} } );
+@EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+@EXPORT    = ( @{ $EXPORT_TAGS{'all'} } );
 
 #############################################################################
 #Library Modules															#
@@ -187,45 +186,32 @@ sub _thelist {
 
 	return	if _setargs($usrhash,$format1);
 
-	my ($nowday,$nowmon,$nowyear) = decode_date($Settings{startdate});
-	
+    $Settings{nowdate} = $Settings{startdate};
+
 	my $optcount = 0;	# our option counter
 	my %DateHash;
 	tie(%DateHash, 'Tie::IxHash');
 
-	while($optcount < $Settings{maxcount}) {
-		# get the calendar for one month
-		my $thismonth = month_list($nowmon,$nowyear);
+    while($optcount < $Settings{maxcount}) {
 
-		foreach my $day (sort {$a <=> $b} keys %$thismonth) {
-			# end if we have enough options
-			last	if($optcount >= $Settings{maxcount});
+        my ($nowday,$nowmon,$nowyear,$nowdow) = decode_date($Settings{nowdate});
 
-			# ignore days prior to start date
-			next	unless($optcount || $day >= $nowday);
+        # ignore days we're not interested in
+        unless($Settings{exclude}->[$nowdow]) {
 
-			# ignore days we're not interested in
-			my $dotw = $thismonth->{$day};
-			next	if($Settings{exclude}->[$dotw]);
+            my $fdate = sprintf "%02d-%02d-%04d", $nowday,$nowmon,$nowyear;
+            unless($Settings{exclude}->[7] && $Settings{holidays} && $Settings{holidays}->{$fdate}) {
+                # store date
+                $DateHash{$optcount++} = [decode_date($Settings{nowdate})];
+            }
+        }
 
-            my $fdate = sprintf "%02d-%02d-%04d", $day,$nowmon,$nowyear;
-            next	if($Settings{exclude}->[7] && $Settings{holidays}
-                        && $Settings{holidays}->{$fdate});
+	    # stop if reached end date
+		last    if(compare_dates($Settings{nowdate},$Settings{enddate}) == 0);
 
-			# stop if reached end date
-			if(_nomore($day,$nowmon,$nowyear)) {
-				$Settings{maxcount}=0;
-				last;
-			}
+        # increment
+        $Settings{nowdate} = add_day($Settings{nowdate});
 
-			# store date
-			$DateHash{$optcount} = [$day,$nowmon,$nowyear,$dotw];
-			$optcount++;
-		}
-
-		# increment to next month (and year if applicable)
-		$nowmon++;
-		if($nowmon > 12) { $nowmon = 1; $nowyear++; }
 	}
 
 	return $format1,$format2,\%DateHash;
@@ -268,7 +254,7 @@ sub _callist {
 #	while(my (@temp) = each %returns) {
 #		push @returns, @temp;
 #	}
-		
+
 #	map { push @returns, $_->[0],$_->[1] } each %returns;
 #	return @returns;
 	return %returns;
@@ -392,7 +378,7 @@ sub _setargs {
 		$Settings{enddate} = encode_date(@dates);
 
 		# check whether we have a bad start/end dates
-		return 1	if(diff_dates($Settings{enddate},$Settings{startdate}) < 0);
+		return 1	if(compare_dates($Settings{enddate},$Settings{startdate}) < 0);
 	}
 
 
@@ -402,22 +388,6 @@ sub _setargs {
 
 	return 0;
 }
-
-# name:	_nomore
-# args: day,month,year .... standard numerical day/month/year values
-# retv: 1 if end date reached, otherwise 0
-# desc:	Checks whether the given dates has gone passed the end date.
-
-sub _nomore {
-	return 0	unless($Settings{enddate});
-
-	my $NowDate = encode_date($_[0], $_[1], $_[2]);
-	my $duration = diff_dates($Settings{enddate},$NowDate);
-	return 0	unless($duration < 0);
-
-	return 1;
-}
-
 
 1;
 
@@ -551,8 +521,8 @@ other modules.
 There are no known bugs at the time of this release. However, if you spot a
 bug or are experiencing difficulties that are not explained within the POD
 documentation, please submit a bug to the RT system (see link below). However,
-it would help greatly if you are able to pinpoint problems or even supply a 
-patch. 
+it would help greatly if you are able to pinpoint problems or even supply a
+patch.
 
 Fixes are dependant upon their severity and my availablity. Should a fix not
 be forthcoming, please feel free to (politely) remind me by sending an email
@@ -569,19 +539,18 @@ RT: http://rt.cpan.org/Public/Dist/Display.html?Name=Calendar-List
 
 Dave Cross, E<lt>dave at dave.orgE<gt> for creating Calendar::Simple, the
 newbie poster on a technical message board who inspired me to write the
-original wrapper code and Richard Clamp E<lt>richardc at unixbeard.co.ukE<gt>
+original code and Richard Clamp E<lt>richardc at unixbeard.co.ukE<gt>
 for testing the beta versions.
 
 =head1 COPYRIGHT AND LICENSE
 
-    Copyright © 2003-2007 Barbie for Miss Barbell Productions.
+    Copyright © 2003-2008 Barbie for Miss Barbell Productions.
 
     This library is free software; you can redistribute it and/or modify it under
     the same terms as Perl itself, using the Artistic License.
 
-The full text of the licenses can be found in the Artistic file included with 
-this distribution, or in perlartistic file as part of Perl installation, in 
+The full text of the licenses can be found in the Artistic file included with
+this distribution, or in perlartistic file as part of Perl installation, in
 the 5.8.1 release or later.
 
 =cut
-

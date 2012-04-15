@@ -1,11 +1,10 @@
 package Calendar::Functions;
 
-use 5.006;
 use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.18';
+$VERSION = '0.19';
 
 #----------------------------------------------------------------------------
 
@@ -16,26 +15,22 @@ Calendar::Functions - A module containing functions for dates and calendars.
 =head1 SYNOPSIS
 
   use Calendar::Functions;
-  $ext = ext($day);
-  $moty = moty($monthname);
+  $ext       = ext($day);
+  $moty      = moty($monthname);
   $monthname = moty($moty);
-  $dotw = dotw($dayname);
-  $dayname = dotw($dotw);
+  $dotw      = dotw($dayname);
+  $dayname   = dotw($dotw);
 
   use Calendar::Functions qw(:dates);
-  my $dateobj = encode_date($day,$month,$year);
-  ($day,$month,$year) = decode_date($dateobj);
-  $duration = diff_dates($dateobj1, $dateobj2);
-  $hash = month_list($month,$year);
-  $days = month_days($month,$year);
+  my $dateobj               = encode_date($day,$month,$year);
+  ($day,$month,$year,$dotw) = decode_date($dateobj);
+  $cmp = compare_dates($dateobj1, $dateobj2);
 
   use Calendar::Functions qw(:form);
   $str = format_date( $fmt, $day, $month, $year, $dotw);
   $str = reformat_date( $date, $fmt1, $fmt2 );
 
   use Calendar::Functions qw(:all);
-  $dotw = dotw3($day,$month,$year);
-  $dotw = dotw3($dateobj);
   fail_range($year);
 
 =head1 DESCRIPTION
@@ -47,16 +42,13 @@ date and/or calendar functions
 
   ext, moty, dotw
 
-  dates:    encode_date, decode_date, diff_dates,
-            month_list, month_days
+  dates:    encode_date, decode_date, compare_dates, add_day
 
   form:     format_date, reformat_date
 
-  all:      encode_date, decode_date, diff_dates,
-            month_list, month_days,
+  all:      encode_date, decode_date, compare_dates, add_day
             format_date, reformat_date,
-            ext, moty, dotw,
-            dotw3, fail_range
+            ext, moty, dotw, fail_range
 
 =cut
 
@@ -72,12 +64,11 @@ require Exporter;
 
 %EXPORT_TAGS = (
 	'basic' => [ qw( ext moty dotw ) ],
-	'dates' => [ qw( encode_date decode_date diff_dates month_list
-					month_days ext moty dotw ) ],
-	'form'  => [ qw( format_date reformat_date ext moty dotw ) ],
-	'all'   => [ qw( dotw3 fail_range
-					encode_date decode_date diff_dates month_list
-					month_days format_date reformat_date ext moty dotw ) ],
+	'dates' => [ qw( ext moty dotw
+                     encode_date decode_date compare_dates add_day ) ],
+	'form'  => [ qw( ext moty dotw format_date reformat_date ) ],
+	'all'   => [ qw( ext moty dotw format_date reformat_date fail_range
+					 encode_date decode_date compare_dates add_day ) ],
 	'test'	=> [ qw( _caltest ) ],
 );
 
@@ -92,7 +83,7 @@ use Time::Local;
 eval "use Date::ICal";
 my $di = ! $@;
 eval "use DateTime";
-my $dt = ($@ ? 0 : (defined $DateTime::VERSION && $DateTime::VERSION < 0.17 ? 1 : 0));
+my $dt = ! $@;
 eval "use Time::Piece";
 my $tp = ! $@;
 
@@ -141,7 +132,7 @@ sub encode_date {
 	if($dt) {		# DateTime.pm loaded
     	$this = DateTime->new(day=>$day,month=>$mon,year=>$year);
 	} elsif($di) {	# Date::ICal loaded
-		$this = new Date::ICal(day=>$day,month=>$mon,year=>$year,offset=>0);
+		$this = Date::ICal->new(day=>$day,month=>$mon,year=>$year,offset=>0);
 	} else {		# using Time::Local
 		return	if(fail_range($year));
 		$this = timegm(0,0,12,$day,$mon-1,$year);
@@ -152,7 +143,7 @@ sub encode_date {
 
 =item decode_date( date )
 
-Translates the given date values into a date object or number.
+Translates the given date object into date values.
 
 =cut
 
@@ -162,153 +153,66 @@ Translates the given date values into a date object or number.
 # desc:	Translates the date object or number into date values.
 
 sub decode_date {
-	my $date = shift;
-	my ($day,$month,$year) = ();
-	return	unless($date);
+	my $date = shift || return;
+	my ($day,$month,$year,$dow);
 
-	if($dt || $di) {		# DateTime.pm or Date::ICal loaded
-		($day,$month,$year) = ($date->day,$date->month,$date->year);
-	} else {		# using Time::Local
-		($day,$month,$year) = (localtime($date))[3..5];
-		(undef,undef,undef,$day,$month,$year) = (localtime($date));
+	if($dt) {   		# DateTime.pm loaded
+		($day,$month,$year,$dow) =
+            ($date->day,$date->month,$date->year,$date->dow);
+        $dow %= 7;
+	} elsif($di) {		# Date::ICal loaded
+		($day,$month,$year,$dow) =
+            ($date->day,$date->month,$date->year,$date->day_of_week);
+	} else {		    # using Time::Local
+		($day,$month,$year,$dow) = (localtime($date))[3..6];
+		(undef,undef,undef,$day,$month,$year,$dow) = (localtime($date));
 		$month++;
 		$year+=1900;
 	}
 
-	return $day,$month,$year;
+	return $day,$month,$year,$dow;
 }
 
-=item diff_dates( date, date )
+=item compare_dates( date, date )
 
 Using the appropriate module finds the duration between the two dates.
 
 =cut
 
-# name:	diff_dates
+# name:	compare_dates
 # args: date1 .... date object or string
 #		date2 .... date object or string
-# retv: the duration betwwen the two dates
-# desc:	Using the loaded module finds the duration between the two dates.
+# retv: the compare value, as per the 'cmp' or '<=>' functionality.
+# desc:	Using the loaded module determines whether two dates are before, after
+#       or the same as each other.
 
-sub diff_dates {
+sub compare_dates {
 	my ($d1,$d2) = @_;
-	my $duration;
-	return	unless($d1 && $d2);
+	return  1 	if(defined $d1 && ! defined $d2);
+	return -1	if(defined $d2 && ! defined $d1);
 
-	my $diff = $d1 - $d2;
+	my $diff = 0;
+	if($dt)		{ $diff = DateTime->compare( $d1, $d2 ); }
+	elsif($di)	{ $diff = $d1->compare($d2); }
+	else		{ $diff = $d1 < $d2 ? -1 : ($d1 > $d2 ? 1 : 0); }
 
-	if($dt)		{ $duration = $diff->delta_days; }
-	elsif($di)	{ $duration = $diff->as_days; }
-	else		{ $duration = $diff ? int($diff/86400) : 0; }
-
-	return $duration;
+	return $diff;
 }
 
-=item month_list( month, year )
+=item add_day( date )
 
-Given a numerical month (1-12) and year, a hash of days for that month are
-returned, with each day being the key and the day of the week being the value.
+Add one day to the date object.
 
 =cut
 
-# name:	month_list
-# args: month .... numerical (1-12) month representation
-#		year ..... numerical year
-# retv: a hash of days
-# desc:	Returns the days for the given month, with day of the week.
+sub add_day {
+    my $d1 = shift;
 
-sub month_list {
-	my ($mon,$year) = @_;
-	return	if(fail_range($year));
+	if($dt)		{ $d1->add( days => 1 ); }
+	elsif($di)	{ $d1->add( day  => 1 ); }
+	else		{ $d1 += 60 * 60 * 24; }
 
-	my $dotw = dotw3(1,$mon,$year);
-	my $mdays = month_days($mon,$year);
-	my %hash = ();
-
-	foreach my $day (1..$mdays) {
-		$hash{$day} = $dotw;
-		$dotw++;
-		$dotw = $dotw % 7;
-	}
-
-	return \%hash;
-}
-
-=item dotw3( day, month, year | dateobj )
-
-Given a numerical representation of a date (day, month (1-12) and year),
-or a date object (as provided by encode_date), the value for day of the
-week is calculated and returned.
-
-=cut
-
-# name:	dotw3
-# args: day ....... numerical day
-#		month ..... numerical (1-12) month representation
-#		year ...... numerical year
-#		dateobj ... if using encode_date [above 3 not required]
-# retv: numerical day of the week.
-# desc:	Calclulates the day of the week value from the given date.
-
-sub dotw3 {
-	my $dotw;
-	my $date = $_[0];
-
-	if($dt) {
-		$date = new DateTime(day => $_[0],month => $_[1],year => $_[2])
-			if(@_ > 1);
-		$dotw = $date->day_of_week;
-		$dotw = $dotw % 7;		# DateTime uses 7 as Sunday
-	} elsif($di) {
-		$date = new Date::ICal(day=>$_[0],month=>$_[1],year=>$_[2],offset=>0)
-			if(@_ > 1);
-		$dotw = $date->day_of_week;
-	} else {
-		return	if(fail_range($_[2]));
-		# pick the middle of the day to avoid Daylight Saving offsets
-		$date = timegm 0, 0, 12, $_[0], $_[1] -1, $_[2]
-			if(@_ > 1);
-		$dotw = (localtime $date)[6];
-	}
-
-	return $dotw;
-}
-
-=item month_days( month, year )
-
-For any given month (1-12) and year, will return the number of days in that
-month. Note that this relies on other modules to give an accurate leap year
-calculation.
-
-=cut
-
-# name:	month_days
-# args: month .... numerical (1-12) month representation
-#		year ..... numerical year
-# retv: number of days for the month
-# desc:	Given a specific month and year, calculates the number of days.
-
-sub month_days {
-	my ($date1,$date2);
-
-	my ($month1,$year1) = @_;
-	my ($month2,$year2) = @_;
-	$month2++;
-	if($month2>12)	{$year2++;$month2=1}
-
-	if($dt) {
-		$date1 = new DateTime(day => 1,month => $month1,year => $year1);
-		$date2 = new DateTime(day => 1,month => $month2,year => $year2);
-	} elsif($di) {
-		$date1 = new Date::ICal(day=>1,month=>$month1,year=>$year1,offset=>0);
-		$date2 = new Date::ICal(day=>1,month=>$month2,year=>$year2,offset=>0);
-	} else {
-		return	if(fail_range($year1));
-		$date1 = timegm 0, 0, 12, 1, $month1-1, $year1;
-		$date2 = timegm 0, 0, 12, 1, $month2-1, $year2;
-	}
-
-	return diff_dates($date2,$date1);
+    return $d1;
 }
 
 =item format_date( fmt, day, mon, year [, dotw])
@@ -450,15 +354,15 @@ sub ext {
 
 =item dotw( day | dayname )
 
-Returns the day number (0..6) if passed the day name, or the day name if
-passed a numeric.
+Returns the day number (0..6) if passed the day name, or the day
+name if passed a numeric.
 
 =cut
 
 sub dotw {
 	return $dotw[$_[0]]	if($_[0] =~ /\d/);
 
-	foreach my $inx (0..6) {
+	foreach my $inx (1..12) {
 		return $inx	if($_[0] =~ /$dotw[$inx]/i);
 	}
 }
@@ -570,8 +474,8 @@ of 1st January 1902 to 31st December 2037 are passed, an undef is returned.
 There are no known bugs at the time of this release. However, if you spot a
 bug or are experiencing difficulties that are not explained within the POD
 documentation, please submit a bug to the RT system (see link below). However,
-it would help greatly if you are able to pinpoint problems or even supply a 
-patch. 
+it would help greatly if you are able to pinpoint problems or even supply a
+patch.
 
 Fixes are dependant upon their severity and my availablity. Should a fix not
 be forthcoming, please feel free to (politely) remind me by sending an email
@@ -605,13 +509,13 @@ for testing the beta versions.
 
 =head1 COPYRIGHT AND LICENSE
 
-    Copyright © 2003-2007 Barbie for Miss Barbell Productions.
+    Copyright © 2003-2008 Barbie for Miss Barbell Productions.
 
     This library is free software; you can redistribute it and/or modify it under
     the same terms as Perl itself, using the Artistic License.
 
-The full text of the licenses can be found in the Artistic file included with 
-this distribution, or in perlartistic file as part of Perl installation, in 
+The full text of the licenses can be found in the Artistic file included with
+this distribution, or in perlartistic file as part of Perl installation, in
 the 5.8.1 release or later.
 
 =cut

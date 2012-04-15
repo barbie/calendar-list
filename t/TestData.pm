@@ -7,7 +7,16 @@ use strict;
 # desc: Preprocessed variables for tests
 ###########################################################################
 
-use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
+use vars qw(
+    $VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK
+	@datetest @diffs
+	%hash01 %hash02 %hash03 %hash04
+	%tests %expected02 %expected03
+	%exts %monthtest %daytest
+	@monthlists
+	@format01 @format02 @format03
+    $on_unix
+);
 $VERSION = '0.18';
 
 require Exporter;
@@ -16,7 +25,7 @@ require Exporter;
 
 %EXPORT_TAGS = ( 'all' => [ qw(
 	@datetest @diffs
-	%hash01 %hash02 %hash03 
+	%hash01 %hash02 %hash03 %hash04
 	%tests %expected02 %expected03
 	%exts %monthtest %daytest
 	@monthlists
@@ -27,7 +36,6 @@ require Exporter;
 @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 @EXPORT    = ( @{ $EXPORT_TAGS{'all'} } );
 
-
 # -------------------------------------------------------------------------
 # Variables
 
@@ -37,36 +45,36 @@ my %os = (MacOS   => 0,
 	      VMS     => 0,
 	      epoc    => 0);
 
-our $on_unix = (exists $os{$^O} ? 0 : 1);
+$on_unix = (exists $os{$^O} ? 0 : 1);
 
-our @datetest = (
-	{ array => [24,3,1976],	dotw => 3, tl => 1 },
-	{ array => [13,9,1965],	dotw => 1, tl => 2 },
-	{ array => [3,11,2000],	dotw => 5, tl => 1 },
-	{ array => [25,5,2003],	dotw => 0, tl => 1 },
-	{ array => [1,1,1900],	dotw => 1, tl => 0 },
-	{ array => [5,7,2056],	dotw => 3, tl => 0 },
+@datetest = (
+	{ array => [24,3,1976,3],	dotw => 3, tl => 1 },
+	{ array => [13,9,1965,1],	dotw => 1, tl => 2 },
+	{ array => [3,11,2000,5],	dotw => 5, tl => 1 },
+	{ array => [25,5,2003,0],	dotw => 0, tl => 1 },
+	{ array => [1,1,1900,1],	dotw => 1, tl => 0 },
+	{ array => [5,7,2056,3],	dotw => 3, tl => 0 },
 );
 
-our @diffs = (
-	{ from => [24,3,1976], to => [24,3,1976], duration => 0,      tl => 1 },
-	{ from => [24,3,1976], to => [13,9,1965], duration => -3845,  tl => 2 },
-	{ from => [24,3,1976], to => [3,11,2000], duration => 8990,   tl => 1 },
-	{ from => [24,3,1976], to => [25,5,2003], duration => 9923,   tl => 1 },
-	{ from => [24,3,1976], to => [1,1,1900],  duration => -27841, tl => 0 },
-	{ from => [24,3,1976], to => [5,7,2056],  duration => 29323,  tl => 0 },
-	{ from => [1,3,1976],  to => [1,4,1976],  duration => 31,     tl => 1 },
-	{ from => [10,5,2003], to => [11,5,2003], duration => 1,      tl => 1 },
+@diffs = (
+	{ from => [24,3,1976], to => [24,3,1976], compare =>  0, tl => 1 },
+	{ from => [24,3,1976], to => [13,9,1965], compare =>  1, tl => 2 },
+	{ from => [24,3,1976], to => [3,11,2000], compare => -1, tl => 1 },
+	{ from => [24,3,1976], to => [25,5,2003], compare => -1, tl => 1 },
+	{ from => [24,3,1976], to => [1,1,1900],  compare =>  1, tl => 0 },
+	{ from => [24,3,1976], to => [5,7,2056],  compare => -1, tl => 0 },
+	{ from => [1,3,1976],  to => [1,4,1976],  compare => -1, tl => 1 },
+	{ from => [10,5,2003], to => [11,5,2003], compare => -1, tl => 1 },
 );
 
 
-our %hash01 = (
+%hash01 = (
 	'options'	=> 10,
 	'exclude'	=> { 'weekend' => 1 },
 	'start'		=> '01-05-2003',
 );
 
-our %hash02 = (
+%hash02 = (
 	'exclude'	=> { 'weekday' => 1 },
 	'start'		=> '01-05-2003',
 	'end'		=> '10-05-2003',
@@ -74,37 +82,37 @@ our %hash02 = (
 	'select'	=> '04-05-2003',
 );
 
-our %hash03 = (
+%hash03 = (
 	'options'	=> 10,
 	'exclude'	=> { 'monday' => 1, 'tuesday' => 1, 'wednesday' => 1 },
 	'start'		=> '01-05-2003',
 	'end'		=> '25-05-2003',
 );
 
-our %hash04 = (
+%hash04 = (
 	'start'		=> '13-09-1965',
 	'end'		=> '13-09-1965',
 	'name'		=> 'TestTest',
 	'select'	=> '13-09-1965',
 );
 
-our %tests = (
-	1 => { f1 => 'YYYY-MM-DD', f2 => undef, hash => undef },
-	2 => { f1 => 'DD-MM-YYYY', f2 => undef, hash => \%hash01 },
-	3 => { f1 => 'MM-DD-YYYY', f2 => undef, hash => \%hash02 },
-	4 => { f1 => 'DD-MONTH-YYYY', f2 => undef, hash => \%hash03 },
-	5 => { f1 => 'YYYY-MM-DD', f2 => 'DD-MM-YYYY', hash => undef },
-	6 => { f1 => 'DD-MM-YYYY', f2 => 'YYYY-MM-DD', hash => \%hash01 },
-	7 => { f1 => 'MM-DD-YYYY', f2 => 'DD MONTH, YYYY', hash => \%hash02 },
-	8 => { f1 => 'DD-MONTH-YYYY', f2 => 'DAY DDEXT MONTH, YYYY', hash => \%hash03 },
-	9 => { f1 => undef, f2 => undef, hash => undef },
-	10 => { f1 => undef, f2 => undef, hash => \%hash03 },
-	11 => { f1 => 'DD-MONTH-YYYY', f2 => undef, hash => \%hash04 },
-	12 => { f1 => 'YYYY-MM-DD', f2 => 'DD-MM-YYYY', hash => \%hash04 },
-	13 => { f1 => undef, f2 => undef, hash => \%hash04 },
+%tests = (
+	1  => { f1 => 'YYYY-MM-DD',     f2 => undef,                    hash => undef    },
+	2  => { f1 => 'DD-MM-YYYY',     f2 => undef,                    hash => \%hash01 },
+	3  => { f1 => 'MM-DD-YYYY',     f2 => undef,                    hash => \%hash02 },
+	4  => { f1 => 'DD-MONTH-YYYY',  f2 => undef,                    hash => \%hash03 },
+	5  => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => undef    },
+	6  => { f1 => 'DD-MM-YYYY',     f2 => 'YYYY-MM-DD',             hash => \%hash01 },
+	7  => { f1 => 'MM-DD-YYYY',     f2 => 'DD MONTH, YYYY',         hash => \%hash02 },
+	8  => { f1 => 'DD-MONTH-YYYY',  f2 => 'DAY DDEXT MONTH, YYYY',  hash => \%hash03 },
+	9  => { f1 => undef,            f2 => undef,                    hash => undef    },
+	10 => { f1 => undef,            f2 => undef,                    hash => \%hash03 },
+	11 => { f1 => 'DD-MONTH-YYYY',  f2 => undef,                    hash => \%hash04 },
+	12 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => \%hash04 },
+	13 => { f1 => undef,            f2 => undef,                    hash => \%hash04 },
 );
 
-our %expected02 = (
+%expected02 = (
 1 => [
           '2003-05-24',
           '2003-05-25',
@@ -282,7 +290,7 @@ our %expected02 = (
         ],
 );
 
-our %expected03 = (
+%expected03 = (
 1 =>
 q|<select name='calendar'>
 <option value='2003-05-24'>2003-05-24</option>
@@ -486,7 +494,7 @@ q|<select name='TestTest'>
 |,
 );
 
-our %exts = (
+%exts = (
 1 => 'st',
 2 => 'nd',
 3 => 'rd',
@@ -564,7 +572,7 @@ my %daytest = (
 'Saturday' => 6,
 );
 
-our @monthlists = (
+@monthlists = (
 { array => [9,1965], hash => {
 	1 => 3, 2 => 4, 3 => 5, 4 => 6, 5 => 0, 6 => 1, 7 => 2,
 	8 => 3, 9 => 4, 10 => 5, 11 => 6, 12 => 0, 13 => 1, 14 => 2,
@@ -594,7 +602,7 @@ our @monthlists = (
 } },
 );
 
-our @format01 = (
+@format01 = (
 	{	array => [ 'YYYY-MM-DD', 13,9,1965 ],
 		result => '1965-09-13' },
 	{	array => [ 'DAY, DDEXT MONTH YYYY', 13,9,1965,1 ],
@@ -611,14 +619,14 @@ our @format01 = (
 #		result => '9999' },
 );
 
-our @format02 = (
+@format02 = (
 	{	array => [ '1965-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
 		result => 'Monday, 13th September 1965' },
 	{	array => [ 'Monday, 13th September 1965', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
 		result => '1965-09-13' },
 );
 
-our @format03 = (
+@format03 = (
 	{	array => [ 'EPOCH', 13,9,1965 ],
 		result => '-1' },
 	{	array => [ 'EPOCH', 24,3,1976 ],
@@ -648,13 +656,13 @@ t/TestData.pm - test variables module.
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright © 2003-2007 Barbie for Miss Barbell Productions.
+  Copyright © 2003-2008 Barbie for Miss Barbell Productions.
 
   This library is free software; you can redistribute it and/or modify it under
   the same terms as Perl itself, using the Artistic License.
 
-The full text of the licenses can be found in the Artistic file included with 
-this distribution, or in perlartistic file as part of Perl installation, in 
+The full text of the licenses can be found in the Artistic file included with
+this distribution, or in perlartistic file as part of Perl installation, in
 the 5.8.1 release or later.
 
 =cut

@@ -21,16 +21,12 @@ foreach my $test (@datetest) {
 
 	# should have real values
 	if($test->{tl}) {
-		is(dotw3(@{$test->{array}}),$test->{dotw});
-
 		my $date = encode_date(@{$test->{array}});
 		my @date = decode_date($date);
 		is_deeply(\@date,$test->{array});
 
 	# expecting undef values
 	} else {
-		is(dotw3(@{$test->{array}}),undef);
-
 		my $date = encode_date(@{$test->{array}});
 		is($date,undef);
 		is(decode_date(undef),undef);
@@ -38,23 +34,22 @@ foreach my $test (@datetest) {
 }
 
 foreach my $test (@diffs) {
-	# before the epoch, skipping
+	# outside the epoch range, skipping
 	next	if(!$on_unix && $test->{tl} == 2);
+	next	if($test->{tl} == 0);
 
 	my $date1 = encode_date(@{$test->{from}});
 	my $date2 = encode_date(@{$test->{to}});
 
-	is(diff_dates($date2,$date1),($test->{tl} ? $test->{duration} : undef));
+	is(compare_dates($date1,$date2),$test->{compare},
+            sprintf ".. [%02d/%02d/%04d] => [%02d/%02d/%04d]",
+                $test->{from}[0],$test->{from}[1],$test->{from}[2],
+                $test->{to}[0],$test->{to}[1],$test->{to}[2]);
 }
 
 foreach my $test (@monthlists) {
 	# cant do dates before the epoch
 	next	if(!$on_unix && $test->{array}->[1] < 1970);
-
-	my $hash = month_list(@{$test->{array}});
-	is_deeply($hash,$test->{hash});
-	my $days = month_days(@{$test->{array}});
-	is($days,scalar(keys %$hash));
 }
 
 

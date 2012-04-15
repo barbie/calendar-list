@@ -1,5 +1,14 @@
 Revision history for Perl extension Calendar::List.
 
+0.19    current
+	- removed 5.006 dependency
+	- major refactorying effort
+	- removed month_list, dotw3, month_days, diff_dates (Functions.pm)
+	- added compare_dates (Functions.pm)
+	- reinstated DateTime support
+	- reworked lots of tests
+	- added AUTOMATED_TESTING checks to packaging tests.
+
 0.18    02/03/2007
 	- Handwritten META.yml to conform to current specs.
 	- Changed all instances of LICENCE to LICENSE.

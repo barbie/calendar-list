@@ -10,8 +10,6 @@ use Calendar::List;
 eval "use DateTime";
 if($@) {
 	plan skip_all => "DateTime not installed.";
-} elsif(defined $DateTime::VERSION && $DateTime::VERSION > 0.16) {
-	plan skip_all => "DateTime after 0.16 is not supported.";
 }
 
 plan tests => 13;
