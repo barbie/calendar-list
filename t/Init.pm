@@ -625,3 +625,24 @@ our @format02 = (
 	{	array => [ 'Monday, 13th September 1965', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
 		result => '1965-09-13' },
 );
+
+__END__
+
+=head1 NAME
+
+t/Init.pm - test variables module.
+
+=head1 AUTHOR
+
+Barbie, E<lt>barbie@cpan.orgE<gt>
+for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
+
+=head1 COPYRIGHT AND LICENSE
+
+  Copyright (C) 2002-2003 Barbie for Miss Barbell Productions
+  All Rights Reserved.
+
+  This module is free software; you can redistribute it and/or 
+  modify it under the same terms as Perl itself.
+
+=cut

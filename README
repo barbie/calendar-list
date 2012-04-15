@@ -1,5 +1,5 @@
-Calendar/List version 0.05
-==========================
+Calendar::List
+==============
 
 DESCRIPTION
 
@@ -49,13 +49,13 @@ To install this module type the following:
 
 AUTHOR
 
-Barbie, C<E<lt>modules@missbarbell.co.ukE<gt>>, http://birmingham.pm.org/
+Barbie, <modules@missbarbell.co.uk>, http://birmingham.pm.org/
 
 Miss Barbell Productions.
 
 LATEST REVISION
 
-$Revision: 0.05 $
+$Revision: 0.07 $
 
 COPYRIGHT AND LICENCE
 

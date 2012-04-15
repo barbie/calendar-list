@@ -1,5 +1,9 @@
 Revision history for Perl extension Calendar::List.
 
+0.07  Wed Oct  8 13:04:18 GMTDT 2003
+	- POD updates
+	- META.yml added to distribution
+
 0.06  Thu Aug  7 11:31:38 BST 2003
 	- Another fix to cope with Time::Local dotw problems
 	- Fixed POD links

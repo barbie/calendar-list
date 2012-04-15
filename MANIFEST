@@ -1,8 +1,9 @@
 Changes
-Functions.pm
-List.pm
+lib/Calendar/Functions.pm
+lib/Calendar/List.pm
 MANIFEST
 Makefile.PL
+META.yml
 README
 t/01base.t
 t/10functions.t
