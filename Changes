@@ -1,5 +1,12 @@
 Revision history for Perl extension Calendar::List.
 
+0.12  22/04/2004
+	- All Time::Local dates based from 12 midday
+
+0.11  19/04/2004
+	- Test::More added as a prerequisites for PPMs
+	- Fixed Abstract in Makefile.PL
+
 0.10  16/12/2003
 	- Fixed the VERSION test if DateTime not loaded
 

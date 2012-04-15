@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 ### CHANGES #########################################################
 #	0.01	30/04/2003	Initial Release
@@ -21,6 +21,7 @@ $VERSION = '0.10';
 #	0.08	07/11/2003	delta_days changed after DateTime 0.16 :(
 #	0.09	10/11/2003	added Time::Piece for the EPOCH date format
 #	0.10	16/12/2003	Fixed the VERSION test if DateTime not loaded
+#	0.11	22/04/2004	All Time::Local dates based from 12 midday
 #####################################################################
 
 #----------------------------------------------------------------------------
@@ -161,7 +162,7 @@ sub encode_date {
 		$this = new Date::ICal(day=>$day,month=>$mon,year=>$year,offset=>0);
 	} else {		# using Time::Local
 		return	if(fail_range($year));
-		$this = timegm(0,0,0,$day,$mon-1,$year);
+		$this = timegm(0,0,12,$day,$mon-1,$year);
 	}
 
 	return $this
@@ -321,8 +322,8 @@ sub month_days {
 		$date2 = new Date::ICal(day=>1,month=>$month2,year=>$year2,offset=>0);
 	} else {
 		return	if(fail_range($year1));
-		$date1 = timegm 0, 0, 0, 1, $month1-1, $year1;
-		$date2 = timegm 0, 0, 0, 1, $month2-1, $year2;
+		$date1 = timegm 0, 0, 12, 1, $month1-1, $year1;
+		$date2 = timegm 0, 0, 12, 1, $month2-1, $year2;
 	}
 
 	return diff_dates($date2,$date1);
