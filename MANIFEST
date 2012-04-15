@@ -1,10 +1,13 @@
+Artistic
 Changes
+LICENSE
+MANIFEST
+META.yml
+Makefile.PL
+README
+examples/examples.txt
 lib/Calendar/Functions.pm
 lib/Calendar/List.pm
-MANIFEST
-Makefile.PL
-META.yml
-README
 t/01base.t
 t/10functions.t
 t/11datetime.t
@@ -20,4 +23,5 @@ t/32select-di.t
 t/33select-tl.t
 t/90podtest.t
 t/91podcover.t
+t/94metatest.t
 t/TestData.pm

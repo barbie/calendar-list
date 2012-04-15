@@ -8,7 +8,7 @@ use strict;
 ###########################################################################
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.05';
+$VERSION = '0.18';
 
 require Exporter;
 
@@ -639,19 +639,22 @@ __END__
 
 =head1 NAME
 
-t/Init.pm - test variables module.
+t/TestData.pm - test variables module.
 
 =head1 AUTHOR
 
-Barbie, E<lt>barbie@cpan.orgE<gt>
-for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
+  Barbie, E<lt>barbie@cpan.orgE<gt>
+  for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2002-2003 Barbie for Miss Barbell Productions
-  All Rights Reserved.
+  Copyright © 2003-2007 Barbie for Miss Barbell Productions.
 
-  This module is free software; you can redistribute it and/or 
-  modify it under the same terms as Perl itself.
+  This library is free software; you can redistribute it and/or modify it under
+  the same terms as Perl itself, using the Artistic License.
+
+The full text of the licenses can be found in the Artistic file included with 
+this distribution, or in perlartistic file as part of Perl installation, in 
+the 5.8.1 release or later.
 
 =cut

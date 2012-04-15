@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.17';
+$VERSION = '0.18';
 
 #----------------------------------------------------------------------------
 
@@ -181,11 +181,11 @@ sub calendar_selectbox {
 sub _thelist {
 	my $format1 = shift	unless(ref($_[0]) eq 'HASH');
 	my $format2 = shift	unless(ref($_[0]) eq 'HASH');
-	my $usrhash = shift	if(ref($_[0]) eq 'HASH');
+	my $usrhash = shift	    if(ref($_[0]) eq 'HASH');
 	$format1 = $Format	unless($format1);
 	$format2 = $format1	unless($format2);
 
-	return undef	if _setargs($usrhash,$format1);
+	return	if _setargs($usrhash,$format1);
 
 	my ($nowday,$nowmon,$nowyear) = decode_date($Settings{startdate});
 	
@@ -243,7 +243,7 @@ sub _thelist {
 
 sub _callist {
 	my ($fmt1,$fmt2,$hash,$wantarray) = @_;
-	return undef	unless($hash);
+	return	unless($hash);
 
 	my (@returns,%returns);
 	tie(%returns, 'Tie::IxHash');
@@ -287,7 +287,7 @@ sub _callist {
 
 sub _calselect {
 	my ($fmt1,$fmt2,$hash) = @_;
-	return undef	unless($hash);
+	return	unless($hash);
 
 	# open SELECT tag
 	my $select = "<select name='$Settings{selectname}'>\n";
@@ -549,13 +549,16 @@ other modules.
 =head1 BUGS, PATCHES & FIXES
 
 There are no known bugs at the time of this release. However, if you spot a
-bug or are experiencing difficulties, that is not explained within the POD
-documentation, please send an email to barbie@cpan.org or submit a bug to the
-RT system (http://rt.cpan.org/). However, it would help greatly if you are 
-able to pinpoint problems or even supply a patch. 
+bug or are experiencing difficulties that are not explained within the POD
+documentation, please submit a bug to the RT system (see link below). However,
+it would help greatly if you are able to pinpoint problems or even supply a 
+patch. 
 
 Fixes are dependant upon their severity and my availablity. Should a fix not
-be forthcoming, please feel free to (politely) remind me.
+be forthcoming, please feel free to (politely) remind me by sending an email
+to barbie@cpan.org .
+
+RT: http://rt.cpan.org/Public/Dist/Display.html?Name=Calendar-List
 
 =head1 AUTHOR
 
@@ -571,11 +574,14 @@ for testing the beta versions.
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2002-2005 Barbie for Miss Barbell Productions.
-  All Rights Reserved.
+    Copyright © 2003-2007 Barbie for Miss Barbell Productions.
 
-  This module is free software; you can redistribute it and/or 
-  modify it under the same terms as Perl itself.
+    This library is free software; you can redistribute it and/or modify it under
+    the same terms as Perl itself, using the Artistic License.
+
+The full text of the licenses can be found in the Artistic file included with 
+this distribution, or in perlartistic file as part of Perl installation, in 
+the 5.8.1 release or later.
 
 =cut
 
