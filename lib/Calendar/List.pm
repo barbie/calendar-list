@@ -5,28 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.15';
-
-### CHANGES #########################################################
-#   0.01    30/04/2003  Initial Release
-#   0.02    08/06/2003  update for undef returns
-#   0.03    09/06/2003  Time::Local offset fix
-#   0.04    10/06/2003  SELECTED bug fix
-#   0.05    25/06/2003  Tie::IxHash for preserving order
-#                       use of => to identify a hash
-#   0.06    07/08/2003	Fixed POD links
-#   0.07    08/10/2003	META.yml added
-#                   	POD updates
-#	0.08    07/11/2003	delta_days changed after DateTime 0.16 :(
-#	0.09	10/11/2003	added Time::Piece for the EPOCH date format
-#	0.10	16/12/2003	Fixed the VERSION test if DateTime not loaded
-#	0.11	19/04/2004	Test::More added as a prerequisites for PPMs
-#	0.12	22/04/2004	All Time::Local dates based from 12 midday
-#	0.13	22/04/2004	Upgrade 91podcover.t to use Test::Pod::Coverage
-#	0.14	07/01/2005	fixed 13timelocal.t epoch test bug
-#						upgraded pod tests
-#	0.15	01/03/2005	POD fix (william--knowmad.com via rt)
-#####################################################################
+$VERSION = '0.16';
 
 #----------------------------------------------------------------------------
 
@@ -45,19 +24,19 @@ Calendar::List - A module for creating date lists
 
   # using the hash
   my %hash01 = (
-  	'options'	=> 10,
-  	'exclude'	=> { 'weekend' => 1 },
-  	'start'		=> '01-05-2003',
+  	'options'   => 10,
+  	'exclude'   => { 'weekend' => 1 },
+  	'start'     => '01-05-2003',
   );
 
   my %hash02 = (
-  	'exclude'	=> { 'monday' => 1,
+  	'exclude'   => { 'monday' => 1,
                      'tuesday' => 1,
                      'wednesday' => 1 },
-  	'start'		=> '01-05-2003',
-  	'end'		=> '10-05-2003',
-  	'name'		=> 'MyDates',
-  	'selected'	=> '04-05-2003',
+  	'start'     => '01-05-2003',
+  	'end'       => '10-05-2003',
+  	'name'      => 'MyDates',
+  	'selected'  => '04-05-2003',
   );
 
   my %hash = calendar_list('DD-MM-YYYY' => 'DDEXT MONTH YYYY', \%hash01);
@@ -95,7 +74,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 ) ] );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
+our @EXPORT    = ( @{ $EXPORT_TAGS{'all'} } );
 
 #############################################################################
 #Library Modules															#
@@ -110,7 +89,7 @@ use Tie::IxHash;
 #############################################################################
 
 # prime our print out names
-my @dotw = qw(	Sunday Monday Tuesday Wednesday Thursday Friday Saturday );
+my @dotw = qw( Sunday Monday Tuesday Wednesday Thursday Friday Saturday );
 
 # THE DEFAULTS
 my $Format		= 'DD-MM-YYYY';
@@ -135,7 +114,7 @@ my (%Settings);
 #Interface Functions														#
 #############################################################################
 
-=head1 METHODS
+=head1 FUNCTIONS
 
 =over 4
 
@@ -204,7 +183,7 @@ sub _thelist {
 	my ($nowday,$nowmon,$nowyear) = decode_date($Settings{startdate});
 	
 	my $optcount = 0;	# our option counter
-	my %DateHash = ();
+	my %DateHash;
 	tie(%DateHash, 'Tie::IxHash');
 
 	while($optcount < $Settings{maxcount}) {
@@ -213,7 +192,7 @@ sub _thelist {
 
 		foreach my $day (sort {$a <=> $b} keys %$thismonth) {
 			# end if we have enough options
-			last	if($optcount > $Settings{maxcount});
+			last	if($optcount >= $Settings{maxcount});
 
 			# ignore days prior to start date
 			next	unless($optcount || $day >= $nowday);
@@ -255,7 +234,7 @@ sub _callist {
 	my ($fmt1,$fmt2,$hash,$wantarray) = @_;
 	return undef	unless($hash);
 
-	my (@returns,%returns) = ();
+	my (@returns,%returns);
 	tie(%returns, 'Tie::IxHash');
 
 	foreach my $key (sort {$a <=> $b} keys %$hash) {
@@ -540,35 +519,42 @@ other modules.
 
 =head1 SEE ALSO
 
-  L<perl>
-  L<Calendar::Functions>
-  L<Clone>
+  Calendar::Functions
 
-The Calendar FAQ at http://www.tondering.dk/claus/calendar.html
+  Clone
+  Date::ICal
+  DateTime
+  Time::Local
+  Time::Piece
 
-=head1 BUGS & ENHANCEMENTS
+  The Calendar FAQ at http://www.tondering.dk/claus/calendar.html
 
-If you think you've found a bug, send details and
-patches (if you have one) to E<lt>modules@missbarbell.co.ukE<gt>.
+=head1 BUGS, PATCHES & FIXES
 
-If you have a suggestion for an enhancement, though I can't promise to
-implement it, please send details to E<lt>modules@missbarbell.co.ukE<gt>.
+There are no known bugs at the time of this release. However, if you spot a
+bug or are experiencing difficulties, that is not explained within the POD
+documentation, please send an email to barbie@cpan.org or submit a bug to the
+RT system (http://rt.cpan.org/). However, it would help greatly if you are 
+able to pinpoint problems or even supply a patch. 
+
+Fixes are dependant upon their severity and my availablity. Should a fix not
+be forthcoming, please feel free to (politely) remind me.
 
 =head1 AUTHOR
 
-  Barbie, E<lt>barbie@cpan.orgE<gt>
-  for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
+  Barbie, <barbie@cpan.org>
+  for Miss Barbell Productions <http://www.missbarbell.co.uk>.
 
 =head1 THANKS TO
 
-Dave Cross, E<lt>dave@dave.orgE<gt> for creating Calendar::Simple, the
+Dave Cross, E<lt>dave at dave.orgE<gt> for creating Calendar::Simple, the
 newbie poster on a technical message board who inspired me to write the
-original wrapper code and Richard Clamp E<lt>richardc@unixbeard.co.ukE<gt>
+original wrapper code and Richard Clamp E<lt>richardc at unixbeard.co.ukE<gt>
 for testing the beta versions.
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2002-2003 Barbie for Miss Barbell Productions
+  Copyright (C) 2002-2005 Barbie for Miss Barbell Productions.
   All Rights Reserved.
 
   This module is free software; you can redistribute it and/or 

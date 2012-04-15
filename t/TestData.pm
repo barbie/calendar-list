@@ -135,8 +135,7 @@ our %expected02 = (
           '2003-06-19',
           '2003-06-20',
           '2003-06-21',
-          '2003-06-22',
-          '2003-06-23'
+          '2003-06-22'
         ],
 2 => [
           '01-05-2003',
@@ -148,8 +147,7 @@ our %expected02 = (
           '09-05-2003',
           '12-05-2003',
           '13-05-2003',
-          '14-05-2003',
-          '15-05-2003'
+          '14-05-2003'
         ],
 3 => [
           '05-03-2003',
@@ -166,8 +164,7 @@ our %expected02 = (
           '10-May-2003',
           '11-May-2003',
           '15-May-2003',
-          '16-May-2003',
-          '17-May-2003'
+          '16-May-2003'
         ],
 5 => {
           '2003-06-01' => '01-06-2003',
@@ -189,7 +186,6 @@ our %expected02 = (
           '2003-06-14' => '14-06-2003',
           '2003-06-06' => '06-06-2003',
           '2003-05-26' => '26-05-2003',
-          '2003-06-23' => '23-06-2003',
           '2003-06-15' => '15-06-2003',
           '2003-06-07' => '07-06-2003',
           '2003-05-27' => '27-05-2003',
@@ -208,7 +204,6 @@ our %expected02 = (
           '02-05-2003' => '2003-05-02',
           '13-05-2003' => '2003-05-13',
           '06-05-2003' => '2003-05-06',
-          '15-05-2003' => '2003-05-15',
           '08-05-2003' => '2003-05-08',
           '01-05-2003' => '2003-05-01',
           '12-05-2003' => '2003-05-12',
@@ -230,7 +225,6 @@ our %expected02 = (
           '15-May-2003' => 'Thursday 15th May, 2003',
           '03-May-2003' => 'Saturday 3rd May, 2003',
           '08-May-2003' => 'Thursday 8th May, 2003',
-          '17-May-2003' => 'Saturday 17th May, 2003',
           '02-May-2003' => 'Friday 2nd May, 2003'
         },
 9 => [
@@ -263,8 +257,7 @@ our %expected02 = (
           '19-06-2003',
           '20-06-2003',
           '21-06-2003',
-          '22-06-2003',
-          '23-06-2003'
+          '22-06-2003'
         ],
 10 => [
           '01-05-2003',
@@ -276,8 +269,7 @@ our %expected02 = (
           '10-05-2003',
           '11-05-2003',
           '15-05-2003',
-          '16-05-2003',
-          '17-05-2003'
+          '16-05-2003'
         ],
 11 => [
           '13-September-1965',
@@ -323,7 +315,6 @@ q|<select name='calendar'>
 <option value='2003-06-20'>2003-06-20</option>
 <option value='2003-06-21'>2003-06-21</option>
 <option value='2003-06-22'>2003-06-22</option>
-<option value='2003-06-23'>2003-06-23</option>
 </select>
 |,
 2 =>
@@ -338,7 +329,6 @@ q|<select name='calendar'>
 <option value='12-05-2003'>12-05-2003</option>
 <option value='13-05-2003'>13-05-2003</option>
 <option value='14-05-2003'>14-05-2003</option>
-<option value='15-05-2003'>15-05-2003</option>
 </select>
 |,
 3 =>
@@ -360,7 +350,6 @@ q|<select name='calendar'>
 <option value='11-May-2003'>11-05-2003</option>
 <option value='15-May-2003'>15-05-2003</option>
 <option value='16-May-2003'>16-05-2003</option>
-<option value='17-May-2003'>17-05-2003</option>
 </select>
 |,
 5 =>
@@ -395,7 +384,6 @@ q|<select name='calendar'>
 <option value='2003-06-20'>20-06-2003</option>
 <option value='2003-06-21'>21-06-2003</option>
 <option value='2003-06-22'>22-06-2003</option>
-<option value='2003-06-23'>23-06-2003</option>
 </select>
 |,
 6 =>
@@ -410,7 +398,6 @@ q|<select name='calendar'>
 <option value='12-05-2003'>2003-05-12</option>
 <option value='13-05-2003'>2003-05-13</option>
 <option value='14-05-2003'>2003-05-14</option>
-<option value='15-05-2003'>2003-05-15</option>
 </select>
 |,
 7 =>
@@ -432,7 +419,6 @@ q|<select name='calendar'>
 <option value='11-May-2003'>Sunday 11th May, 2003</option>
 <option value='15-May-2003'>Thursday 15th May, 2003</option>
 <option value='16-May-2003'>Friday 16th May, 2003</option>
-<option value='17-May-2003'>Saturday 17th May, 2003</option>
 </select>
 |,
 9 =>
@@ -467,7 +453,6 @@ q|<select name='calendar'>
 <option value='20-06-2003'>20-06-2003</option>
 <option value='21-06-2003'>21-06-2003</option>
 <option value='22-06-2003'>22-06-2003</option>
-<option value='23-06-2003'>23-06-2003</option>
 </select>
 |,
 10 =>
@@ -482,7 +467,6 @@ q|<select name='calendar'>
 <option value='11-05-2003'>11-05-2003</option>
 <option value='15-05-2003'>15-05-2003</option>
 <option value='16-05-2003'>16-05-2003</option>
-<option value='17-05-2003'>17-05-2003</option>
 </select>
 |,
 11 =>

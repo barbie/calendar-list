@@ -5,24 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.11';
-
-### CHANGES #########################################################
-#	0.01	30/04/2003	Initial Release
-#	0.02	08/06/2003	fix to diff_dates and undef returns
-#	0.03	09/06/2003	Time::Local offset fix
-#	0.04	11/06/2003	Time::Local fix now uses timegm()
-#	0.05	25/06/2003	More Date Formats
-#	0.06	07/08/2003	Another fix to cope with Time::Local
-#                       dotw problems
-#                       POD updates 
-#                       More Date Formats
-#	0.07	08/10/2003	POD updates
-#	0.08	07/11/2003	delta_days changed after DateTime 0.16 :(
-#	0.09	10/11/2003	added Time::Piece for the EPOCH date format
-#	0.10	16/12/2003	Fixed the VERSION test if DateTime not loaded
-#	0.11	22/04/2004	All Time::Local dates based from 12 midday
-#####################################################################
+$VERSION = '0.16';
 
 #----------------------------------------------------------------------------
 
@@ -32,7 +15,7 @@ Calendar::Functions - A module containing functions for dates and calendars.
 
 =head1 SYNOPSIS
 
-  use Calendar::Functions qw();
+  use Calendar::Functions;
   $ext = ext($day);
   $moty = moty($monthname);
   $monthname = moty($moty);
@@ -99,7 +82,7 @@ require Exporter;
 );
 
 @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} }, @{ $EXPORT_TAGS{'test'} } );
-@EXPORT = ( @{ $EXPORT_TAGS{'basic'} } );
+@EXPORT    = ( @{ $EXPORT_TAGS{'basic'} } );
 
 #############################################################################
 #Library Modules															#
@@ -116,7 +99,6 @@ my $tp = ! $@;
 if($tp) {
 	require Time::Piece;
 }
-
 
 #############################################################################
 #Variables
@@ -137,7 +119,7 @@ my $EpoYear		= 1970;
 #Interface Functions														#
 #############################################################################
 
-=head1 METHODS
+=head1 FUNCTIONS
 
 =over 4
 
@@ -576,46 +558,51 @@ of 1st January 1902 to 31st December 2037 are passed, an undef is returned.
 
 =head1 SEE ALSO
 
-  L<perl>
-  L<Date::ICal>
-  L<DateTime>
-  L<Time::Local>
-  L<Time::Piece>
+  Date::ICal
+  DateTime
+  Time::Local
+  Time::Piece
 
-The Calendar FAQ at http://www.tondering.dk/claus/calendar.html
+  The Calendar FAQ at http://www.tondering.dk/claus/calendar.html
 
-=head1 BUGS & ENHANCEMENTS
+=head1 BUGS, PATCHES & FIXES
 
-There appears to be a problem with Time::Local not returning the correct
-number of seconds for localtime to distinguish the correct day of the week.
-I suspect, even though timegm() is being used, offsets are getting set.
-Now using 12:00pm as the time of day to try and avoid offset strangeness.
+There are no known bugs at the time of this release. However, if you spot a
+bug or are experiencing difficulties, that is not explained within the POD
+documentation, please send an email to barbie@cpan.org or submit a bug to the
+RT system (http://rt.cpan.org/). However, it would help greatly if you are 
+able to pinpoint problems or even supply a patch. 
+
+Fixes are dependant upon their severity and my availablity. Should a fix not
+be forthcoming, please feel free to (politely) remind me.
+
+=head2 Known Issues
+
+=over
+
+=item DateTime & delta_days
 
 DateTime after 0.16 implements delta_days differently from previous versions.
 Until I have time to rewrite this module to be compatible with versions after
 0.16, I won't be supporting DateTime 0.17 or greater.
 
-If you think you've found a bug, send details and
-patches (if you have one) to E<lt>modules@missbarbell.co.ukE<gt>.
-
-If you have a suggestion for an enhancement, though I can't promise to
-implement it, please send details to E<lt>modules@missbarbell.co.ukE<gt>.
+=back
 
 =head1 AUTHOR
 
-  Barbie, E<lt>barbie@cpan.orgE<gt>
-  for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
+  Barbie, <barbie@cpan.org>
+  for Miss Barbell Productions <http://www.missbarbell.co.uk>.
 
 =head1 THANKS TO
 
-Dave Cross, E<lt>dave@dave.orgE<gt> for creating Calendar::Simple, the
+Dave Cross, E<lt>dave at dave.orgE<gt> for creating Calendar::Simple, the
 newbie poster on a technical message board who inspired me to write the
-original wrapper code and Richard Clamp E<lt>richardc@unixbeard.co.ukE<gt>
+original wrapper code and Richard Clamp E<lt>richardc at unixbeard.co.ukE<gt>
 for testing the beta versions.
 
 =head1 COPYRIGHT AND LICENSE
 
-  Copyright (C) 2002-2003 Barbie for Miss Barbell Productions
+  Copyright (C) 2002-2005 Barbie for Miss Barbell Productions
   All Rights Reserved.
 
   This module is free software; you can redistribute it and/or 

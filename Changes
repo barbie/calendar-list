@@ -1,5 +1,11 @@
 Revision history for Perl extension Calendar::List.
 
+0.16  03/03/2005
+	- Fixed some inaccurate tests.
+	- Updated POD
+	- both modules now share the same VERSION
+	- fixed option count bug
+
 0.15  01/03/2005
 	- POD fix (william--knowmad.com via rt)
 
@@ -48,6 +54,7 @@ Revision history for Perl extension Calendar::List.
 	- Fixed the loading module test in new test files
 	- Fix for Time::Local test due to faults on windows
 	- Switched to timegm, as we're not interested in Daylight Saving
+	- SELECTED bug fix
 
 0.03  Mon Jun  9 13:47:31 2003
 	- Time::Local fix for +/- duration.
@@ -57,7 +64,7 @@ Revision history for Perl extension Calendar::List.
 	- '-opt' style dropped in favour of 'opt'
 	- 'make dist' used to create the distribution
 	- fixed DateTime::compare bug in tests
-	thanks to Richard Clamp for the above suggestions
+	  thanks to Richard Clamp for the above suggestions
 	- changed to 'delta_days' to get a true diff date with DateTime
 	- reworked Functions code to provide undef on error
 	- reworked Time::Local tests to check for undef on error
