@@ -33,12 +33,13 @@ For epoch printing the distribution requires:
 
   Time::Piece
 
-For testing purposes, the following modules are desireable, but not essential:
+For testing purposes, the following modules are desirable, but not essential:
 
   Test::Pod
   Test::Pod::Coverage
   Pod::Coverage
-  Test::YAML::Meta
+  Test::CPAN::Meta
+  Test::CPAN::Meta::JSON
 
 INSTALLATION
 
