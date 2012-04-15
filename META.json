@@ -63,8 +63,8 @@
         "license": "http://dev.perl.org/licenses/",
         "bugtracker": { "web": "http://rt.cpan.org/Public/Dist/Display.html?Name=Calendar-List" },
         "repository": {
-            "url": "git://github.com/barbie/Calendar-List.git",
-            "web": "http://github.com/barbie/Calendar-List",
+            "url": "git://github.com/barbie/calendar-list.git",
+            "web": "http://github.com/barbie/calendar-list",
             "type": "git"
         }
     }

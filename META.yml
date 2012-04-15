@@ -40,6 +40,11 @@ no_index:
     - t
     - examples
 
+resources:
+  license:    http://dev.perl.org/licenses/
+  bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Calendar-List
+  repository: http://github.com/barbie/calendar-list.git
+
 meta-spec:
    version:   1.4
    url:       http://module-build.sourceforge.net/META-spec-v1.4.html
