@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                   Calendar-List
-version:                0.20
+version:                0.21
 abstract:               A module for creating date lists
 author:
   - Barbie <barbie@cpan.org>
@@ -17,6 +17,7 @@ requires:
 recommends:
   Time::Piece:          0
   Date::ICal:           0
+  DateTime:             0
   Test::More:           0.47
   Test::Pod:            1.00
   Test::Pod::Coverage:  0.08
@@ -27,11 +28,16 @@ build_requires:
 provides:
   Calendar::List:
     file:     lib/Calendar/List.pm
-    version:  0.20
+    version:  0.21
   Calendar::Functions:
     file:     lib/Calendar/Functions.pm
-    version:  0.20
+    version:  0.21
+  TestData:
+    file:     t/TestData.pm
+    version:  0.18
 no_index:
+  file:
+    - t/TestData.pm
   directory:
     - t
     - examples

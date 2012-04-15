@@ -1,8 +1,15 @@
 Revision history for Perl extension Calendar::List.
 
+0.21    02/06/2008
+	- updated META.yml to correctly include DateTime optional prerequisite.
+	- added dubious TestData to META.yml to see how PAUSE and CPANTS 
+	  respond. This is dubious because TestData.pm is provided in the 
+	  distribution under the ./t directory, and listed as no_index, which
+	  CPANTS ignores and says there is a prerequisite missing!
+
 0.20    28/03/2008
 	- purely a cosmetic release to render the Makefile.PL time issues, that
-	  have generated bogus FAIL reports in the previous two releases, null
+	  have generated bogus FAIL reports in previous releases, null
 	  and void.
 
 0.19    19/03/2008
