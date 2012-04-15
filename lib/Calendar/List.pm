@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT_OK @EXPORT);
-$VERSION = '0.22';
+$VERSION = '0.23';
 
 #----------------------------------------------------------------------------
 
@@ -544,13 +544,9 @@ for testing the beta versions.
 
 =head1 COPYRIGHT AND LICENSE
 
-    Copyright © 2003-2009 Barbie for Miss Barbell Productions.
+  Copyright (C) 2003-2012 Barbie for Miss Barbell Productions
 
-    This library is free software; you can redistribute it and/or modify it under
-    the same terms as Perl itself, using the Artistic License.
-
-The full text of the licenses can be found in the Artistic file included with
-this distribution, or in perlartistic file as part of Perl installation, in
-the 5.8.1 release or later.
+  This module is free software; you can redistribute it and/or
+  modify it under the Artistic License v2.
 
 =cut

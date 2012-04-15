@@ -1,5 +1,11 @@
 Revision history for Perl extension Calendar::List.
 
+0.23    current
+        - update META.yml to prevent TestData.pm from being indexed.
+        - License updated to Artistic License v2.0.
+        - removed Artistic file.
+        - added META.json and test script.
+
 0.22    18/18/2009
         - added more tests
         - updated documentation.

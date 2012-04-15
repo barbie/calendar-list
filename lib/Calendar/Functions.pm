@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.22';
+$VERSION = '0.23';
 
 #----------------------------------------------------------------------------
 
@@ -175,7 +175,7 @@ sub decode_date {
 
 =item compare_dates( date, date )
 
-Using the appropriate method determines ther ordering of the two given dates.
+Using the appropriate method, determines ther ordering of the two given dates.
 
 =cut
 
@@ -183,7 +183,7 @@ Using the appropriate method determines ther ordering of the two given dates.
 # args: date1 .... date object or string
 #		date2 .... date object or string
 # retv: the compare value, as per the 'cmp' or '<=>' functionality.
-# desc:	Using the loaded module determines whether the first date is before, 
+# desc:	Using the selected module, determines whether the first date is before,
 #       after or the same as the second.
 
 sub compare_dates {
@@ -497,13 +497,9 @@ for testing the beta versions.
 
 =head1 COPYRIGHT AND LICENSE
 
-    Copyright © 2003-2009 Barbie for Miss Barbell Productions.
+  Copyright (C) 2003-2012 Barbie for Miss Barbell Productions
 
-    This library is free software; you can redistribute it and/or modify it under
-    the same terms as Perl itself, using the Artistic License.
-
-The full text of the licenses can be found in the Artistic file included with
-this distribution, or in perlartistic file as part of Perl installation, in
-the 5.8.1 release or later.
+  This module is free software; you can redistribute it and/or
+  modify it under the Artistic License v2.
 
 =cut
