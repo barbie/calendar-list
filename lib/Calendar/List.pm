@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.16';
+$VERSION = '0.17';
 
 #----------------------------------------------------------------------------
 
@@ -30,6 +30,12 @@ Calendar::List - A module for creating date lists
   );
 
   my %hash02 = (
+  	'options'   => 10,
+  	'exclude'   => { 'holidays' => \@holidays },
+  	'start'     => '01-05-2003',
+  );
+
+  my %hash03 = (
   	'exclude'   => { 'monday' => 1,
                      'tuesday' => 1,
                      'wednesday' => 1 },
@@ -40,8 +46,8 @@ Calendar::List - A module for creating date lists
   );
 
   my %hash = calendar_list('DD-MM-YYYY' => 'DDEXT MONTH YYYY', \%hash01);
-  my @list = calendar_list('DD-MM-YYYY', \%hash01);
-  my $html = calendar_selectbox('DD-MM-YYYY',\%hash02);
+  my @list = calendar_list('DD-MM-YYYY', \%hash02);
+  my $html = calendar_selectbox('DD-MM-YYYY',\%hash03);
 
 =head1 DESCRIPTION
 
@@ -103,7 +109,8 @@ my %Defaults = (
 	enddate => undef,
 	start => [1,1,1970],
 	end => [31,12,2037],
-	exclude => [ 0,0,0,0,0,0,0 ],
+	exclude => [ 0,0,0,0,0,0,0,0 ],
+    holidays => {},
 );
 
 my (%Settings);
@@ -200,6 +207,10 @@ sub _thelist {
 			# ignore days we're not interested in
 			my $dotw = $thismonth->{$day};
 			next	if($Settings{exclude}->[$dotw]);
+
+            my $fdate = sprintf "%02d-%02d-%04d", $day,$nowmon,$nowyear;
+            next	if($Settings{exclude}->[7] && $Settings{holidays}
+                        && $Settings{holidays}->{$fdate});
 
 			# stop if reached end date
 			if(_nomore($day,$nowmon,$nowyear)) {
@@ -345,6 +356,12 @@ sub _setargs {
 		# check for weekday setting
 		if($hash2->{'weekday'}) {
 			foreach my $inx (1..5) { $Settings{exclude}->[$inx] = 1; }
+		}
+
+		# check for holiday setting
+		if($hash2->{'holidays'}) {
+			$Settings{exclude}->[7] = 1;
+			%{$Settings{holidays}} = map {$_ => 1} @{$hash2->{'holidays'}};
 		}
 
 		# ensure we aren't wasting time

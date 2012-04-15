@@ -1,5 +1,8 @@
 Revision history for Perl extension Calendar::List.
 
+0.17  18/11/2005
+	- added support for excluding holidays (suggested by Julio Gruskin)
+
 0.16  03/03/2005
 	- Fixed some inaccurate tests.
 	- Updated POD
