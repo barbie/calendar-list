@@ -38,11 +38,11 @@ foreach my $test (@datetest) {
 }
 
 foreach my $test (@diffs) {
-	my $date1 = encode_date(@{$test->{from}});
-	my $date2 = encode_date(@{$test->{to}});
-
 	# before the epoch, skipping
 	next	if(!$on_unix && $test->{tl} == 2);
+
+	my $date1 = encode_date(@{$test->{from}});
+	my $date2 = encode_date(@{$test->{to}});
 
 	is(diff_dates($date2,$date1),($test->{tl} ? $test->{duration} : undef));
 }

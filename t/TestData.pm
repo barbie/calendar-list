@@ -37,7 +37,7 @@ my %os = (MacOS   => 0,
 	      VMS     => 0,
 	      epoc    => 0);
 
-our $on_unix = (exists $os{$^O} ? $os{$^O} : 1);
+our $on_unix = (exists $os{$^O} ? 0 : 1);
 
 our @datetest = (
 	{ array => [24,3,1976],	dotw => 3, tl => 1 },

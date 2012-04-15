@@ -1,5 +1,9 @@
 Revision history for Perl extension Calendar::List.
 
+0.14  07/01/2005
+	- fixed 13timelocal.t epoch test bug
+	- upgraded pod tests
+
 0.13  22/04/2004
 	- Upgrade 91podcover.t to use Test::Pod::Coverage
 

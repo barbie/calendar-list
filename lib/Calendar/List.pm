@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.13';
+$VERSION = '0.14';
 
 ### CHANGES #########################################################
 #   0.01    30/04/2003  Initial Release
@@ -23,6 +23,8 @@ $VERSION = '0.13';
 #	0.11	19/04/2004	Test::More added as a prerequisites for PPMs
 #	0.12	22/04/2004	All Time::Local dates based from 12 midday
 #	0.13	22/04/2004	Upgrade 91podcover.t to use Test::Pod::Coverage
+#	0.14	07/01/2005	fixed 13timelocal.t epoch test bug
+#						upgraded pod tests
 #####################################################################
 
 #----------------------------------------------------------------------------
