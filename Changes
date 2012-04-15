@@ -1,6 +1,11 @@
 Revision history for Perl extension Calendar::List.
 
-0.19    current
+0.20    28/03/2008
+	- purely a cosmetic release to render the Makefile.PL time issues, that
+	  have generated bogus FAIL reports in the previous two releases, null
+	  and void.
+
+0.19    19/03/2008
 	- removed 5.006 dependency
 	- major refactorying effort
 	- removed month_list, dotw3, month_days, diff_dates (Functions.pm)

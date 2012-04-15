@@ -17,6 +17,7 @@ use vars qw(
 	@format01 @format02 @format03
     $on_unix
 );
+
 $VERSION = '0.18';
 
 require Exporter;
