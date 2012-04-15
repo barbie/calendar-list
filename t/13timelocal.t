@@ -23,7 +23,7 @@ foreach my $test (@datetest) {
 
 		my $date = encode_date(@{$test->{array}});
 		my @date = decode_date($date);
-		is(eq_array(\@date,$test->{array}),1);
+		is_deeply(\@date,$test->{array});
 	
 		is(diff_dates($date,$diff),$test->{diff});
 
@@ -50,7 +50,7 @@ foreach my $test (@monthlists) {
 	next	if(!$on_unix && $test->{array}->[1] < 1970);
 
 	my $hash = month_list(@{$test->{array}});
-	is(eq_hash($hash,$test->{hash}),1);
+	is_deeply($hash,$test->{hash});
 	my $days = month_days(@{$test->{array}});
 	is($days,scalar(keys %$hash));
 }

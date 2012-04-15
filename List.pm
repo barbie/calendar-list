@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 ### CHANGES #########################################################
 #   0.01   30/04/2003   Initial Release
@@ -14,6 +14,7 @@ $VERSION = '0.05';
 #   0.04   10/06/2003   SELECTED bug fix
 #   0.05   25/06/2003   Tie::IxHash for preserving order
 #                       use of => to identify a hash
+#   0.06   07/08/2003	Fixed POD links
 #####################################################################
 
 =head1 NAME
@@ -421,13 +422,19 @@ Each format string can have the following components:
   MM
   YYYY
   DAY
-  DDEXT
   MONTH
+  DDEXT
+  DMY
+  MDY
+  YMD
+  MABV
+  DABV
 
 The first three are tranlated into the numerical day/month/year strings.
 The DAY format is translated into the day of the week name, and MONTH
 is the month name. DDEXT is the day with the appropriate suffix, eg 1st,
-22nd or 13th.
+22nd or 13th. DMY, MDY and YMD default to '13-09-1965' (DMY) style strings.
+MABV and DABV provide 3 letter abbreviations of MONTH and DAY respectively.
 
 =head3 Options
 
@@ -505,22 +512,22 @@ other modules.
 =head1 SEE ALSO
 
 L<perl>,
-Calendar::Functions,
-Clone
+L<Calendar::Functions>,
+L<Clone>
 
 =head1 BUGS & ENHANCEMENTS
 
 No bugs reported as yet.
 
 If you think you've found a bug, send details and
-patches (if you have one) to E<lt>modules@missbarbell.co.uk<gt>.
+patches (if you have one) to E<lt>modules@missbarbell.co.ukE<gt>.
 
 If you have a suggestion for an enhancement, though I can't promise to
-implement it, please send details to E<lt>modules@missbarbell.co.uk<gt>.
+implement it, please send details to E<lt>modules@missbarbell.co.ukE<gt>.
 
 =head1 AUTHOR
 
-Barbie, E<lt>barbie@missbarbell.co.uk<gt>
+Barbie, E<lt>barbie@missbarbell.co.ukE<gt>
 
 for Miss Barbell Productions.
 

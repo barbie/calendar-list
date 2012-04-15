@@ -613,6 +613,8 @@ our @format01 = (
 		result => '09-13-1965' },
 	{	array => [ 'YMD', 13,9,1965 ],
 		result => '1965-09-13' },
+	{	array => [ 'DABV, DD MABV YYYY', 13,9,1965,1 ],
+		result => 'Mon, 13 Sep 1965' },
 #	{	array => [ 'EPOCH', 13,9,1965 ],
 #		result => '9999' },
 );

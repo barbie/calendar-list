@@ -32,7 +32,7 @@ foreach my $test (1..4,9,10,11,13) {
 	my @array = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
-		is(eq_array(\@array,$expected02{$test}),1);
+		is_deeply(\@array,$expected02{$test});
 	} else {
 		is(scalar(@array),scalar(@{$expected02{$test}}));
 	}
@@ -53,7 +53,7 @@ dotrace("GOT:\n" . DumperX(\%hash) .
 dotrace("-- END test=$test --\n");
 
 	if($tests{$test}->{hash}) {
-		is(eq_hash(\%hash,$expected02{$test}),1);
+		is_deeply(\%hash,$expected02{$test});
 	} else {
 		is(scalar(keys %hash),scalar(keys %{$expected02{$test}}));
 	}

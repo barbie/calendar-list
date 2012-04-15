@@ -73,7 +73,7 @@ our %EXPORT_TAGS = (
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} }, @{ $EXPORT_TAGS{'test'} } );
 our @EXPORT = ( @{ $EXPORT_TAGS{'basic'} } );
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 ### CHANGES #########################################################
 #	0.01	30/04/2003	Initial Release
@@ -81,6 +81,10 @@ our $VERSION = '0.05';
 #	0.03	09/06/2003	Time::Local offset fix
 #	0.04	11/06/2003	Time::Local fix now uses timegm()
 #	0.05	25/06/2003	More Date Formats
+#	0.06	07/08/2003	Another fix to cope with Time::Local
+#                                 dotw problems
+#                               Fixed POD links
+#                               More Date Formats
 #####################################################################
 
 # -------------------------------------
@@ -254,7 +258,8 @@ sub dotw3 {
 		$dotw = $date->day_of_week;
 	} else {
 		return	if(fail_range($_[2]));
-		$date = timegm 0, 0, 0, $_[0], $_[1] -1, $_[2]
+		# pick the middle of the day to avoid Daylight Saving offsets
+		$date = timegm 0, 0, 12, $_[0], $_[1] -1, $_[2]
 			if(@_ > 1);
 		$dotw = (localtime $date)[6];
 	}
@@ -321,12 +326,16 @@ sub format_date {
 	my $fmonth	= sprintf "%s",   $months[$mon];
 	my $fdotw	= sprintf "%s",   (defined $dotw ? $dotw[$dotw] : '');
 	my $fddext	= sprintf "%d%s", $day, ext($day);
+	my $amonth	= substr($fmonth,0,3);
+	my $adotw	= substr($fdotw,0,3);
 #	my $epoch	= 9999;		# not yet implemented
 
 	# transpose format string into a date string
 	$fmt =~ s/\bDMY\b/$fday-$fmon-$fyear/i;
 	$fmt =~ s/\bMDY\b/$fmon-$fday-$fyear/i;
 	$fmt =~ s/\bYMD\b/$fyear-$fmon-$fday/i;
+	$fmt =~ s/\bMABV\b/$amonth/i;
+	$fmt =~ s/\bDABV\b/$adotw/i;
 	$fmt =~ s/\bMONTH\b/$fmonth/i;
 	$fmt =~ s/\bDAY\b/$fdotw/i;
 	$fmt =~ s/\bDDEXT\b/$fddext/i;
@@ -492,13 +501,19 @@ key strings which are currently supported:
   MM
   YYYY
   DAY
-  DDEXT
   MONTH
+  DDEXT
+  DMY
+  MDY
+  YMD
+  MABV
+  DABV
 
 The first three are tranlated into the numerical day/month/year strings.
 The DAY format is translated into the day of the week name, and MONTH
 is the month name. DDEXT is the day with the appropriate suffix, eg 1st,
-22nd or 13th.
+22nd or 13th. DMY, MDY and YMD default to '13-09-1965' (DMY) style strings.
+MABV and DABV provide 3 letter abbreviations of MONTH and DAY respectively.
 
 =back
 
@@ -525,23 +540,26 @@ of 1st January 1902 to 31st December 2037 are passed, an undef is returned.
 =head1 SEE ALSO
 
 L<perl>,
-Date::ICal
-DateTime
-Time::Local
+L<Date::ICal>,
+L<DateTime>,
+L<Time::Local>
 
 =head1 BUGS & ENHANCEMENTS
 
-No bugs reported as yet.
+There appears to be a problem with Time::Local not returning the correct
+number of seconds for localtime to distinguish the correct day of the week.
+I suspect, even though timegm() is being used, offsets are getting set.
+Now using 12:00pm as the time of day to try and avoid offset strangeness.
 
 If you think you've found a bug, send details and
-patches (if you have one) to E<lt>modules@missbarbell.co.uk<gt>.
+patches (if you have one) to E<lt>modules@missbarbell.co.ukE<gt>.
 
 If you have a suggestion for an enhancement, though I can't promise to
-implement it, please send details to E<lt>modules@missbarbell.co.uk<gt>.
+implement it, please send details to E<lt>modules@missbarbell.co.ukE<gt>.
 
 =head1 AUTHOR
 
-Barbie, E<lt>barbie@missbarbell.co.uk<gt>
+Barbie, E<lt>barbie@missbarbell.co.ukE<gt>
 
 for Miss Barbell Productions.
 
