@@ -1,5 +1,8 @@
 Revision history for Perl extension Calendar::List.
 
+0.13  22/04/2004
+	- Upgrade 91podcover.t to use Test::Pod::Coverage
+
 0.12  22/04/2004
 	- All Time::Local dates based from 12 midday
 

@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 ### CHANGES #########################################################
 #   0.01    30/04/2003  Initial Release
@@ -22,6 +22,7 @@ $VERSION = '0.12';
 #	0.10	16/12/2003	Fixed the VERSION test if DateTime not loaded
 #	0.11	19/04/2004	Test::More added as a prerequisites for PPMs
 #	0.12	22/04/2004	All Time::Local dates based from 12 midday
+#	0.13	22/04/2004	Upgrade 91podcover.t to use Test::Pod::Coverage
 #####################################################################
 
 #----------------------------------------------------------------------------
