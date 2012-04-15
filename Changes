@@ -1,5 +1,18 @@
 Revision history for Perl extension Calendar::List.
 
+0.10  16/12/2003
+	- Fixed the VERSION test if DateTime not loaded
+
+0.09  10/11/2003
+	- Added Time::Piece for the EPOCH date format
+	- Added more tests
+
+0.08  07/11/2003
+	- delta_days changed after DateTime 0.16 :(
+	- Quick fix to ensure we don't use DateTime after version 0.16.
+	  This will change in the future, but I don't currently have
+	  the time to write a work around.
+
 0.07  Wed Oct  8 13:04:18 GMTDT 2003
 	- POD updates
 	- META.yml added to distribution

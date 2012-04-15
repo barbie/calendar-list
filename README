@@ -29,14 +29,14 @@ The distribution requires at least one of the following modules:
   Date::ICal
   DateTime
 
+For epoch printing the distribution requires:
+
+  Time::Piece
+
 For testing purposes, the following modules are desireable, but not essential:
 
   Test::Pod
   Pod::Coverage
-
-CHANGES
-
-See the Changes file for a list of updates to the distribution.
 
 INSTALLATION
 
@@ -49,19 +49,14 @@ To install this module type the following:
 
 AUTHOR
 
-Barbie, <modules@missbarbell.co.uk>, http://birmingham.pm.org/
-
-Miss Barbell Productions.
-
-LATEST REVISION
-
-$Revision: 0.07 $
+  Barbie, E<lt>barbie@cpan.orgE<gt>
+  for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
 
 COPYRIGHT AND LICENCE
 
-Copyright (C) 2003 Barbie & Miss Barbell Productions.
-All Rights Reserved.
+  Copyright (C) 2002-2003 Barbie for Miss Barbell Productions
+  All Rights Reserved.
 
-This module is free software; you can redistribute it and/or modify it 
-under the same terms as Perl itself.
+  This module is free software; you can redistribute it and/or 
+  modify it under the same terms as Perl itself.
 

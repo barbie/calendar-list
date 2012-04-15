@@ -5,19 +5,21 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.08';
+$VERSION = '0.10';
 
 ### CHANGES #########################################################
-#   0.01   30/04/2003   Initial Release
-#   0.02   08/06/2003   update for undef returns
-#   0.03   09/06/2003   Time::Local offset fix
-#   0.04   10/06/2003   SELECTED bug fix
-#   0.05   25/06/2003   Tie::IxHash for preserving order
+#   0.01    30/04/2003  Initial Release
+#   0.02    08/06/2003  update for undef returns
+#   0.03    09/06/2003  Time::Local offset fix
+#   0.04    10/06/2003  SELECTED bug fix
+#   0.05    25/06/2003  Tie::IxHash for preserving order
 #                       use of => to identify a hash
-#   0.06   07/08/2003	Fixed POD links
-#   0.07   08/10/2003	META.yml added
+#   0.06    07/08/2003	Fixed POD links
+#   0.07    08/10/2003	META.yml added
 #                   	POD updates
-#	0.08   07/11/2003	delta_days changed after DateTime 0.16 :(
+#	0.08    07/11/2003	delta_days changed after DateTime 0.16 :(
+#	0.09	10/11/2003	added Time::Piece for the EPOCH date format
+#	0.10	16/12/2003	Fixed the VERSION test if DateTime not loaded
 #####################################################################
 
 #----------------------------------------------------------------------------
@@ -446,12 +448,16 @@ Each format string can have the following components:
   YMD
   MABV
   DABV
+  EPOCH
 
-The first three are tranlated into the numerical day/month/year strings.
+The first three are translated into the numerical day/month/year strings.
 The DAY format is translated into the day of the week name, and MONTH
 is the month name. DDEXT is the day with the appropriate suffix, eg 1st,
 22nd or 13th. DMY, MDY and YMD default to '13-09-1965' (DMY) style strings.
 MABV and DABV provide 3 letter abbreviations of MONTH and DAY respectively.
+
+EPOCH is translated into the number od seconds since the system epoch. Note
+that the Time::Piece module must be installed to use this format.
 
 =item Options
 
@@ -532,9 +538,9 @@ other modules.
   L<Calendar::Functions>
   L<Clone>
 
-=head1 BUGS & ENHANCEMENTS
+The Calendar FAQ at http://www.tondering.dk/claus/calendar.html
 
-No bugs reported as yet.
+=head1 BUGS & ENHANCEMENTS
 
 If you think you've found a bug, send details and
 patches (if you have one) to E<lt>modules@missbarbell.co.ukE<gt>.
@@ -544,8 +550,8 @@ implement it, please send details to E<lt>modules@missbarbell.co.ukE<gt>.
 
 =head1 AUTHOR
 
-Barbie, E<lt>barbie@cpan.orgE<gt>
-for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
+  Barbie, E<lt>barbie@cpan.orgE<gt>
+  for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
 
 =head1 THANKS TO
 

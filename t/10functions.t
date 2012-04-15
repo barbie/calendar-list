@@ -4,7 +4,7 @@ use strict;
 use lib './t';
 use Test::More qw(no_plan);
 #use Test::More test => 69;
-use Init;
+use TestData;
 use Calendar::Functions qw(:form);
 
 # Note this test is for the base functions that don't rely on other modules

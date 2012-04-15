@@ -3,20 +3,24 @@ use strict;
 
 use lib './t';
 use Test::More;
-use Init;
+use TestData;
 use Calendar::Functions qw(:all);
 
+# check we can load the module
 eval "use DateTime";
 if($@) {
 	plan skip_all => "DateTime not installed.";
-	exit;
-} elsif($DateTime::VERSION > 0.16) {
+} elsif(defined $DateTime::VERSION && $DateTime::VERSION > 0.16) {
 	plan skip_all => "DateTime after 0.16 is not supported.";
-	exit;
 }
 
 DateTime->import;
 plan qw|no_plan|;
+
+###########################################################################
+# name: 11datetime.t
+# desc: Functionality check with DateTime
+###########################################################################
 
 foreach my $test (@datetest) {
 	is(dotw3(@{$test->{array}}),$test->{dotw});

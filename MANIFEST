@@ -10,6 +10,7 @@ t/10functions.t
 t/11datetime.t
 t/12dateical.t
 t/13timelocal.t
+t/14timepiece.t
 t/21list-dt.t
 t/22list-di.t
 t/23list-tl.t
@@ -18,4 +19,4 @@ t/32select-di.t
 t/33select-tl.t
 t/90podtest.t
 t/91podcover.t
-t/Init.pm
+t/TestData.pm

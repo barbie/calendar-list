@@ -3,18 +3,24 @@ use strict;
 
 use lib './t';
 use Test::More;
-use Init;
+use TestData;
 use Calendar::Functions qw(:all :test);
 
+# check we can load the module
 eval "use Date::ICal";
 if($@) {
 	plan skip_all => "Date::ICal not installed.";
-	exit;
 }
 
 Date::ICal->import;
 plan qw|no_plan|;
 
+###########################################################################
+# name: 12dateical.t
+# desc: Functionality check with Date::ICal
+###########################################################################
+
+# switch off DateTime, if loaded
 _caltest(0,1,0);
 
 foreach my $test (@datetest) {

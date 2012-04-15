@@ -3,12 +3,12 @@ use strict;
 use lib 't';
 
 use Test::More;
-use Init;
+use TestData;
 use Calendar::List;
 
 # check we can load the module
 eval "use Date::ICal";
-if($@) { plan skip_all => "Date::ICal not installed."; exit; }
+if($@) { plan skip_all => "Date::ICal not installed." }
 plan tests => 13;
 
 # switch off DateTime if loaded

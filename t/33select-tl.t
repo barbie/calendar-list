@@ -3,7 +3,7 @@ use strict;
 
 use lib './t';
 use Test::More qw|no_plan|;
-use Init;
+use TestData;
 use Calendar::List;
 use Calendar::Functions qw(:test);
 

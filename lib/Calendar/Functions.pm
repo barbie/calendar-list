@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.08';
+$VERSION = '0.10';
 
 ### CHANGES #########################################################
 #	0.01	30/04/2003	Initial Release
@@ -19,6 +19,8 @@ $VERSION = '0.08';
 #                       More Date Formats
 #	0.07	08/10/2003	POD updates
 #	0.08	07/11/2003	delta_days changed after DateTime 0.16 :(
+#	0.09	10/11/2003	added Time::Piece for the EPOCH date format
+#	0.10	16/12/2003	Fixed the VERSION test if DateTime not loaded
 #####################################################################
 
 #----------------------------------------------------------------------------
@@ -106,7 +108,14 @@ use Time::Local;
 eval "use Date::ICal";
 my $di = ! $@;
 eval "use DateTime";
-my $dt = ($@ ? ($DateTime::VERSION < 0.17 ? 1 : 0) : 0);
+my $dt = ($@ ? 0 : (defined $DateTime::VERSION && $DateTime::VERSION < 0.17 ? 1 : 0));
+eval "use Time::Piece";
+my $tp = ! $@;
+
+if($tp) {
+	require Time::Piece;
+}
+
 
 #############################################################################
 #Variables
@@ -119,6 +128,7 @@ my @dotw	= qw(	Sunday Monday Tuesday Wednesday Thursday Friday Saturday );
 
 my $MinYear		= 1902;
 my $MaxYear		= 2037;
+my $EpoYear		= 1970;
 
 #----------------------------------------------------------------------------
 
@@ -298,18 +308,21 @@ calculation.
 sub month_days {
 	my ($date1,$date2);
 
+	my ($month1,$year1) = @_;
+	my ($month2,$year2) = @_;
+	$month2++;
+	if($month2>12)	{$year2++;$month2=1}
+
 	if($dt) {
-		$date1 = new DateTime(day => 1,month => $_[0],year => $_[1]);
-		$date2 = new DateTime(day => 1,month => $_[0]+1,year => $_[1]);
+		$date1 = new DateTime(day => 1,month => $month1,year => $year1);
+		$date2 = new DateTime(day => 1,month => $month2,year => $year2);
 	} elsif($di) {
-		$date1 = new Date::ICal(day=>1,month=>$_[0],year=>$_[1],offset=>0);
-		$date2 = new Date::ICal(day=>1,month=>$_[0]+1,year=>$_[1],offset=>0);
+		$date1 = new Date::ICal(day=>1,month=>$month1,year=>$year1,offset=>0);
+		$date2 = new Date::ICal(day=>1,month=>$month2,year=>$year2,offset=>0);
 	} else {
-		return	if(fail_range($_[1]));
-		my ($month,$year) = ($_[0]+1,$_[1]);
-		if($month>12) {$month=1;$year++}
-		$date1 = timegm 0, 0, 0, 1, $_[0]-1, $_[1];
-		$date2 = timegm 0, 0, 0, 1, $month-1, $year;
+		return	if(fail_range($year1));
+		$date1 = timegm 0, 0, 0, 1, $month1-1, $year1;
+		$date2 = timegm 0, 0, 0, 1, $month2-1, $year2;
 	}
 
 	return diff_dates($date2,$date1);
@@ -342,7 +355,14 @@ sub format_date {
 	my $fddext	= sprintf "%d%s", $day, ext($day);
 	my $amonth	= substr($fmonth,0,3);
 	my $adotw	= substr($fdotw,0,3);
-#	my $epoch	= 9999;		# not yet implemented
+	my $epoch	= -1;	# an arbitory number
+
+	# epoch only supports the same dates in the 32-bit range
+	if($tp && $fmt =~ /\bEPOCH\b/ && $year >= $EpoYear && $year <= $MaxYear) {
+		my $date = timegm 0, 0, 12, $day, $mon -1, $year;
+		my $t = Time::Piece::gmtime($date);
+		$epoch = $t->epoch	if($t);
+	}
 
 	# transpose format string into a date string
 	$fmt =~ s/\bDMY\b/$fday-$fmon-$fyear/i;
@@ -356,7 +376,7 @@ sub format_date {
 	$fmt =~ s/\bYYYY\b/$fyear/i;
 	$fmt =~ s/\bMM\b/$fmon/i;
 	$fmt =~ s/\bDD\b/$fday/i;
-#	$fmt =~ s/\bEPOCH\b/$epoch/i;	# not yet implemented
+	$fmt =~ s/\bEPOCH\b/$epoch/i;
 
 	return $fmt;
 }
@@ -559,6 +579,9 @@ of 1st January 1902 to 31st December 2037 are passed, an undef is returned.
   L<Date::ICal>
   L<DateTime>
   L<Time::Local>
+  L<Time::Piece>
+
+The Calendar FAQ at http://www.tondering.dk/claus/calendar.html
 
 =head1 BUGS & ENHANCEMENTS
 
@@ -568,8 +591,8 @@ I suspect, even though timegm() is being used, offsets are getting set.
 Now using 12:00pm as the time of day to try and avoid offset strangeness.
 
 DateTime after 0.16 implements delta_days differently from previous versions.
-Until I have time to rewrite this module to be compatible with both versions,
-I won't be supporting DateTime 0.17 or greater.
+Until I have time to rewrite this module to be compatible with versions after
+0.16, I won't be supporting DateTime 0.17 or greater.
 
 If you think you've found a bug, send details and
 patches (if you have one) to E<lt>modules@missbarbell.co.ukE<gt>.
@@ -579,8 +602,8 @@ implement it, please send details to E<lt>modules@missbarbell.co.ukE<gt>.
 
 =head1 AUTHOR
 
-Barbie, E<lt>barbie@cpan.orgE<gt>
-for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
+  Barbie, E<lt>barbie@cpan.orgE<gt>
+  for Miss Barbell Productions L<http://www.missbarbell.co.uk>.
 
 =head1 THANKS TO
 

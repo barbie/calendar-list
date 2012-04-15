@@ -3,8 +3,13 @@ use strict;
 
 use lib './t';
 use Test::More qw|no_plan|;
-use Init;
+use TestData;
 use Calendar::Functions qw(:all :test);
+
+###########################################################################
+# name: 13timelocal.t
+# desc: Functionality check with Time::Local
+###########################################################################
 
 # switch off DateTime and Date::ICal, if loaded
 _caltest(0,0);
