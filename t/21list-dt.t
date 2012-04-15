@@ -8,7 +8,14 @@ use Calendar::List;
 
 # check we can load the module
 eval "use DateTime";
-if($@) { plan skip_all => "DateTime not installed."; exit; }
+if($@) {
+	plan skip_all => "DateTime not installed.";
+	exit;
+} elsif($DateTime::VERSION > 0.16) {
+	plan skip_all => "DateTime after 0.16 is not supported.";
+	exit;
+}
+
 plan tests => 13;
 
 ###########################################################################

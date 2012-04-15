@@ -17,16 +17,12 @@ plan qw|no_plan|;
 
 _caltest(0,1,0);
 
-my $diff = encode_date(@{$datetest[0]->{array}});
-
 foreach my $test (@datetest) {
 	is(dotw3(@{$test->{array}}),$test->{dotw});
 
 	my $date = encode_date(@{$test->{array}});
 	my @date = decode_date($date);
 	is_deeply(\@date,$test->{array});
-
-	is(diff_dates($date,$diff),$test->{diff});
 }
 
 foreach my $test (@diffs) {

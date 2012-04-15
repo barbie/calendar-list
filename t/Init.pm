@@ -7,11 +7,14 @@ use strict;
 # desc: Preprocessed variables for tests
 ###########################################################################
 
+use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
+$VERSION = '0.05';
+
 require Exporter;
 
-our @ISA = qw(Exporter);
+@ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [ qw(
+%EXPORT_TAGS = ( 'all' => [ qw(
 	@datetest @diffs
 	%hash01 %hash02 %hash03 
 	%tests %expected02 %expected03
@@ -21,10 +24,9 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
     $on_unix
 ) ] );
 
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
+@EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+@EXPORT    = ( @{ $EXPORT_TAGS{'all'} } );
 
-our $VERSION = '0.04';
 
 # -------------------------------------------------------------------------
 # Variables
@@ -38,17 +40,23 @@ my %os = (MacOS   => 0,
 our $on_unix = (exists $os{$^O} ? $os{$^O} : 1);
 
 our @datetest = (
-	{ array => [24,3,1976],	dotw => 3, tl => 1, diff => 0 },
-	{ array => [13,9,1965],	dotw => 1, tl => 2, diff => -3845 },
-	{ array => [3,11,2000],	dotw => 5, tl => 1, diff => 8990 },
-	{ array => [25,5,2003],	dotw => 0, tl => 1, diff => 9923 },
-	{ array => [1,1,1900],	dotw => 1, tl => 0, diff => -27841 },
-	{ array => [5,7,2056],	dotw => 3, tl => 0, diff => 29323 },
+	{ array => [24,3,1976],	dotw => 3, tl => 1 },
+	{ array => [13,9,1965],	dotw => 1, tl => 2 },
+	{ array => [3,11,2000],	dotw => 5, tl => 1 },
+	{ array => [25,5,2003],	dotw => 0, tl => 1 },
+	{ array => [1,1,1900],	dotw => 1, tl => 0 },
+	{ array => [5,7,2056],	dotw => 3, tl => 0 },
 );
 
 our @diffs = (
-	{ from => [1,3,1976], to => [1,4,1976], duration => 31 },
-	{ from => [10,5,2003], to => [11,5,2003], duration => 1 },
+	{ from => [24,3,1976], to => [24,3,1976], duration => 0,      tl => 1 },
+	{ from => [24,3,1976], to => [13,9,1965], duration => -3845,  tl => 2 },
+	{ from => [24,3,1976], to => [3,11,2000], duration => 8990,   tl => 1 },
+	{ from => [24,3,1976], to => [25,5,2003], duration => 9923,   tl => 1 },
+	{ from => [24,3,1976], to => [1,1,1900],  duration => -27841, tl => 0 },
+	{ from => [24,3,1976], to => [5,7,2056],  duration => 29323,  tl => 0 },
+	{ from => [1,3,1976],  to => [1,4,1976],  duration => 31,     tl => 1 },
+	{ from => [10,5,2003], to => [11,5,2003], duration => 1,      tl => 1 },
 );
 
 

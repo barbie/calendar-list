@@ -9,23 +9,18 @@ use Calendar::Functions qw(:all :test);
 # switch off DateTime and Date::ICal, if loaded
 _caltest(0,0);
 
-my $diff = encode_date(@{$datetest[0]->{array}});
-
 foreach my $test (@datetest) {
 
 	# before the epoch, skipping
-	if(!$on_unix && $test->{tl} == 2) {
-		# do nothing
+	next	if(!$on_unix && $test->{tl} == 2);
 
 	# should have real values
-	} elsif($test->{tl}) {
+	if($test->{tl}) {
 		is(dotw3(@{$test->{array}}),$test->{dotw});
 
 		my $date = encode_date(@{$test->{array}});
 		my @date = decode_date($date);
 		is_deeply(\@date,$test->{array});
-	
-		is(diff_dates($date,$diff),$test->{diff});
 
 	# expecting undef values
 	} else {
@@ -34,15 +29,17 @@ foreach my $test (@datetest) {
 		my $date = encode_date(@{$test->{array}});
 		is($date,undef);
 		is(decode_date(undef),undef);
-
-		is(diff_dates($date,$diff),undef);
 	}
 }
 
 foreach my $test (@diffs) {
 	my $date1 = encode_date(@{$test->{from}});
 	my $date2 = encode_date(@{$test->{to}});
-	is(diff_dates($date2,$date1),$test->{duration});
+
+	# before the epoch, skipping
+	next	if(!$on_unix && $test->{tl} == 2);
+
+	is(diff_dates($date2,$date1),($test->{tl} ? $test->{duration} : undef));
 }
 
 foreach my $test (@monthlists) {

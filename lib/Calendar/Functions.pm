@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 ### CHANGES #########################################################
 #	0.01	30/04/2003	Initial Release
@@ -17,6 +17,8 @@ $VERSION = '0.07';
 #                       dotw problems
 #                       POD updates 
 #                       More Date Formats
+#	0.07	08/10/2003	POD updates
+#	0.08	07/11/2003	delta_days changed after DateTime 0.16 :(
 #####################################################################
 
 #----------------------------------------------------------------------------
@@ -104,7 +106,7 @@ use Time::Local;
 eval "use Date::ICal";
 my $di = ! $@;
 eval "use DateTime";
-my $dt = ! $@;
+my $dt = ($@ ? ($DateTime::VERSION < 0.17 ? 1 : 0) : 0);
 
 #############################################################################
 #Variables
@@ -564,6 +566,10 @@ There appears to be a problem with Time::Local not returning the correct
 number of seconds for localtime to distinguish the correct day of the week.
 I suspect, even though timegm() is being used, offsets are getting set.
 Now using 12:00pm as the time of day to try and avoid offset strangeness.
+
+DateTime after 0.16 implements delta_days differently from previous versions.
+Until I have time to rewrite this module to be compatible with both versions,
+I won't be supporting DateTime 0.17 or greater.
 
 If you think you've found a bug, send details and
 patches (if you have one) to E<lt>modules@missbarbell.co.ukE<gt>.
