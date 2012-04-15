@@ -22,14 +22,15 @@ foreach my $test (@datetest) {
 	# should have real values
 	if($test->{tl}) {
 		my $date = encode_date(@{$test->{array}});
+        ok($date,"date encoded [@{$test->{array}}]");
 		my @date = decode_date($date);
-		is_deeply(\@date,$test->{array});
+		is_deeply(\@date,$test->{array},"date decoded [@{$test->{array}}]");
 
 	# expecting undef values
 	} else {
 		my $date = encode_date(@{$test->{array}});
-		is($date,undef);
-		is(decode_date(undef),undef);
+		is($date,undef,"date not encoded [@{$test->{array}}]");
+		is(decode_date(undef),undef,"date not decoded [@{$test->{array}}]");
 	}
 }
 

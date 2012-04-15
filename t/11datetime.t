@@ -15,6 +15,8 @@ if($@) {
 DateTime->import;
 plan qw|no_plan|;
 
+diag("using DateTime version " . $DateTime::VERSION);
+
 ###########################################################################
 # name: 11datetime.t
 # desc: Functionality check with DateTime
@@ -22,8 +24,9 @@ plan qw|no_plan|;
 
 foreach my $test (@datetest) {
 	my $date = encode_date(@{$test->{array}});
+    ok($date,"date encoded [@{$test->{array}}]");
 	my @date = decode_date($date);
-	is_deeply(\@date,$test->{array});
+	is_deeply(\@date,$test->{array},"date decoded [@{$test->{array}}]");
 }
 
 foreach my $test (@diffs) {

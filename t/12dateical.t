@@ -15,6 +15,8 @@ if($@) {
 Date::ICal->import;
 plan qw|no_plan|;
 
+diag("using Date::ICal version " . $Date::ICal::VERSION);
+
 ###########################################################################
 # name: 12dateical.t
 # desc: Functionality check with Date::ICal
@@ -25,8 +27,9 @@ _caltest(0,1,0);
 
 foreach my $test (@datetest) {
 	my $date = encode_date(@{$test->{array}});
+    ok($date,"date encoded [@{$test->{array}}]");
 	my @date = decode_date($date);
-	is_deeply(\@date,$test->{array});
+	is_deeply(\@date,$test->{array},"date decoded [@{$test->{array}}]");
 }
 
 foreach my $test (@diffs) {

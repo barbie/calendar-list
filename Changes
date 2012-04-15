@@ -1,35 +1,40 @@
 Revision history for Perl extension Calendar::List.
 
+0.22    18/18/2009
+        - added more tests
+        - updated documentation.
+        - Due to previous rewrite, all versions of DateTime are now supported.
+
 0.21    02/06/2008
-	- updated META.yml to correctly include DateTime optional prerequisite.
-	- added dubious TestData to META.yml to see how PAUSE and CPANTS 
-	  respond. This is dubious because TestData.pm is provided in the 
-	  distribution under the ./t directory, and listed as no_index, which
-	  CPANTS ignores and says there is a prerequisite missing!
+        - updated META.yml to correctly include DateTime optional prerequisite.
+        - added dubious TestData to META.yml to see how PAUSE and CPANTS 
+          respond. This is dubious because TestData.pm is provided in the 
+          distribution under the ./t directory, and listed as no_index, which
+          CPANTS ignores and says there is a prerequisite missing!
 
 0.20    28/03/2008
-	- purely a cosmetic release to render the Makefile.PL time issues, that
-	  have generated bogus FAIL reports in previous releases, null
-	  and void.
+        - purely a cosmetic release to render the Makefile.PL time issues, that
+          have generated bogus FAIL reports in previous releases, null
+          and void.
 
 0.19    19/03/2008
-	- removed 5.006 dependency
-	- major refactorying effort
-	- removed month_list, dotw3, month_days, diff_dates (Functions.pm)
-	- added compare_dates (Functions.pm)
-	- reinstated DateTime support
-	- reworked lots of tests
-	- added AUTOMATED_TESTING checks to packaging tests.
+        - removed 5.006 dependency
+        - major refactorying effort
+        - removed month_list, dotw3, month_days, diff_dates (Functions.pm)
+        - added compare_dates (Functions.pm)
+        - reinstated DateTime support
+        - reworked lots of tests
+        - added AUTOMATED_TESTING checks to packaging tests.
 
 0.18    02/03/2007
-	- Handwritten META.yml to conform to current specs.
-	- Changed all instances of LICENCE to LICENSE.
-	- Added META.yml test script.
-	- Added LICENSE and Artistic files.
-	- Added an examples directory. Nothing in it yet, except a request
-	  for interesting scripts.
-	- POD/README updates
-	- Devel::Cover - 90.6%
+        - Handwritten META.yml to conform to current specs.
+        - Changed all instances of LICENCE to LICENSE.
+        - Added META.yml test script.
+        - Added LICENSE and Artistic files.
+        - Added an examples directory. Nothing in it yet, except a request
+          for interesting scripts.
+        - POD/README updates
+        - Devel::Cover - 90.6%
 
 0.17    18/11/2005
         - added support for excluding holidays (suggested by Julio Gruskin)
@@ -70,21 +75,21 @@ Revision history for Perl extension Calendar::List.
           This will change in the future, but I don't currently have
           the time to write a work around.
 
-0.07    Wed Oct  8 13:04:18 GMTDT 2003
+0.07    Wed Oct  8 13:04:18 2003
         - POD updates
         - META.yml added to distribution
 
-0.06    Thu Aug  7 11:31:38 BST 2003
+0.06    Thu Aug  7 11:31:38 2003
         - Another fix to cope with Time::Local dotw problems
         - Fixed POD links
         - More Date Formats
         - change tests to use is_deeply
 
-0.05    Thu Jul 31 21:21:14 BST 2003
+0.05    Thu Jul 31 21:21:14 2003
         - more Date Formats
         - use Tie::IxHash to preserve order of internal hash
 
-0.04    Tue Jun 10 22:31:21 BST 2003
+0.04    Tue Jun 10 22:31:21 2003
         - Fixed the loading module test in new test files
         - Fix for Time::Local test due to faults on windows
         - Switched to timegm, as we're not interested in Daylight Saving

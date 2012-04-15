@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.21';
+$VERSION = '0.22';
 
 #----------------------------------------------------------------------------
 
@@ -175,7 +175,7 @@ sub decode_date {
 
 =item compare_dates( date, date )
 
-Using the appropriate module finds the duration between the two dates.
+Using the appropriate method determines ther ordering of the two given dates.
 
 =cut
 
@@ -183,8 +183,8 @@ Using the appropriate module finds the duration between the two dates.
 # args: date1 .... date object or string
 #		date2 .... date object or string
 # retv: the compare value, as per the 'cmp' or '<=>' functionality.
-# desc:	Using the loaded module determines whether two dates are before, after
-#       or the same as each other.
+# desc:	Using the loaded module determines whether the first date is before, 
+#       after or the same as the second.
 
 sub compare_dates {
 	my ($d1,$d2) = @_;
@@ -483,18 +483,6 @@ to barbie@cpan.org .
 
 RT: http://rt.cpan.org/Public/Dist/Display.html?Name=Calendar-List
 
-=head2 Known Issues
-
-=over
-
-=item DateTime & delta_days
-
-DateTime after 0.16 implements delta_days differently from previous versions.
-Until I have time to rewrite this module to be compatible with versions after
-0.16, I won't be supporting DateTime 0.17 or greater.
-
-=back
-
 =head1 AUTHOR
 
   Barbie, <barbie@cpan.org>
@@ -509,7 +497,7 @@ for testing the beta versions.
 
 =head1 COPYRIGHT AND LICENSE
 
-    Copyright © 2003-2008 Barbie for Miss Barbell Productions.
+    Copyright © 2003-2009 Barbie for Miss Barbell Productions.
 
     This library is free software; you can redistribute it and/or modify it under
     the same terms as Perl itself, using the Artistic License.
