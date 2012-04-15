@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.14';
+$VERSION = '0.15';
 
 ### CHANGES #########################################################
 #   0.01    30/04/2003  Initial Release
@@ -25,6 +25,7 @@ $VERSION = '0.14';
 #	0.13	22/04/2004	Upgrade 91podcover.t to use Test::Pod::Coverage
 #	0.14	07/01/2005	fixed 13timelocal.t epoch test bug
 #						upgraded pod tests
+#	0.15	01/03/2005	POD fix (william--knowmad.com via rt)
 #####################################################################
 
 #----------------------------------------------------------------------------
@@ -59,7 +60,7 @@ Calendar::List - A module for creating date lists
   	'selected'	=> '04-05-2003',
   );
 
-  my %hash = calendar_list('DD-MM-YYYY' => 'DDEXT MONTH YEAR', \%hash01);
+  my %hash = calendar_list('DD-MM-YYYY' => 'DDEXT MONTH YYYY', \%hash01);
   my @list = calendar_list('DD-MM-YYYY', \%hash01);
   my $html = calendar_selectbox('DD-MM-YYYY',\%hash02);
 
