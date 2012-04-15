@@ -29,6 +29,7 @@ foreach my $test (1..4,9,10,11,13) {
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
 	push @args, $tests{$test}->{hash}	if $tests{$test}->{hash};
+
 	my @array = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
@@ -44,13 +45,8 @@ foreach my $test (5..8,12) {
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
 	push @args, $tests{$test}->{hash}	if $tests{$test}->{hash};
-dotrace("-- START test=$test --\n");
-	my %hash = calendar_list(@args);
-
-use Data::Dumper qw(DumperX);
-dotrace("GOT:\n" . DumperX(\%hash) .
-	"WANTED:\n" . DumperX($expected02{$test}) );
-dotrace("-- END test=$test --\n");
+	
+    my %hash = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
 		is_deeply(\%hash,$expected02{$test});
@@ -58,10 +54,3 @@ dotrace("-- END test=$test --\n");
 		is(scalar(keys %hash),scalar(keys %{$expected02{$test}}));
 	}
 }
-
-sub dotrace {
-	open  FH, ">>trace.log" or die "cannot open file: $!\n";
-	print FH @_;
-	close FH;
-}
-

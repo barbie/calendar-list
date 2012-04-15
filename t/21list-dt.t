@@ -28,6 +28,7 @@ foreach my $test (1..4,9,10,11,13) {
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
 	push @args, $tests{$test}->{hash}	if $tests{$test}->{hash};
+
 	my @array = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
@@ -43,17 +44,12 @@ foreach my $test (5..8,12) {
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
 	push @args, $tests{$test}->{hash}	if $tests{$test}->{hash};
-#use Data::Dumper qw(DumperX);
-#print STDERR "\n===\ntest=$test\nhash=".DumperX(calendar_list(@args));
-	my %hash = calendar_list(@args);
+
+    my %hash = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
 		is_deeply(\%hash,$expected02{$test});
 	} else {
-#use Data::Dumper qw(DumperX);
-#print STDERR "\n===\ntest=$test\nhash=".DumperX(\%hash).
-#			 "expected=".DumperX($expected02{$test})."\n===\n";
 		is(scalar(keys %hash),scalar(keys %{$expected02{$test}}));
 	}
 }
-

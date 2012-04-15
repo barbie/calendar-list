@@ -27,6 +27,7 @@ foreach my $test (@tests) {
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
 	push @args, $tests{$test}->{hash}	if $tests{$test}->{hash};
+
 	my @array = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
@@ -45,7 +46,8 @@ foreach my $test (@tests) {
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
 	push @args, $tests{$test}->{hash}	if $tests{$test}->{hash};
-	my %hash = calendar_list(@args);
+	
+    my %hash = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
 		is_deeply(\%hash,$expected02{$test});
@@ -53,4 +55,3 @@ foreach my $test (@tests) {
 		is(scalar(keys %hash),scalar(keys %{$expected02{$test}}));
 	}
 }
-

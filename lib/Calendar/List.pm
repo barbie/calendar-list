@@ -244,19 +244,7 @@ sub _callist {
 		}
 	}
 
-#print STDERR "\n\n===[".scalar(each %returns)."]===\n\n";
 	return @returns	if($wantarray);
-#use Data::Dumper qw(DumperX);
-#open  FH, ">>trace.log" or die "cannot open file:$!\n";
-#print FH "STORED:\n".DumperX(\%returns)."\n";
-#close FH;
-#exit;
-#	while(my (@temp) = each %returns) {
-#		push @returns, @temp;
-#	}
-
-#	map { push @returns, $_->[0],$_->[1] } each %returns;
-#	return @returns;
 	return %returns;
 }
 
