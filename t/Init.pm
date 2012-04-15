@@ -1,0 +1,625 @@
+package Init;
+use warnings;
+use strict;
+
+###########################################################################
+# name: init.pm
+# desc: Preprocessed variables for tests
+###########################################################################
+
+require Exporter;
+
+our @ISA = qw(Exporter);
+
+our %EXPORT_TAGS = ( 'all' => [ qw(
+	@datetest @diffs
+	%hash01 %hash02 %hash03 
+	%tests %expected02 %expected03
+	%exts %monthtest %daytest
+	@monthlists
+	@format01 @format02
+    $on_unix
+) ] );
+
+our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
+
+our $VERSION = '0.04';
+
+# -------------------------------------------------------------------------
+# Variables
+
+my %os = (MacOS   => 0,
+	      MSWin32 => 0,
+	      os2     => 0,
+	      VMS     => 0,
+	      epoc    => 0);
+
+our $on_unix = (exists $os{$^O} ? $os{$^O} : 1);
+
+our @datetest = (
+	{ array => [24,3,1976],	dotw => 3, tl => 1, diff => 0 },
+	{ array => [13,9,1965],	dotw => 1, tl => 2, diff => -3845 },
+	{ array => [3,11,2000],	dotw => 5, tl => 1, diff => 8990 },
+	{ array => [25,5,2003],	dotw => 0, tl => 1, diff => 9923 },
+	{ array => [1,1,1900],	dotw => 1, tl => 0, diff => -27841 },
+	{ array => [5,7,2056],	dotw => 3, tl => 0, diff => 29323 },
+);
+
+our @diffs = (
+	{ from => [1,3,1976], to => [1,4,1976], duration => 31 },
+	{ from => [10,5,2003], to => [11,5,2003], duration => 1 },
+);
+
+
+our %hash01 = (
+	'options'	=> 10,
+	'exclude'	=> { 'weekend' => 1 },
+	'start'		=> '01-05-2003',
+);
+
+our %hash02 = (
+	'exclude'	=> { 'weekday' => 1 },
+	'start'		=> '01-05-2003',
+	'end'		=> '10-05-2003',
+	'name'		=> 'TestTest',
+	'select'	=> '04-05-2003',
+);
+
+our %hash03 = (
+	'options'	=> 10,
+	'exclude'	=> { 'monday' => 1, 'tuesday' => 1, 'wednesday' => 1 },
+	'start'		=> '01-05-2003',
+	'end'		=> '25-05-2003',
+);
+
+our %hash04 = (
+	'start'		=> '13-09-1965',
+	'end'		=> '13-09-1965',
+	'name'		=> 'TestTest',
+	'select'	=> '13-09-1965',
+);
+
+our %tests = (
+	1 => { f1 => 'YYYY-MM-DD', f2 => undef, hash => undef },
+	2 => { f1 => 'DD-MM-YYYY', f2 => undef, hash => \%hash01 },
+	3 => { f1 => 'MM-DD-YYYY', f2 => undef, hash => \%hash02 },
+	4 => { f1 => 'DD-MONTH-YYYY', f2 => undef, hash => \%hash03 },
+	5 => { f1 => 'YYYY-MM-DD', f2 => 'DD-MM-YYYY', hash => undef },
+	6 => { f1 => 'DD-MM-YYYY', f2 => 'YYYY-MM-DD', hash => \%hash01 },
+	7 => { f1 => 'MM-DD-YYYY', f2 => 'DD MONTH, YYYY', hash => \%hash02 },
+	8 => { f1 => 'DD-MONTH-YYYY', f2 => 'DAY DDEXT MONTH, YYYY', hash => \%hash03 },
+	9 => { f1 => undef, f2 => undef, hash => undef },
+	10 => { f1 => undef, f2 => undef, hash => \%hash03 },
+	11 => { f1 => 'DD-MONTH-YYYY', f2 => undef, hash => \%hash04 },
+	12 => { f1 => 'YYYY-MM-DD', f2 => 'DD-MM-YYYY', hash => \%hash04 },
+	13 => { f1 => undef, f2 => undef, hash => \%hash04 },
+);
+
+our %expected02 = (
+1 => [
+          '2003-05-24',
+          '2003-05-25',
+          '2003-05-26',
+          '2003-05-27',
+          '2003-05-28',
+          '2003-05-29',
+          '2003-05-30',
+          '2003-05-31',
+          '2003-06-01',
+          '2003-06-02',
+          '2003-06-03',
+          '2003-06-04',
+          '2003-06-05',
+          '2003-06-06',
+          '2003-06-07',
+          '2003-06-08',
+          '2003-06-09',
+          '2003-06-10',
+          '2003-06-11',
+          '2003-06-12',
+          '2003-06-13',
+          '2003-06-14',
+          '2003-06-15',
+          '2003-06-16',
+          '2003-06-17',
+          '2003-06-18',
+          '2003-06-19',
+          '2003-06-20',
+          '2003-06-21',
+          '2003-06-22',
+          '2003-06-23'
+        ],
+2 => [
+          '01-05-2003',
+          '02-05-2003',
+          '05-05-2003',
+          '06-05-2003',
+          '07-05-2003',
+          '08-05-2003',
+          '09-05-2003',
+          '12-05-2003',
+          '13-05-2003',
+          '14-05-2003',
+          '15-05-2003'
+        ],
+3 => [
+          '05-03-2003',
+          '05-04-2003',
+          '05-10-2003'
+        ],
+4 => [
+          '01-May-2003',
+          '02-May-2003',
+          '03-May-2003',
+          '04-May-2003',
+          '08-May-2003',
+          '09-May-2003',
+          '10-May-2003',
+          '11-May-2003',
+          '15-May-2003',
+          '16-May-2003',
+          '17-May-2003'
+        ],
+5 => {
+          '2003-06-01' => '01-06-2003',
+          '2003-06-10' => '10-06-2003',
+          '2003-06-02' => '02-06-2003',
+          '2003-05-30' => '30-05-2003',
+          '2003-06-11' => '11-06-2003',
+          '2003-06-03' => '03-06-2003',
+          '2003-05-31' => '31-05-2003',
+          '2003-06-20' => '20-06-2003',
+          '2003-06-12' => '12-06-2003',
+          '2003-06-04' => '04-06-2003',
+          '2003-05-24' => '24-05-2003',
+          '2003-06-21' => '21-06-2003',
+          '2003-06-13' => '13-06-2003',
+          '2003-06-05' => '05-06-2003',
+          '2003-05-25' => '25-05-2003',
+          '2003-06-22' => '22-06-2003',
+          '2003-06-14' => '14-06-2003',
+          '2003-06-06' => '06-06-2003',
+          '2003-05-26' => '26-05-2003',
+          '2003-06-23' => '23-06-2003',
+          '2003-06-15' => '15-06-2003',
+          '2003-06-07' => '07-06-2003',
+          '2003-05-27' => '27-05-2003',
+          '2003-06-16' => '16-06-2003',
+          '2003-06-08' => '08-06-2003',
+          '2003-05-28' => '28-05-2003',
+          '2003-06-17' => '17-06-2003',
+          '2003-06-09' => '09-06-2003',
+          '2003-05-29' => '29-05-2003',
+          '2003-06-18' => '18-06-2003',
+          '2003-06-19' => '19-06-2003'
+        },
+6 => {
+          '07-05-2003' => '2003-05-07',
+          '09-05-2003' => '2003-05-09',
+          '02-05-2003' => '2003-05-02',
+          '13-05-2003' => '2003-05-13',
+          '06-05-2003' => '2003-05-06',
+          '15-05-2003' => '2003-05-15',
+          '08-05-2003' => '2003-05-08',
+          '01-05-2003' => '2003-05-01',
+          '12-05-2003' => '2003-05-12',
+          '05-05-2003' => '2003-05-05',
+          '14-05-2003' => '2003-05-14'
+        },
+7 => {
+          '05-04-2003' => '04 May, 2003',
+          '05-03-2003' => '03 May, 2003',
+          '05-10-2003' => '10 May, 2003'
+        },
+8 => {
+          '11-May-2003' => 'Sunday 11th May, 2003',
+          '16-May-2003' => 'Friday 16th May, 2003',
+          '04-May-2003' => 'Sunday 4th May, 2003',
+          '09-May-2003' => 'Friday 9th May, 2003',
+          '01-May-2003' => 'Thursday 1st May, 2003',
+          '10-May-2003' => 'Saturday 10th May, 2003',
+          '15-May-2003' => 'Thursday 15th May, 2003',
+          '03-May-2003' => 'Saturday 3rd May, 2003',
+          '08-May-2003' => 'Thursday 8th May, 2003',
+          '17-May-2003' => 'Saturday 17th May, 2003',
+          '02-May-2003' => 'Friday 2nd May, 2003'
+        },
+9 => [
+          '24-05-2003',
+          '25-05-2003',
+          '26-05-2003',
+          '27-05-2003',
+          '28-05-2003',
+          '29-05-2003',
+          '30-05-2003',
+          '31-05-2003',
+          '01-06-2003',
+          '02-06-2003',
+          '03-06-2003',
+          '04-06-2003',
+          '05-06-2003',
+          '06-06-2003',
+          '07-06-2003',
+          '08-06-2003',
+          '09-06-2003',
+          '10-06-2003',
+          '11-06-2003',
+          '12-06-2003',
+          '13-06-2003',
+          '14-06-2003',
+          '15-06-2003',
+          '16-06-2003',
+          '17-06-2003',
+          '18-06-2003',
+          '19-06-2003',
+          '20-06-2003',
+          '21-06-2003',
+          '22-06-2003',
+          '23-06-2003'
+        ],
+10 => [
+          '01-05-2003',
+          '02-05-2003',
+          '03-05-2003',
+          '04-05-2003',
+          '08-05-2003',
+          '09-05-2003',
+          '10-05-2003',
+          '11-05-2003',
+          '15-05-2003',
+          '16-05-2003',
+          '17-05-2003'
+        ],
+11 => [
+          '13-September-1965',
+        ],
+12 => {
+          '1965-09-13' => '13-09-1965',
+        },
+13 => [
+          '13-09-1965',
+        ],
+);
+
+our %expected03 = (
+1 =>
+q|<select name='calendar'>
+<option value='2003-05-24'>2003-05-24</option>
+<option value='2003-05-25'>2003-05-25</option>
+<option value='2003-05-26'>2003-05-26</option>
+<option value='2003-05-27'>2003-05-27</option>
+<option value='2003-05-28'>2003-05-28</option>
+<option value='2003-05-29'>2003-05-29</option>
+<option value='2003-05-30'>2003-05-30</option>
+<option value='2003-05-31'>2003-05-31</option>
+<option value='2003-06-01'>2003-06-01</option>
+<option value='2003-06-02'>2003-06-02</option>
+<option value='2003-06-03'>2003-06-03</option>
+<option value='2003-06-04'>2003-06-04</option>
+<option value='2003-06-05'>2003-06-05</option>
+<option value='2003-06-06'>2003-06-06</option>
+<option value='2003-06-07'>2003-06-07</option>
+<option value='2003-06-08'>2003-06-08</option>
+<option value='2003-06-09'>2003-06-09</option>
+<option value='2003-06-10'>2003-06-10</option>
+<option value='2003-06-11'>2003-06-11</option>
+<option value='2003-06-12'>2003-06-12</option>
+<option value='2003-06-13'>2003-06-13</option>
+<option value='2003-06-14'>2003-06-14</option>
+<option value='2003-06-15'>2003-06-15</option>
+<option value='2003-06-16'>2003-06-16</option>
+<option value='2003-06-17'>2003-06-17</option>
+<option value='2003-06-18'>2003-06-18</option>
+<option value='2003-06-19'>2003-06-19</option>
+<option value='2003-06-20'>2003-06-20</option>
+<option value='2003-06-21'>2003-06-21</option>
+<option value='2003-06-22'>2003-06-22</option>
+<option value='2003-06-23'>2003-06-23</option>
+</select>
+|,
+2 =>
+q|<select name='calendar'>
+<option value='01-05-2003'>01-05-2003</option>
+<option value='02-05-2003'>02-05-2003</option>
+<option value='05-05-2003'>05-05-2003</option>
+<option value='06-05-2003'>06-05-2003</option>
+<option value='07-05-2003'>07-05-2003</option>
+<option value='08-05-2003'>08-05-2003</option>
+<option value='09-05-2003'>09-05-2003</option>
+<option value='12-05-2003'>12-05-2003</option>
+<option value='13-05-2003'>13-05-2003</option>
+<option value='14-05-2003'>14-05-2003</option>
+<option value='15-05-2003'>15-05-2003</option>
+</select>
+|,
+3 =>
+q|<select name='TestTest'>
+<option value='05-03-2003'>03-05-2003</option>
+<option value='05-04-2003' SELECTED>04-05-2003</option>
+<option value='05-10-2003'>10-05-2003</option>
+</select>
+|,
+4 =>
+q|<select name='calendar'>
+<option value='01-May-2003'>01-05-2003</option>
+<option value='02-May-2003'>02-05-2003</option>
+<option value='03-May-2003'>03-05-2003</option>
+<option value='04-May-2003'>04-05-2003</option>
+<option value='08-May-2003'>08-05-2003</option>
+<option value='09-May-2003'>09-05-2003</option>
+<option value='10-May-2003'>10-05-2003</option>
+<option value='11-May-2003'>11-05-2003</option>
+<option value='15-May-2003'>15-05-2003</option>
+<option value='16-May-2003'>16-05-2003</option>
+<option value='17-May-2003'>17-05-2003</option>
+</select>
+|,
+5 =>
+q|<select name='calendar'>
+<option value='2003-05-24'>24-05-2003</option>
+<option value='2003-05-25'>25-05-2003</option>
+<option value='2003-05-26'>26-05-2003</option>
+<option value='2003-05-27'>27-05-2003</option>
+<option value='2003-05-28'>28-05-2003</option>
+<option value='2003-05-29'>29-05-2003</option>
+<option value='2003-05-30'>30-05-2003</option>
+<option value='2003-05-31'>31-05-2003</option>
+<option value='2003-06-01'>01-06-2003</option>
+<option value='2003-06-02'>02-06-2003</option>
+<option value='2003-06-03'>03-06-2003</option>
+<option value='2003-06-04'>04-06-2003</option>
+<option value='2003-06-05'>05-06-2003</option>
+<option value='2003-06-06'>06-06-2003</option>
+<option value='2003-06-07'>07-06-2003</option>
+<option value='2003-06-08'>08-06-2003</option>
+<option value='2003-06-09'>09-06-2003</option>
+<option value='2003-06-10'>10-06-2003</option>
+<option value='2003-06-11'>11-06-2003</option>
+<option value='2003-06-12'>12-06-2003</option>
+<option value='2003-06-13'>13-06-2003</option>
+<option value='2003-06-14'>14-06-2003</option>
+<option value='2003-06-15'>15-06-2003</option>
+<option value='2003-06-16'>16-06-2003</option>
+<option value='2003-06-17'>17-06-2003</option>
+<option value='2003-06-18'>18-06-2003</option>
+<option value='2003-06-19'>19-06-2003</option>
+<option value='2003-06-20'>20-06-2003</option>
+<option value='2003-06-21'>21-06-2003</option>
+<option value='2003-06-22'>22-06-2003</option>
+<option value='2003-06-23'>23-06-2003</option>
+</select>
+|,
+6 =>
+q|<select name='calendar'>
+<option value='01-05-2003'>2003-05-01</option>
+<option value='02-05-2003'>2003-05-02</option>
+<option value='05-05-2003'>2003-05-05</option>
+<option value='06-05-2003'>2003-05-06</option>
+<option value='07-05-2003'>2003-05-07</option>
+<option value='08-05-2003'>2003-05-08</option>
+<option value='09-05-2003'>2003-05-09</option>
+<option value='12-05-2003'>2003-05-12</option>
+<option value='13-05-2003'>2003-05-13</option>
+<option value='14-05-2003'>2003-05-14</option>
+<option value='15-05-2003'>2003-05-15</option>
+</select>
+|,
+7 =>
+q|<select name='TestTest'>
+<option value='05-03-2003'>03 May, 2003</option>
+<option value='05-04-2003' SELECTED>04 May, 2003</option>
+<option value='05-10-2003'>10 May, 2003</option>
+</select>
+|,
+8 =>
+q|<select name='calendar'>
+<option value='01-May-2003'>Thursday 1st May, 2003</option>
+<option value='02-May-2003'>Friday 2nd May, 2003</option>
+<option value='03-May-2003'>Saturday 3rd May, 2003</option>
+<option value='04-May-2003'>Sunday 4th May, 2003</option>
+<option value='08-May-2003'>Thursday 8th May, 2003</option>
+<option value='09-May-2003'>Friday 9th May, 2003</option>
+<option value='10-May-2003'>Saturday 10th May, 2003</option>
+<option value='11-May-2003'>Sunday 11th May, 2003</option>
+<option value='15-May-2003'>Thursday 15th May, 2003</option>
+<option value='16-May-2003'>Friday 16th May, 2003</option>
+<option value='17-May-2003'>Saturday 17th May, 2003</option>
+</select>
+|,
+9 =>
+q|<select name='calendar'>
+<option value='24-05-2003'>24-05-2003</option>
+<option value='25-05-2003'>25-05-2003</option>
+<option value='26-05-2003'>26-05-2003</option>
+<option value='27-05-2003'>27-05-2003</option>
+<option value='28-05-2003'>28-05-2003</option>
+<option value='29-05-2003'>29-05-2003</option>
+<option value='30-05-2003'>30-05-2003</option>
+<option value='31-05-2003'>31-05-2003</option>
+<option value='01-06-2003'>01-06-2003</option>
+<option value='02-06-2003'>02-06-2003</option>
+<option value='03-06-2003'>03-06-2003</option>
+<option value='04-06-2003'>04-06-2003</option>
+<option value='05-06-2003'>05-06-2003</option>
+<option value='06-06-2003'>06-06-2003</option>
+<option value='07-06-2003'>07-06-2003</option>
+<option value='08-06-2003'>08-06-2003</option>
+<option value='09-06-2003'>09-06-2003</option>
+<option value='10-06-2003'>10-06-2003</option>
+<option value='11-06-2003'>11-06-2003</option>
+<option value='12-06-2003'>12-06-2003</option>
+<option value='13-06-2003'>13-06-2003</option>
+<option value='14-06-2003'>14-06-2003</option>
+<option value='15-06-2003'>15-06-2003</option>
+<option value='16-06-2003'>16-06-2003</option>
+<option value='17-06-2003'>17-06-2003</option>
+<option value='18-06-2003'>18-06-2003</option>
+<option value='19-06-2003'>19-06-2003</option>
+<option value='20-06-2003'>20-06-2003</option>
+<option value='21-06-2003'>21-06-2003</option>
+<option value='22-06-2003'>22-06-2003</option>
+<option value='23-06-2003'>23-06-2003</option>
+</select>
+|,
+10 =>
+q|<select name='calendar'>
+<option value='01-05-2003'>01-05-2003</option>
+<option value='02-05-2003'>02-05-2003</option>
+<option value='03-05-2003'>03-05-2003</option>
+<option value='04-05-2003'>04-05-2003</option>
+<option value='08-05-2003'>08-05-2003</option>
+<option value='09-05-2003'>09-05-2003</option>
+<option value='10-05-2003'>10-05-2003</option>
+<option value='11-05-2003'>11-05-2003</option>
+<option value='15-05-2003'>15-05-2003</option>
+<option value='16-05-2003'>16-05-2003</option>
+<option value='17-05-2003'>17-05-2003</option>
+</select>
+|,
+11 =>
+q|<select name='TestTest'>
+<option value='13-September-1965' SELECTED>13-09-1965</option>
+</select>
+|,
+12 =>
+q|<select name='TestTest'>
+<option value='1965-09-13' SELECTED>13-09-1965</option>
+</select>
+|,
+13 =>
+q|<select name='TestTest'>
+<option value='13-09-1965' SELECTED>13-09-1965</option>
+</select>
+|,
+);
+
+our %exts = (
+1 => 'st',
+2 => 'nd',
+3 => 'rd',
+4 => 'th',
+5 => 'th',
+6 => 'th',
+7 => 'th',
+8 => 'th',
+9 => 'th',
+10 => 'th',
+11 => 'th',
+12 => 'th',
+13 => 'th',
+14 => 'th',
+15 => 'th',
+16 => 'th',
+17 => 'th',
+18 => 'th',
+19 => 'th',
+20 => 'th',
+21 => 'st',
+22 => 'nd',
+23 => 'rd',
+24 => 'th',
+25 => 'th',
+26 => 'th',
+27 => 'th',
+28 => 'th',
+29 => 'th',
+30 => 'th',
+31 => 'st',
+);
+
+my %monthtest = (
+1 => 'January',
+2 => 'February',
+3 => 'March',
+4 => 'April',
+5 => 'May',
+6 => 'June',
+7 => 'July',
+8 => 'August',
+9 => 'September',
+10 => 'October',
+11 => 'November',
+12 => 'December',
+'January' => 1,
+'February' => 2,
+'March' => 3,
+'April' => 4,
+'May' => 5,
+'June' => 6,
+'July' => 7,
+'August' => 8,
+'September' => 9,
+'October' => 10,
+'November' => 11,
+'December' => 12,
+);
+
+my %daytest = (
+0 => 'Sunday',
+1 => 'Monday',
+2 => 'Tuesday',
+3 => 'Wednesday',
+4 => 'Thursday',
+5 => 'Friday',
+6 => 'Saturday',
+'Sunday' => 0,
+'Monday' => 1,
+'Tuesday' => 2,
+'Wednesday' => 3,
+'Thursday' => 4,
+'Friday' => 5,
+'Saturday' => 6,
+);
+
+our @monthlists = (
+{ array => [9,1965], hash => {
+	1 => 3, 2 => 4, 3 => 5, 4 => 6, 5 => 0, 6 => 1, 7 => 2,
+	8 => 3, 9 => 4, 10 => 5, 11 => 6, 12 => 0, 13 => 1, 14 => 2,
+	15 => 3, 16 => 4, 17 => 5, 18 => 6, 19 => 0, 20 => 1, 21 => 2,
+	22 => 3, 23 => 4, 24 => 5, 25 => 6, 26 => 0, 27 => 1, 28 => 2,
+	29 => 3, 30 => 4,
+} },
+{ array => [3,1976], hash => {
+	1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 0,
+	8 => 1, 9 => 2, 10 => 3, 11 => 4, 12 => 5, 13 => 6, 14 => 0,
+	15 => 1, 16 => 2, 17 => 3, 18 => 4, 19 => 5, 20 => 6, 21 => 0,
+	22 => 1, 23 => 2, 24 => 3, 25 => 4, 26 => 5, 27 => 6, 28 => 0,
+	29 => 1, 30 => 2, 31 => 3,
+} },
+{ array => [2,2000], hash => {
+	1 => 2, 2 => 3, 3 => 4, 4 => 5, 5 => 6, 6 => 0, 7 => 1,
+	8 => 2, 9 => 3, 10 => 4, 11 => 5, 12 => 6, 13 => 0, 14 => 1,
+	15 => 2, 16 => 3, 17 => 4, 18 => 5, 19 => 6, 20 => 0, 21 => 1,
+	22 => 2, 23 => 3, 24 => 4, 25 => 5, 26 => 6, 27 => 0, 28 => 1,
+	29 => 2,
+} },
+{ array => [2,1999], hash => {
+	1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 0,
+	8 => 1, 9 => 2, 10 => 3, 11 => 4, 12 => 5, 13 => 6, 14 => 0,
+	15 => 1, 16 => 2, 17 => 3, 18 => 4, 19 => 5, 20 => 6, 21 => 0,
+	22 => 1, 23 => 2, 24 => 3, 25 => 4, 26 => 5, 27 => 6, 28 => 0,
+} },
+);
+
+our @format01 = (
+	{	array => [ 'YYYY-MM-DD', 13,9,1965 ],
+		result => '1965-09-13' },
+	{	array => [ 'DAY, DDEXT MONTH YYYY', 13,9,1965,1 ],
+		result => 'Monday, 13th September 1965' },
+	{	array => [ 'DMY', 13,9,1965 ],
+		result => '13-09-1965' },
+	{	array => [ 'MDY', 13,9,1965 ],
+		result => '09-13-1965' },
+	{	array => [ 'YMD', 13,9,1965 ],
+		result => '1965-09-13' },
+#	{	array => [ 'EPOCH', 13,9,1965 ],
+#		result => '9999' },
+);
+
+our @format02 = (
+	{	array => [ '1965-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+		result => 'Monday, 13th September 1965' },
+	{	array => [ 'Monday, 13th September 1965', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
+		result => '1965-09-13' },
+);

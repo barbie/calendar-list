@@ -1,0 +1,28 @@
+Revision history for Perl extension Calendar::List.
+
+0.05  Thu Jul 31 21:21:14 BST 2003
+	- more Date Formats
+	- use Tie::IxHash to preserve order of internal hash
+
+0.04  Tue Jun 10 22:31:21 BST 2003
+	- Fixed the loading module test in new test files
+	- Fix for Time::Local test due to faults on windows
+	- Switched to timegm, as we're not interested in Daylight Saving
+
+0.03  Mon Jun  9 13:47:31 2003
+	- Time::Local fix for +/- duration.
+	- more tests added.
+
+0.02  Sun Jun  8 20:27:31 2003
+	- '-opt' style dropped in favour of 'opt'
+	- 'make dist' used to create the distribution
+	- fixed DateTime::compare bug in tests
+	thanks to Richard Clamp for the above suggestions
+	- changed to 'delta_days' to get a true diff date with DateTime
+	- reworked Functions code to provide undef on error
+	- reworked Time::Local tests to check for undef on error
+
+0.01  Wed Apr 30 16:50:06 2003
+	- original version; created by h2xs 1.21 with options
+		-c -n Calendar::List
+

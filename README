@@ -1,0 +1,67 @@
+Calendar/List version 0.05
+==========================
+
+DESCRIPTION
+
+This distribution consists of two modules, Calendar::List and
+Calendar::Functions.
+
+Calendar::List is intended to be used to return a simple list, hash or
+scalar of calendar dates. This is achieved by the use of two functions,
+calendar_list and calendar_selectbox. The former allows a return of a
+list of dates and a hash of dates, whereas the later returns a scalar
+containing a HTML code snippet for use as a HTML Form field select box.
+
+Calendar::Functions is intended to provide numerous support functions
+for other date and/or calendar functions, which are also used by
+Calendar::List.
+
+DEPENDENCIES
+
+The distribution requires the following modules:
+
+  Clone
+  Tie::IxHash
+
+The distribution requires at least one of the following modules:
+
+  Time::Local
+  Date::ICal
+  DateTime
+
+For testing purposes, the following modules are desireable, but not essential:
+
+  Test::Pod
+  Pod::Coverage
+
+CHANGES
+
+See the Changes file for a list of updates to the distribution.
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+AUTHOR
+
+Barbie, C<E<lt>modules@missbarbell.co.ukE<gt>>, http://birmingham.pm.org/
+
+Miss Barbell Productions.
+
+LATEST REVISION
+
+$Revision: 0.05 $
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2003 Barbie & Miss Barbell Productions.
+All Rights Reserved.
+
+This module is free software; you can redistribute it and/or modify it 
+under the same terms as Perl itself.
+
