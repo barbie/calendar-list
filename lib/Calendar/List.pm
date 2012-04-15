@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION);
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 ### CHANGES #########################################################
 #   0.01    30/04/2003  Initial Release
@@ -20,6 +20,7 @@ $VERSION = '0.10';
 #	0.08    07/11/2003	delta_days changed after DateTime 0.16 :(
 #	0.09	10/11/2003	added Time::Piece for the EPOCH date format
 #	0.10	16/12/2003	Fixed the VERSION test if DateTime not loaded
+#	0.11	19/04/2004	Test::More added as a prerequisites for PPMs
 #####################################################################
 
 #----------------------------------------------------------------------------
