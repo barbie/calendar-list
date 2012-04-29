@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK);
-$VERSION = '0.24';
+$VERSION = '0.25';
 
 #----------------------------------------------------------------------------
 
@@ -477,7 +477,7 @@ documentation, please submit a bug to the RT system (see link below). However,
 it would help greatly if you are able to pinpoint problems or even supply a
 patch.
 
-Fixes are dependant upon their severity and my availablity. Should a fix not
+Fixes are dependent upon their severity and my availability. Should a fix not
 be forthcoming, please feel free to (politely) remind me by sending an email
 to barbie@cpan.org .
 

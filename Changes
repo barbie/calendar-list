@@ -1,5 +1,10 @@
 Revision history for Perl extension Calendar::List.
 
+0.25    29/04/2012
+	- added minimum perl version (5.006).
+	- META tests no longer require specific versions.
+	- spelling fix. (thanks to Florian Schlichting & Gregor Herrmann).
+
 0.24    15/04/2012
 	- removed debugging lines.
 

@@ -18,7 +18,7 @@ use vars qw(
     $on_unix
 );
 
-$VERSION = '0.23';
+$VERSION = '0.25';
 
 require Exporter;
 

@@ -1,16 +1,28 @@
-use ExtUtils::MakeMaker;
-WriteMakefile(
-    'NAME'			=> 'Calendar::List',
-    'VERSION_FROM'	=> 'lib/Calendar/List.pm',
-    'PREREQ_PM'		=> {
-		Clone       => 0,
-		Tie::IxHash	=> 0,
-		Time::Local	=> 0,
-		Test::More	=> 0.47,	# for testing
-	},
-	NO_META			=> 1,
+#!/usr/bin/perl
 
-    ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
-      (ABSTRACT	=> 'A module for creating date lists',
-       AUTHOR	=> 'Barbie <barbie@cpan.org>') : ()),
+use strict;
+use warnings;
+use 5.006;
+
+use ExtUtils::MakeMaker;
+
+WriteMakefile(
+    AUTHOR              => 'Barbie <barbie@cpan.org>',
+    NAME                => 'Calendar::List',
+    VERSION_FROM        => 'lib/Calendar/List.pm',
+    ABSTRACT            => 'A module for creating date lists',
+    NO_META             => 1,
+    PREREQ_PM           => {
+
+        # prereqs
+		'Clone'             => '0',
+		'Tie::IxHash'	    => '0',
+		'Time::Local'	    => '0',
+
+        # build/test prereqs
+        'Test::More'        => '0.70',
+        'IO::File'          => '0'
+
+    }
 );
+
