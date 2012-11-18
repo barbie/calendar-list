@@ -2,6 +2,7 @@ Revision history for Perl extension Calendar::List.
 
 0.26    2012-11-18
         - change file dates changed to meet W3CDTF standards.
+        - test file updates.
 
 0.25    2012-04-29
 	    - added minimum perl version (5.006).
