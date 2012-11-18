@@ -1,6 +1,6 @@
 {
     "name": "Calendar-List",
-    "version": "0.25",
+    "version": "0.26",
     "abstract": "A module for creating date lists.",
     "author": ["Barbie <barbie@cpan.org>"],
 
@@ -37,11 +37,10 @@
                 "Test::More": "0.70"
             },
             "recommends": {
-                "Test::More": "0.70",
-                "Test::Pod": "1.00",
-                "Test::Pod::Coverage": "0.08",
                 "Test::CPAN::Meta": "0",
-                "Test::CPAN::Meta::JSON": "0"
+                "Test::CPAN::Meta::JSON": "0",
+                "Test::Pod": "1.00",
+                "Test::Pod::Coverage": "0.08"
             }
         }
     },
@@ -49,11 +48,11 @@
     "provides": {
         "Calendar::List": {
             "file": "lib/Calendar/List.pm",
-            "version": "0.25"
+            "version": "0.26"
         },
         "Calendar::Functions": {
             "file": "lib/Calendar/Functions.pm",
-            "version": "0.25"
+            "version": "0.26"
         }
     },
     "no_index": {
