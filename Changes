@@ -1,4 +1,7 @@
-Revision history for Perl extension Calendar::List.
+Revision history for Calendar-List
+==================================
+
+        - fixed license fields in META.json to be lists.
 
 0.26    2012-11-18
         - change file dates changed to meet W3CDTF standards.
