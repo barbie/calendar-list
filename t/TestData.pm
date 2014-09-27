@@ -377,7 +377,7 @@ q|<select name='calendar'>
 3 =>
 q|<select name='TestTest'>
 <option value='05-03-2003'>05-03-2003</option>
-<option value='05-04-2003' SELECTED>05-04-2003</option>
+<option value='05-04-2003' selected="selected">05-04-2003</option>
 <option value='05-10-2003'>05-10-2003</option>
 </select>
 |,
@@ -446,7 +446,7 @@ q|<select name='calendar'>
 7 =>
 q|<select name='TestTest'>
 <option value='05-03-2003'>03 May, 2003</option>
-<option value='05-04-2003' SELECTED>04 May, 2003</option>
+<option value='05-04-2003' selected="selected">04 May, 2003</option>
 <option value='05-10-2003'>10 May, 2003</option>
 </select>
 |,
@@ -514,17 +514,17 @@ q|<select name='calendar'>
 |,
 11 =>
 q|<select name='TestTest'>
-<option value='13-September-1965' SELECTED>13-September-1965</option>
+<option value='13-September-1965' selected="selected">13-September-1965</option>
 </select>
 |,
 12 =>
 q|<select name='TestTest'>
-<option value='1965-09-13' SELECTED>13-September-1965</option>
+<option value='1965-09-13' selected="selected">13-September-1965</option>
 </select>
 |,
 13 =>
 q|<select name='TestTest'>
-<option value='13-09-1965' SELECTED>13-09-1965</option>
+<option value='13-09-1965' selected="selected">13-09-1965</option>
 </select>
 |,
 14 =>
@@ -538,7 +538,7 @@ q|<select name='TestTest'>
 <option value='2014-12-24'>24-12-2014</option>
 <option value='2014-12-27'>27-12-2014</option>
 <option value='2014-12-31'>31-12-2014</option>
-<option value='2015-01-03' SELECTED>03-01-2015</option>
+<option value='2015-01-03' selected="selected">03-01-2015</option>
 <option value='2015-01-07'>07-01-2015</option>
 </select>
 |,

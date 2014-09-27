@@ -282,7 +282,7 @@ sub _calselect {
 
         # create the option
         $select .= "<option value='$date1'";
-        $select .= ' SELECTED'  if($selected);
+        $select .= ' selected="selected"'   if($selected);
         $select .= ">$date2</option>\n";
     }
 

@@ -7,6 +7,7 @@ Revision history for Calendar-List
         - reformat_date day/month/year validation must be numeric.
         - fixed DDEXT and dotw bugs.
         - simplified logic for holidays and exclusions.
+        - SELECTED now switched XHTML format of selected="selected".
 
 0.26    2012-11-18
         - change file dates changed to meet W3CDTF standards.
