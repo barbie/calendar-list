@@ -289,7 +289,7 @@ sub reformat_date {
 	my ($year,$mon,$day,$dotw) = ();
 
 	while($form1) {
-		if($form1 =~ /^YYYY/) {
+        if($form1 =~ /^YYYY/) {
 			($year) = ($date =~ /^(\d{4})/);
 			$form1 =~ s/^....//;
 			$date =~ s/^....//;
@@ -327,9 +327,12 @@ sub reformat_date {
 		}
 	}
 
-	# return original date if badly formed date
-	return $_[0]	unless($day && $mon && $year);
+print "# 1.date=$_[0], day=$day, mon=$mon, year=$year\n";
 
+    # return original date if badly formed date
+	return $_[0]	unless(int($day) && int($mon) && int($year));
+
+print "# 2.date=$_[0], form2=$form2, dotw=$dotw\n";
 	# get the day of the week, if we need it
 	$dotw = dotw($day,$mon,$year)	if($form2 =~ /DAY/ && !$dotw);
 
@@ -368,6 +371,8 @@ sub dotw {
 	foreach my $inx (1..12) {
 		return $inx	if($_[0] =~ /$dotw[$inx]/i);
 	}
+
+    return;
 }
 
 =item moty( month | monthname )
@@ -383,6 +388,8 @@ sub moty {
 	foreach my $inx (1..12) {
 		return $inx	if($_[0] =~ /$months[$inx]/i);
 	}
+
+    return;
 }
 
 =item fail_range( year )
