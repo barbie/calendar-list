@@ -236,6 +236,10 @@ sub format_date {
 	my ($fmt,$day,$mon,$year,$dotw) = @_;
 	return	unless($day && $mon && $year);
 
+    unless($dotw) {
+        (undef,undef,undef,$dotw) = decode_date(encode_date($day,$mon,$year));
+    }
+
 	# create date mini strings
 	my $fday	= sprintf "%02d", $day;
 	my $fmon	= sprintf "%02d", $mon;
@@ -297,7 +301,7 @@ sub reformat_date {
 		} elsif($form1 =~ /^MONTH/) {
 			my ($month) = ($date =~ /^(\w+)/);
 			$mon = moty($month);
-			$form1 =~ s/^\w+//;
+            $form1 =~ s/^\w+//;
 			$date =~ s/^\w+//;
 
 		} elsif($form1 =~ /^MM/) {
@@ -306,9 +310,9 @@ sub reformat_date {
 			$date =~ s/^..//;
 
 		} elsif($form1 =~ /^DDEXT/) {
-			($day) = ($date =~ /^(\d{2})/);
-			$form1 =~ s/^....//;
-			$date =~ s/^....//;
+			($day) = ($date =~ /^(\d{1,2})/);
+			$form1 =~ s/^.....//;
+			$date =~ s/^\d{1,2}..//;
 
 		} elsif($form1 =~ /^DD/) {
 			($day) = ($date =~ /^(\d{2})/);
@@ -327,17 +331,14 @@ sub reformat_date {
 		}
 	}
 
-print "# 1.date=$_[0], day=$day, mon=$mon, year=$year\n";
-
     # return original date if badly formed date
 	return $_[0]	unless(int($day) && int($mon) && int($year));
 
-print "# 2.date=$_[0], form2=$form2, dotw=$dotw\n";
 	# get the day of the week, if we need it
 	$dotw = dotw($day,$mon,$year)	if($form2 =~ /DAY/ && !$dotw);
 
 	# rebuild date into second format
-	return format_date($form2,$day,$mon,$year);
+	return format_date($form2,$day,$mon,$year,$dotw);
 }
 
 =item ext( day )
