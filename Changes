@@ -6,6 +6,7 @@ Revision history for Calendar-List
         - compare_dates and encode_date undefined logic reworked.
         - reformat_date day/month/year validation must be numeric.
         - fixed DDEXT and dotw bugs.
+        - simplified logic for holidays and exclusions.
 
 0.26    2012-11-18
         - change file dates changed to meet W3CDTF standards.

@@ -178,10 +178,12 @@ sub calendar_selectbox {
 #		of entries have been found.
 
 sub _thelist {
-	my $format1 = shift	unless(ref($_[0]) eq 'HASH');
-	my $format2 = shift	unless(ref($_[0]) eq 'HASH');
-	my $usrhash = shift	    if(ref($_[0]) eq 'HASH');
-	$format1 = $Format	unless($format1);
+    my ($format1,$format2,$usrhash);
+	$format1 = shift	unless(ref($_[0]) eq 'HASH');
+	$format2 = shift	unless(ref($_[0]) eq 'HASH');
+	$usrhash = shift	    if(ref($_[0]) eq 'HASH');
+
+    $format1 = $Format	unless($format1);
 	$format2 = $format1	unless($format2);
 
 	return	if _setargs($usrhash,$format1);
@@ -193,17 +195,15 @@ sub _thelist {
 	tie(%DateHash, 'Tie::IxHash');
 
     while($optcount < $Settings{maxcount}) {
-
         my ($nowday,$nowmon,$nowyear,$nowdow) = decode_date($Settings{nowdate});
 
         # ignore days we're not interested in
         unless($Settings{exclude}->[$nowdow]) {
 
+            # store the date, unless its a holiday
             my $fdate = sprintf "%02d-%02d-%04d", $nowday,$nowmon,$nowyear;
-            unless($Settings{exclude}->[7] && $Settings{holidays} && $Settings{holidays}->{$fdate}) {
-                # store date
-                $DateHash{$optcount++} = [decode_date($Settings{nowdate})];
-            }
+            $DateHash{$optcount++} = [decode_date($Settings{nowdate})]
+                unless($Settings{holidays}->{$fdate});
         }
 
 	    # stop if reached end date
@@ -211,7 +211,6 @@ sub _thelist {
 
         # increment
         $Settings{nowdate} = add_day($Settings{nowdate});
-
 	}
 
 	return $format1,$format2,\%DateHash;
@@ -333,8 +332,7 @@ sub _setargs {
 		}
 
 		# check for holiday setting
-		if($hash2->{'holidays'}) {
-			$Settings{exclude}->[7] = 1;
+		if($hash2->{'holidays'} and ref($hash2->{'holidays'}) eq 'ARRAY') {
 			%{$Settings{holidays}} = map {$_ => 1} @{$hash2->{'holidays'}};
 		}
 
