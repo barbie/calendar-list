@@ -22,5 +22,5 @@ foreach my $test (@format01) {
 
 foreach my $test (@format02) {
 	my $str = reformat_date(@{$test->{array}});
-#	is($str,$test->{result});
+	is($str,$test->{result});
 }

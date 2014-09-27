@@ -12,7 +12,7 @@ if($@) {
 	plan skip_all => "DateTime not installed.";
 }
 
-plan tests => 13;
+plan tests => 14;
 
 ###########################################################################
 # name: 31select-dt.t
@@ -23,7 +23,7 @@ plan tests => 13;
 # The tests
 
 # 1. testing the returned string
-foreach my $test (1..13) {
+foreach my $test (1..14) {
 	my @args = ();
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
@@ -31,7 +31,7 @@ foreach my $test (1..13) {
 	my $str = calendar_selectbox(@args);
 
 	if($tests{$test}->{hash}) {
-		is($str,$expected03{$test});
+		is($str,$expected03{$test},".. matches $test index");
 	} else {
 		is(length $str,length $expected03{$test});
 	}

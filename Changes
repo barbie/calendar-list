@@ -2,7 +2,7 @@ Revision history for Calendar-List
 ==================================
 
         - fixed license fields in META.json to be lists.
-        - extended META test suite.
+        - extended META and functional test suites.
         - compare_dates and encode_date undefined logic reworked.
         - reformat_date day/month/year validation must be numeric.
         - fixed DDEXT and dotw bugs.

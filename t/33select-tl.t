@@ -18,7 +18,7 @@ _caltest(0,0);
 # -------------------------------------------------------------------------
 # The tests
 
-my @tests = (1..10);
+my @tests = (1..10,14);
 push @tests, 11,12,13	if($on_unix);
 
 # 1. testing the returned string
@@ -30,7 +30,7 @@ foreach my $test (@tests) {
 	my $str = calendar_selectbox(@args);
 
 	if($tests{$test}->{hash}) {
-		is($str,$expected03{$test});
+		is($str,$expected03{$test},".. matches $test index");
 	} else {
 		my @array1 = split("\n",$str);
 		my @array2 = split("\n",$expected03{$test});

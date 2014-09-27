@@ -9,7 +9,7 @@ use Calendar::List;
 # check we can load the module
 eval "use Date::ICal";
 if($@) { plan skip_all => "Date::ICal not installed." }
-plan tests => 13;
+plan tests => 14;
 
 # switch off DateTime if loaded
 use Calendar::Functions qw(:test);
@@ -24,7 +24,7 @@ _caltest(0,1);
 # The tests
 
 # 1. testing the returned array
-foreach my $test (1..4,9,10,11,13) {
+foreach my $test (1..4,9,10,11,13,14) {
 	my @args = ();
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};

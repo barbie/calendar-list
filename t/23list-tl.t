@@ -18,7 +18,7 @@ _caltest(0,0);
 # -------------------------------------------------------------------------
 # The tests
 
-my @tests = (1..4,9,10);
+my @tests = (1..4,9,10,14);
 push @tests, 11,13	if($on_unix);
 
 # 1. testing the returned array

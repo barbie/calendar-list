@@ -12,7 +12,7 @@ if($@) {
 	plan skip_all => "DateTime not installed.";
 }
 
-plan tests => 13;
+plan tests => 14;
 
 ###########################################################################
 # name: 21list-dt.t
@@ -23,7 +23,7 @@ plan tests => 13;
 # The tests
 
 # 1. testing the returned array
-foreach my $test (1..4,9,10,11,13) {
+foreach my $test (1..4,9,10,11,13,14) {
 	my @args;
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};

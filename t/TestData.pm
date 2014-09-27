@@ -10,7 +10,7 @@ use strict;
 use vars qw(
     $VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK
 	@datetest @diffs
-	%hash01 %hash02 %hash03 %hash04
+	%hash01 %hash02 %hash03 %hash04 %hash05
 	%tests %expected02 %expected03
 	%exts %monthtest %daytest
 	@monthlists
@@ -26,7 +26,7 @@ require Exporter;
 
 %EXPORT_TAGS = ( 'all' => [ qw(
 	@datetest @diffs
-	%hash01 %hash02 %hash03 %hash04
+	%hash01 %hash02 %hash03 %hash04 %hash05
 	%tests %expected02 %expected03
 	%exts %monthtest %daytest
 	@monthlists
@@ -55,10 +55,22 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
 	{ array => [25,5,2003,0],	dotw => 0, tl => 1 },
 	{ array => [1,1,1900,1],	dotw => 1, tl => 0 },
 	{ array => [5,7,2056,3],	dotw => 3, tl => 0 },
+
+	{ array => [0,9,1965,1],	dotw => 1, tl => 0, invalid => 1 },
+	{ array => [13,0,1965,1],	dotw => 1, tl => 0, invalid => 1 },
+	{ array => [13,9,0,1],	    dotw => 1, tl => 0, invalid => 1 },
 );
 
 @diffs = (
-	{ from => [24,3,1976], to => [24,3,1976], compare =>  0, tl => 1 },
+	{ from => [],          to => [],          compare =>  0, tl => 1 },
+	{ from => [],          to => [24,3,1976], compare => -1, tl => 1 },
+	{ from => [24,3,1976], to => [],          compare =>  1, tl => 1 },
+
+    { from => [0,0,0],     to => [0,0,0],     compare =>  0, tl => 1 },
+	{ from => [0,0,0],     to => [24,3,1976], compare => -1, tl => 1 },
+	{ from => [24,3,1976], to => [0,0,0],     compare =>  1, tl => 1 },
+
+    { from => [24,3,1976], to => [24,3,1976], compare =>  0, tl => 1 },
 	{ from => [24,3,1976], to => [13,9,1965], compare =>  1, tl => 2 },
 	{ from => [24,3,1976], to => [3,11,2000], compare => -1, tl => 1 },
 	{ from => [24,3,1976], to => [25,5,2003], compare => -1, tl => 1 },
@@ -97,6 +109,14 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
 	'select'	=> '13-09-1965',
 );
 
+%hash05 = (
+	'start'		=> '01-12-2014',
+	'end'		=> '07-01-2015',
+	'name'		=> 'TestTest',
+	'select'	=> '03-01-2015',
+	'exclude'	=> { 'monday' => 1, 'tuesday' => 1, 'thursday' => 1, 'friday' => 1, 'sunday' => 1 },
+);
+
 %tests = (
 	1  => { f1 => 'YYYY-MM-DD',     f2 => undef,                    hash => undef    },
 	2  => { f1 => 'DD-MM-YYYY',     f2 => undef,                    hash => \%hash01 },
@@ -109,8 +129,9 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
 	9  => { f1 => undef,            f2 => undef,                    hash => undef    },
 	10 => { f1 => undef,            f2 => undef,                    hash => \%hash03 },
 	11 => { f1 => 'DD-MONTH-YYYY',  f2 => undef,                    hash => \%hash04 },
-	12 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => \%hash04 },
+	12 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MONTH-YYYY',          hash => \%hash04 },
 	13 => { f1 => undef,            f2 => undef,                    hash => \%hash04 },
+	14 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => \%hash05 },
 );
 
 %expected02 = (
@@ -284,10 +305,23 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
           '13-September-1965',
         ],
 12 => {
-          '1965-09-13' => '13-09-1965',
+          '1965-09-13' => '13-September-1965',
         },
 13 => [
           '13-09-1965',
+        ],
+14 => [
+        '2014-12-03' => '03-12-2014',
+        '2014-12-06' => '06-12-2014',
+        '2014-12-10' => '10-12-2014',
+        '2014-12-13' => '13-12-2014',
+        '2014-12-17' => '17-12-2014',
+        '2014-12-20' => '20-12-2014',
+        '2014-12-24' => '24-12-2014',
+        '2014-12-27' => '27-12-2014',
+        '2014-12-31' => '31-12-2014',
+        '2015-01-03' => '03-01-2015',
+        '2015-01-07' => '07-01-2015',
         ],
 );
 
@@ -342,23 +376,23 @@ q|<select name='calendar'>
 |,
 3 =>
 q|<select name='TestTest'>
-<option value='05-03-2003'>03-05-2003</option>
-<option value='05-04-2003' SELECTED>04-05-2003</option>
-<option value='05-10-2003'>10-05-2003</option>
+<option value='05-03-2003'>05-03-2003</option>
+<option value='05-04-2003' SELECTED>05-04-2003</option>
+<option value='05-10-2003'>05-10-2003</option>
 </select>
 |,
 4 =>
 q|<select name='calendar'>
-<option value='01-May-2003'>01-05-2003</option>
-<option value='02-May-2003'>02-05-2003</option>
-<option value='03-May-2003'>03-05-2003</option>
-<option value='04-May-2003'>04-05-2003</option>
-<option value='08-May-2003'>08-05-2003</option>
-<option value='09-May-2003'>09-05-2003</option>
-<option value='10-May-2003'>10-05-2003</option>
-<option value='11-May-2003'>11-05-2003</option>
-<option value='15-May-2003'>15-05-2003</option>
-<option value='16-May-2003'>16-05-2003</option>
+<option value='01-May-2003'>01-May-2003</option>
+<option value='02-May-2003'>02-May-2003</option>
+<option value='03-May-2003'>03-May-2003</option>
+<option value='04-May-2003'>04-May-2003</option>
+<option value='08-May-2003'>08-May-2003</option>
+<option value='09-May-2003'>09-May-2003</option>
+<option value='10-May-2003'>10-May-2003</option>
+<option value='11-May-2003'>11-May-2003</option>
+<option value='15-May-2003'>15-May-2003</option>
+<option value='16-May-2003'>16-May-2003</option>
 </select>
 |,
 5 =>
@@ -480,17 +514,32 @@ q|<select name='calendar'>
 |,
 11 =>
 q|<select name='TestTest'>
-<option value='13-September-1965' SELECTED>13-09-1965</option>
+<option value='13-September-1965' SELECTED>13-September-1965</option>
 </select>
 |,
 12 =>
 q|<select name='TestTest'>
-<option value='1965-09-13' SELECTED>13-09-1965</option>
+<option value='1965-09-13' SELECTED>13-September-1965</option>
 </select>
 |,
 13 =>
 q|<select name='TestTest'>
 <option value='13-09-1965' SELECTED>13-09-1965</option>
+</select>
+|,
+14 =>
+q|<select name='TestTest'>
+<option value='2014-12-03'>03-12-2014</option>
+<option value='2014-12-06'>06-12-2014</option>
+<option value='2014-12-10'>10-12-2014</option>
+<option value='2014-12-13'>13-12-2014</option>
+<option value='2014-12-17'>17-12-2014</option>
+<option value='2014-12-20'>20-12-2014</option>
+<option value='2014-12-24'>24-12-2014</option>
+<option value='2014-12-27'>27-12-2014</option>
+<option value='2014-12-31'>31-12-2014</option>
+<option value='2015-01-03' SELECTED>03-01-2015</option>
+<option value='2015-01-07'>07-01-2015</option>
 </select>
 |,
 );
@@ -604,7 +653,14 @@ my %daytest = (
 );
 
 @format01 = (
-	{	array => [ 'YYYY-MM-DD', 13,9,1965 ],
+	{	array => [ 'YYYY-MM-DD', 0,9,1965 ],
+		result => undef },
+	{	array => [ 'YYYY-MM-DD', 13,0,1965 ],
+		result => undef },
+	{	array => [ 'YYYY-MM-DD', 13,9,0 ],
+		result => undef },
+
+    {	array => [ 'YYYY-MM-DD', 13,9,1965 ],
 		result => '1965-09-13' },
 	{	array => [ 'DAY, DDEXT MONTH YYYY', 13,9,1965,1 ],
 		result => 'Monday, 13th September 1965' },
@@ -621,10 +677,25 @@ my %daytest = (
 );
 
 @format02 = (
-	{	array => [ '1965-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+	{	array => [ '1965-09-00', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+		result => '1965-09-00' },
+	{	array => [ '1965-00-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+		result => '1965-00-13' },
+	{	array => [ '0000-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+		result => '0000-09-13' },
+
+    {	array => [ '1965-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
 		result => 'Monday, 13th September 1965' },
 	{	array => [ 'Monday, 13th September 1965', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
 		result => '1965-09-13' },
+    {	array => [ '1965-09-13', 'YYYY-MM-DD', 'DDEXT MONTH YYYY' ],
+		result => '13th September 1965' },
+
+	{	array => [ 'Tuesday, 3rd November 2015', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
+		result => '2015-11-03' },
+	{	array => [ 'Wednesday, 8th February 2015', 'DAY, DDEXT MONTH YYYY', 'DDEXT MONTH YYYY, DAY' ],
+		result => '8th February 2015, Wednesday' },
+
 );
 
 @format03 = (
