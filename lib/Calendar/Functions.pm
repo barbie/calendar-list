@@ -127,16 +127,18 @@ Translates the given date values into a date object or number.
 
 sub encode_date {
 	my ($day,$mon,$year) = @_;
-	my $this = undef;
+	my $this;
 
-	if($dt) {		# DateTime.pm loaded
-    	$this = DateTime->new(day=>$day,month=>$mon,year=>$year);
-	} elsif($di) {	# Date::ICal loaded
-		$this = Date::ICal->new(day=>$day,month=>$mon,year=>$year,offset=>0);
-	} else {		# using Time::Local
-		return	if(fail_range($year));
-		$this = timegm(0,0,12,$day,$mon-1,$year);
-	}
+    if($day && $mon && $year) {
+        if($dt) {		# DateTime.pm loaded
+            $this = DateTime->new(day=>$day,month=>$mon,year=>$year);
+        } elsif($di) {	# Date::ICal loaded
+            $this = Date::ICal->new(day=>$day,month=>$mon,year=>$year,offset=>0);
+        } else {		# using Time::Local
+            return	if(fail_range($year));
+            $this = timegm(0,0,12,$day,$mon-1,$year);
+        }
+    }
 
 	return $this
 }
