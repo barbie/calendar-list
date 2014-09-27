@@ -188,8 +188,9 @@ Using the appropriate method, determines ther ordering of the two given dates.
 
 sub compare_dates {
 	my ($d1,$d2) = @_;
-	return  1 	if(defined $d1 && ! defined $d2);
-	return -1	if(defined $d2 && ! defined $d1);
+	return  0 	if(! defined $d1 && ! defined $d2);
+	return  1 	if(  defined $d1 && ! defined $d2);
+	return -1	if(! defined $d1);
 
 	my $diff = 0;
 	if($dt)		{ $diff = DateTime->compare( $d1, $d2 ); }

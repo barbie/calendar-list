@@ -3,6 +3,7 @@ Revision history for Calendar-List
 
         - fixed license fields in META.json to be lists.
         - extended META test suite.
+        - compare_dates undefined logic reworked.
 
 0.26    2012-11-18
         - change file dates changed to meet W3CDTF standards.
