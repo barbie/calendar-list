@@ -23,25 +23,25 @@ Calendar::List - A module for creating date lists
 
   # using the hash
   my %hash01 = (
-  	'options'   => 10,
-  	'exclude'   => { 'weekend' => 1 },
-  	'start'     => '01-05-2003',
+    'options'   => 10,
+    'exclude'   => { 'weekend' => 1 },
+    'start'     => '01-05-2003',
   );
 
   my %hash02 = (
-  	'options'   => 10,
-  	'exclude'   => { 'holidays' => \@holidays },
-  	'start'     => '01-05-2003',
+    'options'   => 10,
+    'exclude'   => { 'holidays' => \@holidays },
+    'start'     => '01-05-2003',
   );
 
   my %hash03 = (
-  	'exclude'   => { 'monday' => 1,
+    'exclude'   => { 'monday' => 1,
                      'tuesday' => 1,
                      'wednesday' => 1 },
-  	'start'     => '01-05-2003',
-  	'end'       => '10-05-2003',
-  	'name'      => 'MyDates',
-  	'selected'  => '04-05-2003',
+    'start'     => '01-05-2003',
+    'end'       => '10-05-2003',
+    'name'      => 'MyDates',
+    'selected'  => '04-05-2003',
   );
 
   my %hash = calendar_list('DD-MM-YYYY' => 'DDEXT MONTH YYYY', \%hash01);
@@ -66,7 +66,7 @@ snippet for use as a HTML Form field select box.
 #----------------------------------------------------------------------------
 
 #############################################################################
-#Export Settings															#
+#Export Settings                                                            #
 #############################################################################
 
 require Exporter;
@@ -74,15 +74,15 @@ require Exporter;
 @ISA = qw(Exporter);
 
 %EXPORT_TAGS = ( 'all' => [ qw(
-	calendar_list
-	calendar_selectbox
+    calendar_list
+    calendar_selectbox
 ) ] );
 
 @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 @EXPORT    = ( @{ $EXPORT_TAGS{'all'} } );
 
 #############################################################################
-#Library Modules															#
+#Library Modules                                                            #
 #############################################################################
 
 use Calendar::Functions qw(:all);
@@ -97,18 +97,18 @@ use Tie::IxHash;
 my @dotw = qw( Sunday Monday Tuesday Wednesday Thursday Friday Saturday );
 
 # THE DEFAULTS
-my $Format		= 'DD-MM-YYYY';
-my @order		= qw( day month year );
+my $Format      = 'DD-MM-YYYY';
+my @order       = qw( day month year );
 
 my %Defaults = (
-	maxcount => 30,
-	selectname => 'calendar',
-	selected => [],
-	startdate => undef,
-	enddate => undef,
-	start => [1,1,1970],
-	end => [31,12,2037],
-	exclude => [ 0,0,0,0,0,0,0,0 ],
+    maxcount => 30,
+    selectname => 'calendar',
+    selected => [],
+    startdate => undef,
+    enddate => undef,
+    start => [1,1,1970],
+    end => [31,12,2037],
+    exclude => [ 0,0,0,0,0,0,0,0 ],
     holidays => {},
 );
 
@@ -117,7 +117,7 @@ my (%Settings);
 #----------------------------------------------------------------------------
 
 #############################################################################
-#Interface Functions														#
+#Interface Functions                                                        #
 #############################################################################
 
 =head1 FUNCTIONS
@@ -138,9 +138,9 @@ key and value portions.
 =cut
 
 sub calendar_list {
-	my $wantarray = (@_ < 2 || ref($_[1]) eq 'HASH') ? 1 : 0;
-	my ($fmt1,$fmt2,$hash) = _thelist(@_);
-	return _callist($fmt1,$fmt2,$hash,$wantarray);
+    my $wantarray = (@_ < 2 || ref($_[1]) eq 'HASH') ? 1 : 0;
+    my ($fmt1,$fmt2,$hash) = _thelist(@_);
+    return _callist($fmt1,$fmt2,$hash,$wantarray);
 }
 
 =item calendar_selectbox([DATEFORMAT] [,DATEFORMAT] [,OPTIONSHASH])
@@ -157,42 +157,42 @@ data portions.
 =cut
 
 sub calendar_selectbox {
-	my ($fmt1,$fmt2,$hash) = _thelist(@_);
-	return _calselect($fmt1,$fmt2,$hash);
+    my ($fmt1,$fmt2,$hash) = _thelist(@_);
+    return _calselect($fmt1,$fmt2,$hash);
 }
 
 #############################################################################
-#Internal Functions															#
+#Internal Functions                                                         #
 #############################################################################
 
-# name:	_thelist
+# name: _thelist
 # args: format string 1 .... optional
-# 		format string 2 .... optional
-# 		settings hash ...... optional
+#       format string 2 .... optional
+#       settings hash ...... optional
 # retv: undef if invalid settings, otherwise a hash of dates, keyed by
-#		an incremental counter.
-# desc:	The heart of the engine. Arranges the parameters passed to the
-#		the interface function, calls for the settings to be decided,
-#		them creates the main hash table of dates.
-#		Stops when either the end date is reached, or the maximum number
-#		of entries have been found.
+#       an incremental counter.
+# desc: The heart of the engine. Arranges the parameters passed to the
+#       the interface function, calls for the settings to be decided,
+#       them creates the main hash table of dates.
+#       Stops when either the end date is reached, or the maximum number
+#       of entries have been found.
 
 sub _thelist {
     my ($format1,$format2,$usrhash);
-	$format1 = shift	unless(ref($_[0]) eq 'HASH');
-	$format2 = shift	unless(ref($_[0]) eq 'HASH');
-	$usrhash = shift	    if(ref($_[0]) eq 'HASH');
+    $format1 = shift    unless(ref($_[0]) eq 'HASH');
+    $format2 = shift    unless(ref($_[0]) eq 'HASH');
+    $usrhash = shift        if(ref($_[0]) eq 'HASH');
 
-    $format1 = $Format	unless($format1);
-	$format2 = $format1	unless($format2);
+    $format1 = $Format  unless($format1);
+    $format2 = $format1 unless($format2);
 
-	return	if _setargs($usrhash,$format1);
+    return  if _setargs($usrhash,$format1);
 
     $Settings{nowdate} = $Settings{startdate};
 
-	my $optcount = 0;	# our option counter
-	my %DateHash;
-	tie(%DateHash, 'Tie::IxHash');
+    my $optcount = 0;   # our option counter
+    my %DateHash;
+    tie(%DateHash, 'Tie::IxHash');
 
     while($optcount < $Settings{maxcount}) {
         my ($nowday,$nowmon,$nowyear,$nowdow) = decode_date($Settings{nowdate});
@@ -206,173 +206,173 @@ sub _thelist {
                 unless($Settings{holidays}->{$fdate});
         }
 
-	    # stop if reached end date
-		last    if(compare_dates($Settings{nowdate},$Settings{enddate}) == 0);
+        # stop if reached end date
+        last    if(compare_dates($Settings{nowdate},$Settings{enddate}) == 0);
 
         # increment
         $Settings{nowdate} = add_day($Settings{nowdate});
-	}
+    }
 
-	return $format1,$format2,\%DateHash;
+    return $format1,$format2,\%DateHash;
 }
 
-# name:	_callist
+# name: _callist
 # args: format string 1 .... optional
-# 		format string 2 .... optional
-# 		settings hash ...... optional
+#       format string 2 .... optional
+#       settings hash ...... optional
 # retv: undef if invalid settings, otherwise an array if zero or one
-#		date format provided, in ascending order, or a hash if two
-#		date formats.
-# desc:	The cream on top. Takes the hash provided by _thelist and uses
-#		it to create a formatted array or hash.
+#       date format provided, in ascending order, or a hash if two
+#       date formats.
+# desc: The cream on top. Takes the hash provided by _thelist and uses
+#       it to create a formatted array or hash.
 
 sub _callist {
-	my ($fmt1,$fmt2,$hash,$wantarray) = @_;
-	return	unless($hash);
+    my ($fmt1,$fmt2,$hash,$wantarray) = @_;
+    return  unless($hash);
 
-	my (@returns,%returns);
-	tie(%returns, 'Tie::IxHash');
+    my (@returns,%returns);
+    tie(%returns, 'Tie::IxHash');
 
-	foreach my $key (sort {$a <=> $b} keys %$hash) {
-		my $date1 = format_date($fmt1,@{$hash->{$key}});
-		if($wantarray) {
-			push @returns, $date1;
-		} else {
-			my $date2 = format_date($fmt2,@{$hash->{$key}});
-			$returns{$date1} = $date2;
-		}
-	}
+    foreach my $key (sort {$a <=> $b} keys %$hash) {
+        my $date1 = format_date($fmt1,@{$hash->{$key}});
+        if($wantarray) {
+            push @returns, $date1;
+        } else {
+            my $date2 = format_date($fmt2,@{$hash->{$key}});
+            $returns{$date1} = $date2;
+        }
+    }
 
-	return @returns	if($wantarray);
-	return %returns;
+    return @returns if($wantarray);
+    return %returns;
 }
 
 
-# name:	_calselect
+# name: _calselect
 # args: format string 1 .... optional
-# 		format string 2 .... optional
-# 		settings hash ...... optional
+#       format string 2 .... optional
+#       settings hash ...... optional
 # retv: undef if invalid settings, otherwise a hash of dates, keyed by
-#		an incremental counter.
-# desc:	The cream on top. Takes the hash provided by _thelist and uses
-#		it to create a HTML select box form field, making use of any
-#		user defined settings.
+#       an incremental counter.
+# desc: The cream on top. Takes the hash provided by _thelist and uses
+#       it to create a HTML select box form field, making use of any
+#       user defined settings.
 
 sub _calselect {
-	my ($fmt1,$fmt2,$hash) = @_;
-	return	unless($hash);
+    my ($fmt1,$fmt2,$hash) = @_;
+    return  unless($hash);
 
-	# open SELECT tag
-	my $select = "<select name='$Settings{selectname}'>\n";
+    # open SELECT tag
+    my $select = "<select name='$Settings{selectname}'>\n";
 
-	# add an OPTION elements
-	foreach my $key (sort {$a <=> $b} keys %$hash) {
-		my $selected = 0;
+    # add an OPTION elements
+    foreach my $key (sort {$a <=> $b} keys %$hash) {
+        my $selected = 0;
 
-		# check whether this option has been selected
-		$selected = 1
-			if(	@{$Settings{selected}} &&
-				$hash->{$key}->[0] == $Settings{selected}->[0] &&
-				$hash->{$key}->[1] == $Settings{selected}->[1] &&
-				$hash->{$key}->[2] == $Settings{selected}->[2]);
+        # check whether this option has been selected
+        $selected = 1
+            if( @{$Settings{selected}} &&
+                $hash->{$key}->[0] == $Settings{selected}->[0] &&
+                $hash->{$key}->[1] == $Settings{selected}->[1] &&
+                $hash->{$key}->[2] == $Settings{selected}->[2]);
 
-		# format date strings
-		my $date1 = format_date($fmt1,@{$hash->{$key}});
-		my $date2 = format_date($fmt2,@{$hash->{$key}});
+        # format date strings
+        my $date1 = format_date($fmt1,@{$hash->{$key}});
+        my $date2 = format_date($fmt2,@{$hash->{$key}});
 
-		# create the option
-		$select .= "<option value='$date1'";
-		$select .= ' SELECTED'	if($selected);
-		$select .= ">$date2</option>\n";
-	}
+        # create the option
+        $select .= "<option value='$date1'";
+        $select .= ' SELECTED'  if($selected);
+        $select .= ">$date2</option>\n";
+    }
 
-	# close SELECT tag
-	$select .= "</select>\n";
-	return $select;
+    # close SELECT tag
+    $select .= "</select>\n";
+    return $select;
 }
 
-# name:	_setargs
+# name: _setargs
 # args: settings hash ...... optional
 # retv: 1 to indicate any bad settings, otherwise undef.
-# desc:	Sets defaults, then deciphers user defined settings.
+# desc: Sets defaults, then deciphers user defined settings.
 
 sub _setargs {
-	my $hash = shift;
-	my $format1 = shift;
+    my $hash = shift;
+    my $format1 = shift;
 
-	# set the current date
-	my @now = localtime();
-	my @today = ( $now[3], $now[4]+1, $now[5]+1900 );
+    # set the current date
+    my @now = localtime();
+    my @today = ( $now[3], $now[4]+1, $now[5]+1900 );
 
-	%Settings = ();
-	%Settings = %{ clone(\%Defaults) };
-	$Settings{startdate} = encode_date(@today);
+    %Settings = ();
+    %Settings = %{ clone(\%Defaults) };
+    $Settings{startdate} = encode_date(@today);
 
-	# if no user hash table provided, lets go
-	return	unless($hash);
-
-
-	# store excluded days
-	if($hash->{'exclude'}) {
-		my $hash2 = $hash->{'exclude'};
-		foreach my $inx (0..6) {
-			my $key = lc($dotw[$inx]);
-			$Settings{exclude}->[$inx] = 1	if $hash2->{"$key"};
-		}
-
-		# check for weekend setting
-		if($hash2->{'weekend'}) {
-			$Settings{exclude}->[0] = 1;
-			$Settings{exclude}->[6] = 1;
-		}
-
-		# check for weekday setting
-		if($hash2->{'weekday'}) {
-			foreach my $inx (1..5) { $Settings{exclude}->[$inx] = 1; }
-		}
-
-		# check for holiday setting
-		if($hash2->{'holidays'} and ref($hash2->{'holidays'}) eq 'ARRAY') {
-			%{$Settings{holidays}} = map {$_ => 1} @{$hash2->{'holidays'}};
-		}
-
-		# ensure we aren't wasting time
-		my $count = 0;
-		foreach my $inx (0..6) { $count++	if($Settings{exclude}->[$inx]) }
-		die "all days ignore\n"	if($count == 7);
-	}
+    # if no user hash table provided, lets go
+    return  unless($hash);
 
 
-	# store selected date
-	if($hash->{'select'}) {
-		my @dates = ($hash->{'select'} =~ /(\d+)/g);
-		$Settings{selected} = \@dates;
-	}
+    # store excluded days
+    if($hash->{'exclude'}) {
+        my $hash2 = $hash->{'exclude'};
+        foreach my $inx (0..6) {
+            my $key = lc($dotw[$inx]);
+            $Settings{exclude}->[$inx] = 1  if $hash2->{"$key"};
+        }
+
+        # check for weekend setting
+        if($hash2->{'weekend'}) {
+            $Settings{exclude}->[0] = 1;
+            $Settings{exclude}->[6] = 1;
+        }
+
+        # check for weekday setting
+        if($hash2->{'weekday'}) {
+            foreach my $inx (1..5) { $Settings{exclude}->[$inx] = 1; }
+        }
+
+        # check for holiday setting
+        if($hash2->{'holidays'} and ref($hash2->{'holidays'}) eq 'ARRAY') {
+            %{$Settings{holidays}} = map {$_ => 1} @{$hash2->{'holidays'}};
+        }
+
+        # ensure we aren't wasting time
+        my $count = 0;
+        foreach my $inx (0..6) { $count++   if($Settings{exclude}->[$inx]) }
+        die "all days ignore\n" if($count == 7);
+    }
 
 
-	# store start date
-	if($hash->{'start'}) {
-		my @dates = ($hash->{'start'} =~ /(\d+)/g);
-		$Settings{startdate} = encode_date(@dates);
-	}
+    # store selected date
+    if($hash->{'select'}) {
+        my @dates = ($hash->{'select'} =~ /(\d+)/g);
+        $Settings{selected} = \@dates;
+    }
 
 
-	# store end date
-	if($hash->{'end'}) {
-		$Settings{maxcount}=9999;
-		my @dates = ($hash->{'end'} =~ /(\d+)/g);
-		$Settings{enddate} = encode_date(@dates);
-
-		# check whether we have a bad start/end dates
-		return 1	if(compare_dates($Settings{enddate},$Settings{startdate}) < 0);
-	}
+    # store start date
+    if($hash->{'start'}) {
+        my @dates = ($hash->{'start'} =~ /(\d+)/g);
+        $Settings{startdate} = encode_date(@dates);
+    }
 
 
-	# store user defined values
-	$Settings{maxcount}		= $hash->{'options'}	if($hash->{'options'});
-	$Settings{selectname}	= $hash->{'name'}		if($hash->{'name'});
+    # store end date
+    if($hash->{'end'}) {
+        $Settings{maxcount}=9999;
+        my @dates = ($hash->{'end'} =~ /(\d+)/g);
+        $Settings{enddate} = encode_date(@dates);
 
-	return 0;
+        # check whether we have a bad start/end dates
+        return 1    if(compare_dates($Settings{enddate},$Settings{startdate}) < 0);
+    }
+
+
+    # store user defined values
+    $Settings{maxcount}     = $hash->{'options'}    if($hash->{'options'});
+    $Settings{selectname}   = $hash->{'name'}       if($hash->{'name'});
+
+    return 0;
 }
 
 1;

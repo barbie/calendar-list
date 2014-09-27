@@ -55,7 +55,7 @@ date and/or calendar functions
 #----------------------------------------------------------------------------
 
 #############################################################################
-#Export Settings															#
+#Export Settings                                                            #
 #############################################################################
 
 require Exporter;
@@ -63,20 +63,20 @@ require Exporter;
 @ISA = qw(Exporter);
 
 %EXPORT_TAGS = (
-	'basic' => [ qw( ext moty dotw ) ],
-	'dates' => [ qw( ext moty dotw
+    'basic' => [ qw( ext moty dotw ) ],
+    'dates' => [ qw( ext moty dotw
                      encode_date decode_date compare_dates add_day ) ],
-	'form'  => [ qw( ext moty dotw format_date reformat_date ) ],
-	'all'   => [ qw( ext moty dotw format_date reformat_date fail_range
-					 encode_date decode_date compare_dates add_day ) ],
-	'test'	=> [ qw( _caltest ) ],
+    'form'  => [ qw( ext moty dotw format_date reformat_date ) ],
+    'all'   => [ qw( ext moty dotw format_date reformat_date fail_range
+                     encode_date decode_date compare_dates add_day ) ],
+    'test'  => [ qw( _caltest ) ],
 );
 
 @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} }, @{ $EXPORT_TAGS{'test'} } );
 @EXPORT    = ( @{ $EXPORT_TAGS{'basic'} } );
 
 #############################################################################
-#Library Modules															#
+#Library Modules                                                            #
 #############################################################################
 
 use Time::Local;
@@ -88,7 +88,7 @@ eval "use Time::Piece";
 my $tp = ! $@;
 
 if($tp) {
-	require Time::Piece;
+    require Time::Piece;
 }
 
 #############################################################################
@@ -96,18 +96,18 @@ if($tp) {
 #############################################################################
 
 # prime our print out names
-my @months	= qw(	NULL January February March April May June July
+my @months  = qw(   NULL January February March April May June July
                     August September October November December );
-my @dotw	= qw(	Sunday Monday Tuesday Wednesday Thursday Friday Saturday );
+my @dotw    = qw(   Sunday Monday Tuesday Wednesday Thursday Friday Saturday );
 
-my $MinYear		= 1902;
-my $MaxYear		= 2037;
-my $EpoYear		= 1970;
+my $MinYear     = 1902;
+my $MaxYear     = 2037;
+my $EpoYear     = 1970;
 
 #----------------------------------------------------------------------------
 
 #############################################################################
-#Interface Functions														#
+#Interface Functions                                                        #
 #############################################################################
 
 =head1 FUNCTIONS
@@ -120,27 +120,27 @@ Translates the given date values into a date object or number.
 
 =cut
 
-# name:	encode_date
+# name: encode_date
 # args: day,month,year .... standard numerical day/month/year values
 # retv: date object or number
-# desc:	Translates the given date values into a date object or number.
+# desc: Translates the given date values into a date object or number.
 
 sub encode_date {
-	my ($day,$mon,$year) = @_;
-	my $this;
+    my ($day,$mon,$year) = @_;
+    my $this;
 
     if($day && $mon && $year) {
-        if($dt) {		# DateTime.pm loaded
+        if($dt) {       # DateTime.pm loaded
             $this = DateTime->new(day=>$day,month=>$mon,year=>$year);
-        } elsif($di) {	# Date::ICal loaded
+        } elsif($di) {  # Date::ICal loaded
             $this = Date::ICal->new(day=>$day,month=>$mon,year=>$year,offset=>0);
-        } else {		# using Time::Local
-            return	if(fail_range($year));
+        } else {        # using Time::Local
+            return  if(fail_range($year));
             $this = timegm(0,0,12,$day,$mon-1,$year);
         }
     }
 
-	return $this
+    return $this
 }
 
 =item decode_date( date )
@@ -149,30 +149,30 @@ Translates the given date object into date values.
 
 =cut
 
-# name:	decode_date
+# name: decode_date
 # args: date1 .... date object or number
 # retv: the standard numerical day/month/year values
-# desc:	Translates the date object or number into date values.
+# desc: Translates the date object or number into date values.
 
 sub decode_date {
-	my $date = shift || return;
-	my ($day,$month,$year,$dow);
+    my $date = shift || return;
+    my ($day,$month,$year,$dow);
 
-	if($dt) {   		# DateTime.pm loaded
-		($day,$month,$year,$dow) =
+    if($dt) {           # DateTime.pm loaded
+        ($day,$month,$year,$dow) =
             ($date->day,$date->month,$date->year,$date->dow);
         $dow %= 7;
-	} elsif($di) {		# Date::ICal loaded
-		($day,$month,$year,$dow) =
+    } elsif($di) {      # Date::ICal loaded
+        ($day,$month,$year,$dow) =
             ($date->day,$date->month,$date->year,$date->day_of_week);
-	} else {		    # using Time::Local
-		($day,$month,$year,$dow) = (localtime($date))[3..6];
-		(undef,undef,undef,$day,$month,$year,$dow) = (localtime($date));
-		$month++;
-		$year+=1900;
-	}
+    } else {            # using Time::Local
+        ($day,$month,$year,$dow) = (localtime($date))[3..6];
+        (undef,undef,undef,$day,$month,$year,$dow) = (localtime($date));
+        $month++;
+        $year+=1900;
+    }
 
-	return $day,$month,$year,$dow;
+    return $day,$month,$year,$dow;
 }
 
 =item compare_dates( date, date )
@@ -181,25 +181,25 @@ Using the appropriate method, determines ther ordering of the two given dates.
 
 =cut
 
-# name:	compare_dates
+# name: compare_dates
 # args: date1 .... date object or string
-#		date2 .... date object or string
+#       date2 .... date object or string
 # retv: the compare value, as per the 'cmp' or '<=>' functionality.
-# desc:	Using the selected module, determines whether the first date is before,
+# desc: Using the selected module, determines whether the first date is before,
 #       after or the same as the second.
 
 sub compare_dates {
-	my ($d1,$d2) = @_;
-	return  0 	if(! defined $d1 && ! defined $d2);
-	return  1 	if(  defined $d1 && ! defined $d2);
-	return -1	if(! defined $d1);
+    my ($d1,$d2) = @_;
+    return  0   if(! defined $d1 && ! defined $d2);
+    return  1   if(  defined $d1 && ! defined $d2);
+    return -1   if(! defined $d1);
 
-	my $diff = 0;
-	if($dt)		{ $diff = DateTime->compare( $d1, $d2 ); }
-	elsif($di)	{ $diff = $d1->compare($d2); }
-	else		{ $diff = $d1 < $d2 ? -1 : ($d1 > $d2 ? 1 : 0); }
+    my $diff = 0;
+    if($dt)     { $diff = DateTime->compare( $d1, $d2 ); }
+    elsif($di)  { $diff = $d1->compare($d2); }
+    else        { $diff = $d1 < $d2 ? -1 : ($d1 > $d2 ? 1 : 0); }
 
-	return $diff;
+    return $diff;
 }
 
 =item add_day( date )
@@ -211,9 +211,9 @@ Add one day to the date object.
 sub add_day {
     my $d1 = shift;
 
-	if($dt)		{ $d1->add( days => 1 ); }
-	elsif($di)	{ $d1->add( day  => 1 ); }
-	else		{ $d1 += 60 * 60 * 24; }
+    if($dt)     { $d1->add( days => 1 ); }
+    elsif($di)  { $d1->add( day  => 1 ); }
+    else        { $d1 += 60 * 60 * 24; }
 
     return $d1;
 }
@@ -224,55 +224,55 @@ transposes the standard date values into a formatted string.
 
 =cut
 
-# name:	format_date
+# name: format_date
 # args: fmt ............. format string
-#		day/mon/year .... standard date values
-#		dotw ............ day of the week number (optional)
+#       day/mon/year .... standard date values
+#       dotw ............ day of the week number (optional)
 # retv: newly formatted date
-# desc:	Transposes the format string and date values into a correctly
-#		formatted date string.
+# desc: Transposes the format string and date values into a correctly
+#       formatted date string.
 
 sub format_date {
-	my ($fmt,$day,$mon,$year,$dotw) = @_;
-	return	unless($day && $mon && $year);
+    my ($fmt,$day,$mon,$year,$dotw) = @_;
+    return  unless($day && $mon && $year);
 
     unless($dotw) {
         (undef,undef,undef,$dotw) = decode_date(encode_date($day,$mon,$year));
     }
 
-	# create date mini strings
-	my $fday	= sprintf "%02d", $day;
-	my $fmon	= sprintf "%02d", $mon;
-	my $fyear	= sprintf "%04d", $year;
-	my $fmonth	= sprintf "%s",   $months[$mon];
-	my $fdotw	= sprintf "%s",   (defined $dotw ? $dotw[$dotw] : '');
-	my $fddext	= sprintf "%d%s", $day, ext($day);
-	my $amonth	= substr($fmonth,0,3);
-	my $adotw	= substr($fdotw,0,3);
-	my $epoch	= -1;	# an arbitory number
+    # create date mini strings
+    my $fday    = sprintf "%02d", $day;
+    my $fmon    = sprintf "%02d", $mon;
+    my $fyear   = sprintf "%04d", $year;
+    my $fmonth  = sprintf "%s",   $months[$mon];
+    my $fdotw   = sprintf "%s",   (defined $dotw ? $dotw[$dotw] : '');
+    my $fddext  = sprintf "%d%s", $day, ext($day);
+    my $amonth  = substr($fmonth,0,3);
+    my $adotw   = substr($fdotw,0,3);
+    my $epoch   = -1;   # an arbitory number
 
-	# epoch only supports the same dates in the 32-bit range
-	if($tp && $fmt =~ /\bEPOCH\b/ && $year >= $EpoYear && $year <= $MaxYear) {
-		my $date = timegm 0, 0, 12, $day, $mon -1, $year;
-		my $t = Time::Piece::gmtime($date);
-		$epoch = $t->epoch	if($t);
-	}
+    # epoch only supports the same dates in the 32-bit range
+    if($tp && $fmt =~ /\bEPOCH\b/ && $year >= $EpoYear && $year <= $MaxYear) {
+        my $date = timegm 0, 0, 12, $day, $mon -1, $year;
+        my $t = Time::Piece::gmtime($date);
+        $epoch = $t->epoch  if($t);
+    }
 
-	# transpose format string into a date string
-	$fmt =~ s/\bDMY\b/$fday-$fmon-$fyear/i;
-	$fmt =~ s/\bMDY\b/$fmon-$fday-$fyear/i;
-	$fmt =~ s/\bYMD\b/$fyear-$fmon-$fday/i;
-	$fmt =~ s/\bMABV\b/$amonth/i;
-	$fmt =~ s/\bDABV\b/$adotw/i;
-	$fmt =~ s/\bMONTH\b/$fmonth/i;
-	$fmt =~ s/\bDAY\b/$fdotw/i;
-	$fmt =~ s/\bDDEXT\b/$fddext/i;
-	$fmt =~ s/\bYYYY\b/$fyear/i;
-	$fmt =~ s/\bMM\b/$fmon/i;
-	$fmt =~ s/\bDD\b/$fday/i;
-	$fmt =~ s/\bEPOCH\b/$epoch/i;
+    # transpose format string into a date string
+    $fmt =~ s/\bDMY\b/$fday-$fmon-$fyear/i;
+    $fmt =~ s/\bMDY\b/$fmon-$fday-$fyear/i;
+    $fmt =~ s/\bYMD\b/$fyear-$fmon-$fday/i;
+    $fmt =~ s/\bMABV\b/$amonth/i;
+    $fmt =~ s/\bDABV\b/$adotw/i;
+    $fmt =~ s/\bMONTH\b/$fmonth/i;
+    $fmt =~ s/\bDAY\b/$fdotw/i;
+    $fmt =~ s/\bDDEXT\b/$fddext/i;
+    $fmt =~ s/\bYYYY\b/$fyear/i;
+    $fmt =~ s/\bMM\b/$fmon/i;
+    $fmt =~ s/\bDD\b/$fday/i;
+    $fmt =~ s/\bEPOCH\b/$epoch/i;
 
-	return $fmt;
+    return $fmt;
 }
 
 =item reformat_date( date, form1, form1 )
@@ -281,64 +281,64 @@ transposes the standard date values into a formatted string.
 
 =cut
 
-# name:	reformat_date
+# name: reformat_date
 # args: date ..... date string
-#		form1 .... format string
-#		form2 .... format string
+#       form1 .... format string
+#       form2 .... format string
 # retv: converted date string
-# desc:	Transposes the date from one format to another.
+# desc: Transposes the date from one format to another.
 
 sub reformat_date {
-	my ($date,$form1,$form2) = @_;
-	my ($year,$mon,$day,$dotw) = ();
+    my ($date,$form1,$form2) = @_;
+    my ($year,$mon,$day,$dotw) = ();
 
-	while($form1) {
+    while($form1) {
         if($form1 =~ /^YYYY/) {
-			($year) = ($date =~ /^(\d{4})/);
-			$form1 =~ s/^....//;
-			$date =~ s/^....//;
+            ($year) = ($date =~ /^(\d{4})/);
+            $form1 =~ s/^....//;
+            $date =~ s/^....//;
 
-		} elsif($form1 =~ /^MONTH/) {
-			my ($month) = ($date =~ /^(\w+)/);
-			$mon = moty($month);
+        } elsif($form1 =~ /^MONTH/) {
+            my ($month) = ($date =~ /^(\w+)/);
+            $mon = moty($month);
             $form1 =~ s/^\w+//;
-			$date =~ s/^\w+//;
+            $date =~ s/^\w+//;
 
-		} elsif($form1 =~ /^MM/) {
-			($mon) = ($date =~ /^(\d{2})/);
-			$form1 =~ s/^..//;
-			$date =~ s/^..//;
+        } elsif($form1 =~ /^MM/) {
+            ($mon) = ($date =~ /^(\d{2})/);
+            $form1 =~ s/^..//;
+            $date =~ s/^..//;
 
-		} elsif($form1 =~ /^DDEXT/) {
-			($day) = ($date =~ /^(\d{1,2})/);
-			$form1 =~ s/^.....//;
-			$date =~ s/^\d{1,2}..//;
+        } elsif($form1 =~ /^DDEXT/) {
+            ($day) = ($date =~ /^(\d{1,2})/);
+            $form1 =~ s/^.....//;
+            $date =~ s/^\d{1,2}..//;
 
-		} elsif($form1 =~ /^DD/) {
-			($day) = ($date =~ /^(\d{2})/);
-			$form1 =~ s/^..//;
-			$date =~ s/^..//;
+        } elsif($form1 =~ /^DD/) {
+            ($day) = ($date =~ /^(\d{2})/);
+            $form1 =~ s/^..//;
+            $date =~ s/^..//;
 
-		} elsif($form1 =~ /^DAY/) {
-			my ($wday) = ($date =~ /^(\w+)/);
-			$dotw = dotw($wday);
-			$form1 =~ s/^\w+//;
-			$date =~ s/^\w+//;
+        } elsif($form1 =~ /^DAY/) {
+            my ($wday) = ($date =~ /^(\w+)/);
+            $dotw = dotw($wday);
+            $form1 =~ s/^\w+//;
+            $date =~ s/^\w+//;
 
-		} else {
-			$form1 =~ s/^.//;
-			$date =~ s/^.//;
-		}
-	}
+        } else {
+            $form1 =~ s/^.//;
+            $date =~ s/^.//;
+        }
+    }
 
     # return original date if badly formed date
-	return $_[0]	unless(int($day) && int($mon) && int($year));
+    return $_[0]    unless(int($day) && int($mon) && int($year));
 
-	# get the day of the week, if we need it
-	$dotw = dotw($day,$mon,$year)	if($form2 =~ /DAY/ && !$dotw);
+    # get the day of the week, if we need it
+    $dotw = dotw($day,$mon,$year)   if($form2 =~ /DAY/ && !$dotw);
 
-	# rebuild date into second format
-	return format_date($form2,$day,$mon,$year,$dotw);
+    # rebuild date into second format
+    return format_date($form2,$day,$mon,$year,$dotw);
 }
 
 =item ext( day )
@@ -347,16 +347,16 @@ Returns the extension associated with the given day value.
 
 =cut
 
-# name:	ext
+# name: ext
 # args: day .... day value
 # retv: day value extension
-# desc:	Returns the extension associated with the given day value.
+# desc: Returns the extension associated with the given day value.
 
 sub ext {
-	return 'st'	if($_[0] == 1 ||$_[0] == 21 || $_[0] == 31);
-	return 'nd'	if($_[0] == 2 ||$_[0] == 22);
-	return 'rd'	if($_[0] == 3 ||$_[0] == 23);
-	return 'th';
+    return 'st' if($_[0] == 1 ||$_[0] == 21 || $_[0] == 31);
+    return 'nd' if($_[0] == 2 ||$_[0] == 22);
+    return 'rd' if($_[0] == 3 ||$_[0] == 23);
+    return 'th';
 }
 
 =item dotw( day | dayname )
@@ -367,11 +367,11 @@ name if passed a numeric.
 =cut
 
 sub dotw {
-	return $dotw[$_[0]]	if($_[0] =~ /\d/);
+    return $dotw[$_[0]] if($_[0] =~ /\d/);
 
-	foreach my $inx (1..12) {
-		return $inx	if($_[0] =~ /$dotw[$inx]/i);
-	}
+    foreach my $inx (1..12) {
+        return $inx if($_[0] =~ /$dotw[$inx]/i);
+    }
 
     return;
 }
@@ -384,11 +384,11 @@ name if passed a numeric.
 =cut
 
 sub moty {
-	return $months[$_[0]]	if($_[0] =~ /\d/);
+    return $months[$_[0]]   if($_[0] =~ /\d/);
 
-	foreach my $inx (1..12) {
-		return $inx	if($_[0] =~ /$months[$inx]/i);
-	}
+    foreach my $inx (1..12) {
+        return $inx if($_[0] =~ /$months[$inx]/i);
+    }
 
     return;
 }
@@ -401,15 +401,15 @@ basic date range, 01-01-1902 to 31-12-2037.
 =cut
 
 sub fail_range {
-	return 1	unless($_[0]);
-	return 0	if($dt || $di);
-	return 1	if($_[0] < $MinYear || $_[0] > $MaxYear);
-	return 0;
+    return 1    unless($_[0]);
+    return 0    if($dt || $di);
+    return 1    if($_[0] < $MinYear || $_[0] > $MaxYear);
+    return 0;
 }
 
 sub _caltest {
-	$dt = $_[0]	if($dt);
-	$di = $_[1]	if($di);
+    $dt = $_[0] if($dt);
+    $di = $_[1] if($di);
 }
 
 1;
