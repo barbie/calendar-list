@@ -9,12 +9,12 @@ use strict;
 
 use vars qw(
     $VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK
-	@datetest @diffs
-	%hash01 %hash02 %hash03 %hash04 %hash05 %hash06 %hash07 %hash08 %hash09 %hash10 %hash11 %hash12 %hash13
-	%tests %expected02 %expected03 %setargs
-	%exts %monthtest %daytest
-	@monthlists
-	@format01 @format02 @format03
+    @datetest @diffs
+    %hash01 %hash02 %hash03 %hash04 %hash05 %hash06 %hash07 %hash08 %hash09 %hash10 %hash11 %hash12 %hash13
+    %tests %expected02 %expected03 %setargs
+    %exts %monthtest %daytest
+    @monthlists
+    @format01 @format02 @format03
     $on_unix
 );
 
@@ -25,12 +25,12 @@ require Exporter;
 @ISA = qw(Exporter);
 
 %EXPORT_TAGS = ( 'all' => [ qw(
-	@datetest @diffs
+    @datetest @diffs
     %hash07
-	%tests %expected02 %expected03 %setargs
-	%exts %monthtest %daytest
-	@monthlists
-	@format01 @format02 @format03
+    %tests %expected02 %expected03 %setargs
+    %exts %monthtest %daytest
+    @monthlists
+    @format01 @format02 @format03
     $on_unix
 ) ] );
 
@@ -41,126 +41,126 @@ require Exporter;
 # Variables
 
 my %os = (MacOS   => 0,
-	      MSWin32 => 0,
-	      os2     => 0,
-	      VMS     => 0,
-	      epoc    => 0);
+          MSWin32 => 0,
+          os2     => 0,
+          VMS     => 0,
+          epoc    => 0);
 
 $on_unix = (exists $os{$^O} ? 0 : 1);
 
 @datetest = (
-	{ array => [24,3,1976,3],	dotw => 3, tl => 1 },
-	{ array => [13,9,1965,1],	dotw => 1, tl => 2 },
-	{ array => [3,11,2000,5],	dotw => 5, tl => 1 },
-	{ array => [25,5,2003,0],	dotw => 0, tl => 1 },
-	{ array => [1,1,1900,1],	dotw => 1, tl => 0 },
-	{ array => [5,7,2056,3],	dotw => 3, tl => 0 },
+    { array => [24,3,1976,3],   dotw => 3, tl => 1 },
+    { array => [13,9,1965,1],   dotw => 1, tl => 2 },
+    { array => [3,11,2000,5],   dotw => 5, tl => 1 },
+    { array => [25,5,2003,0],   dotw => 0, tl => 1 },
+    { array => [1,1,1900,1],    dotw => 1, tl => 0 },
+    { array => [5,7,2056,3],    dotw => 3, tl => 0 },
 
-	{ array => [0,9,1965,1],	dotw => 1, tl => 0, invalid => 1 },
-	{ array => [13,0,1965,1],	dotw => 1, tl => 0, invalid => 1 },
-	{ array => [13,9,0,1],	    dotw => 1, tl => 0, invalid => 1 },
+    { array => [0,9,1965,1],    dotw => 1, tl => 0, invalid => 1 },
+    { array => [13,0,1965,1],   dotw => 1, tl => 0, invalid => 1 },
+    { array => [13,9,0,1],      dotw => 1, tl => 0, invalid => 1 },
 );
 
 @diffs = (
-	{ from => [],          to => [],          compare =>  0, tl => 1 },
-	{ from => [],          to => [24,3,1976], compare => -1, tl => 1 },
-	{ from => [24,3,1976], to => [],          compare =>  1, tl => 1 },
+    { from => [],          to => [],          compare =>  0, tl => 1 },
+    { from => [],          to => [24,3,1976], compare => -1, tl => 1 },
+    { from => [24,3,1976], to => [],          compare =>  1, tl => 1 },
 
     { from => [0,0,0],     to => [0,0,0],     compare =>  0, tl => 1 },
-	{ from => [0,0,0],     to => [24,3,1976], compare => -1, tl => 1 },
-	{ from => [24,3,1976], to => [0,0,0],     compare =>  1, tl => 1 },
+    { from => [0,0,0],     to => [24,3,1976], compare => -1, tl => 1 },
+    { from => [24,3,1976], to => [0,0,0],     compare =>  1, tl => 1 },
 
     { from => [24,3,1976], to => [24,3,1976], compare =>  0, tl => 1 },
-	{ from => [24,3,1976], to => [13,9,1965], compare =>  1, tl => 2 },
-	{ from => [24,3,1976], to => [3,11,2000], compare => -1, tl => 1 },
-	{ from => [24,3,1976], to => [25,5,2003], compare => -1, tl => 1 },
-	{ from => [24,3,1976], to => [1,1,1900],  compare =>  1, tl => 0 },
-	{ from => [24,3,1976], to => [5,7,2056],  compare => -1, tl => 0 },
-	{ from => [1,3,1976],  to => [1,4,1976],  compare => -1, tl => 1 },
-	{ from => [10,5,2003], to => [11,5,2003], compare => -1, tl => 1 },
+    { from => [24,3,1976], to => [13,9,1965], compare =>  1, tl => 2 },
+    { from => [24,3,1976], to => [3,11,2000], compare => -1, tl => 1 },
+    { from => [24,3,1976], to => [25,5,2003], compare => -1, tl => 1 },
+    { from => [24,3,1976], to => [1,1,1900],  compare =>  1, tl => 0 },
+    { from => [24,3,1976], to => [5,7,2056],  compare => -1, tl => 0 },
+    { from => [1,3,1976],  to => [1,4,1976],  compare => -1, tl => 1 },
+    { from => [10,5,2003], to => [11,5,2003], compare => -1, tl => 1 },
 );
 
 
 %hash01 = (
-	'options'	=> 10,
-	'exclude'	=> { 'weekend' => 1 },
-	'start'		=> '01-05-2003',
+    'options'   => 10,
+    'exclude'   => { 'weekend' => 1 },
+    'start'     => '01-05-2003',
 );
 
 %hash02 = (
-	'exclude'	=> { 'weekday' => 1 },
-	'start'		=> '01-05-2003',
-	'end'		=> '10-05-2003',
-	'name'		=> 'TestTest',
-	'select'	=> '04-05-2003',
+    'exclude'   => { 'weekday' => 1 },
+    'start'     => '01-05-2003',
+    'end'       => '10-05-2003',
+    'name'      => 'TestTest',
+    'select'    => '04-05-2003',
 );
 
 %hash03 = (
-	'options'	=> 10,
-	'exclude'	=> { 'monday' => 1, 'tuesday' => 1, 'wednesday' => 1 },
-	'start'		=> '01-05-2003',
-	'end'		=> '25-05-2003',
+    'options'   => 10,
+    'exclude'   => { 'monday' => 1, 'tuesday' => 1, 'wednesday' => 1 },
+    'start'     => '01-05-2003',
+    'end'       => '25-05-2003',
 );
 
 %hash04 = (
-	'start'		=> '13-09-1965',
-	'end'		=> '13-09-1965',
-	'name'		=> 'TestTest',
-	'select'	=> '13-09-1965',
+    'start'     => '13-09-1965',
+    'end'       => '13-09-1965',
+    'name'      => 'TestTest',
+    'select'    => '13-09-1965',
 );
 
 %hash05 = (
-	'start'		=> '01-12-2014',
-	'end'		=> '07-01-2015',
-	'name'		=> 'TestTest',
-	'select'	=> '03-01-2015',
-	'exclude'	=> { 'monday' => 1, 'tuesday' => 1, 'thursday' => 1, 'friday' => 1, 'sunday' => 1 },
+    'start'     => '01-12-2014',
+    'end'       => '07-01-2015',
+    'name'      => 'TestTest',
+    'select'    => '03-01-2015',
+    'exclude'   => { 'monday' => 1, 'tuesday' => 1, 'thursday' => 1, 'friday' => 1, 'sunday' => 1 },
 );
 
 %hash06 = (
-	'start'		=> '30-11-2014',
-	'end'		=> '01-01-2015',
-	'name'		=> 'TestTest',
-	'exclude'	=> { 'december' => 1 },
+    'start'     => '30-11-2014',
+    'end'       => '01-01-2015',
+    'name'      => 'TestTest',
+    'exclude'   => { 'december' => 1 },
 );
 
 %hash07 = (
-	'start'		=> '30-11-2014',
+    'start'     => '30-11-2014',
     'options'   => 0
 );
 
 %hash08 = (
-	'start'		=> '30-11-2014',
-	'end'		=> '01-01-2014',
+    'start'     => '30-11-2014',
+    'end'       => '01-01-2014',
 );
 
 %hash09 = (
-	'end'		=> '01-01-2014',
-	'start'		=> '',
+    'end'       => '01-01-2014',
+    'start'     => '',
 );
 
 %hash10 = (
-	'exclude'	=> { 'blah' => 1 },
-	'start'		=> '01-05-2003',
-	'end'		=> '10-05-2003',
+    'exclude'   => { 'blah' => 1 },
+    'start'     => '01-05-2003',
+    'end'       => '10-05-2003',
 );
 
 %hash11 = (
-	'start'		=> '01-05-2003',
-	'end'		=> '10-05-2003',
+    'start'     => '01-05-2003',
+    'end'       => '10-05-2003',
     'blah'      => 1
 );
 
 %hash12 = (
-	'exclude'	=> { 'weekday' => 1, 'weekend' => 1 },
-	'start'		=> '01-05-2003',
-	'end'		=> '10-05-2003',
+    'exclude'   => { 'weekday' => 1, 'weekend' => 1 },
+    'start'     => '01-05-2003',
+    'end'       => '10-05-2003',
 );
 
 %hash13 = (
-	'exclude'	=> { 'january' => 1, 'february' => 1, 'march' => 1, 'april' => 1, 'may' => 1, 'june' => 1, 'july' => 1, 'august' => 1, 'september' => 1, 'october' => 1, 'november' => 1, 'december' => 1 },
-	'start'		=> '01-05-2003',
-	'end'		=> '10-05-2003',
+    'exclude'   => { 'january' => 1, 'february' => 1, 'march' => 1, 'april' => 1, 'may' => 1, 'june' => 1, 'july' => 1, 'august' => 1, 'september' => 1, 'october' => 1, 'november' => 1, 'december' => 1 },
+    'start'     => '01-05-2003',
+    'end'       => '10-05-2003',
 );
 
 %setargs = (
@@ -180,21 +180,21 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
 );
 
 %tests = (
-	1  => { f1 => 'YYYY-MM-DD',     f2 => undef,                    hash => undef    },
-	2  => { f1 => 'DD-MM-YYYY',     f2 => undef,                    hash => \%hash01 },
-	3  => { f1 => 'MM-DD-YYYY',     f2 => undef,                    hash => \%hash02 },
-	4  => { f1 => 'DD-MONTH-YYYY',  f2 => undef,                    hash => \%hash03 },
-	5  => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => undef    },
-	6  => { f1 => 'DD-MM-YYYY',     f2 => 'YYYY-MM-DD',             hash => \%hash01 },
-	7  => { f1 => 'MM-DD-YYYY',     f2 => 'DD MONTH, YYYY',         hash => \%hash02 },
-	8  => { f1 => 'DD-MONTH-YYYY',  f2 => 'DAY DDEXT MONTH, YYYY',  hash => \%hash03 },
-	9  => { f1 => undef,            f2 => undef,                    hash => undef    },
-	10 => { f1 => undef,            f2 => undef,                    hash => \%hash03 },
-	11 => { f1 => 'DD-MONTH-YYYY',  f2 => undef,                    hash => \%hash04 },
-	12 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MONTH-YYYY',          hash => \%hash04 },
-	13 => { f1 => undef,            f2 => undef,                    hash => \%hash04 },
-	14 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => \%hash05 },
-	15 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => \%hash06 },
+    1  => { f1 => 'YYYY-MM-DD',     f2 => undef,                    hash => undef    },
+    2  => { f1 => 'DD-MM-YYYY',     f2 => undef,                    hash => \%hash01 },
+    3  => { f1 => 'MM-DD-YYYY',     f2 => undef,                    hash => \%hash02 },
+    4  => { f1 => 'DD-MONTH-YYYY',  f2 => undef,                    hash => \%hash03 },
+    5  => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => undef    },
+    6  => { f1 => 'DD-MM-YYYY',     f2 => 'YYYY-MM-DD',             hash => \%hash01 },
+    7  => { f1 => 'MM-DD-YYYY',     f2 => 'DD MONTH, YYYY',         hash => \%hash02 },
+    8  => { f1 => 'DD-MONTH-YYYY',  f2 => 'DAY DDEXT MONTH, YYYY',  hash => \%hash03 },
+    9  => { f1 => undef,            f2 => undef,                    hash => undef    },
+    10 => { f1 => undef,            f2 => undef,                    hash => \%hash03 },
+    11 => { f1 => 'DD-MONTH-YYYY',  f2 => undef,                    hash => \%hash04 },
+    12 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MONTH-YYYY',          hash => \%hash04 },
+    13 => { f1 => undef,            f2 => undef,                    hash => \%hash04 },
+    14 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => \%hash05 },
+    15 => { f1 => 'YYYY-MM-DD',     f2 => 'DD-MM-YYYY',             hash => \%hash06 },
 );
 
 %expected02 = (
@@ -738,95 +738,95 @@ my %daytest = (
 
 @monthlists = (
 { array => [9,1965], hash => {
-	1 => 3, 2 => 4, 3 => 5, 4 => 6, 5 => 0, 6 => 1, 7 => 2,
-	8 => 3, 9 => 4, 10 => 5, 11 => 6, 12 => 0, 13 => 1, 14 => 2,
-	15 => 3, 16 => 4, 17 => 5, 18 => 6, 19 => 0, 20 => 1, 21 => 2,
-	22 => 3, 23 => 4, 24 => 5, 25 => 6, 26 => 0, 27 => 1, 28 => 2,
-	29 => 3, 30 => 4,
+    1 => 3, 2 => 4, 3 => 5, 4 => 6, 5 => 0, 6 => 1, 7 => 2,
+    8 => 3, 9 => 4, 10 => 5, 11 => 6, 12 => 0, 13 => 1, 14 => 2,
+    15 => 3, 16 => 4, 17 => 5, 18 => 6, 19 => 0, 20 => 1, 21 => 2,
+    22 => 3, 23 => 4, 24 => 5, 25 => 6, 26 => 0, 27 => 1, 28 => 2,
+    29 => 3, 30 => 4,
 } },
 { array => [3,1976], hash => {
-	1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 0,
-	8 => 1, 9 => 2, 10 => 3, 11 => 4, 12 => 5, 13 => 6, 14 => 0,
-	15 => 1, 16 => 2, 17 => 3, 18 => 4, 19 => 5, 20 => 6, 21 => 0,
-	22 => 1, 23 => 2, 24 => 3, 25 => 4, 26 => 5, 27 => 6, 28 => 0,
-	29 => 1, 30 => 2, 31 => 3,
+    1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 0,
+    8 => 1, 9 => 2, 10 => 3, 11 => 4, 12 => 5, 13 => 6, 14 => 0,
+    15 => 1, 16 => 2, 17 => 3, 18 => 4, 19 => 5, 20 => 6, 21 => 0,
+    22 => 1, 23 => 2, 24 => 3, 25 => 4, 26 => 5, 27 => 6, 28 => 0,
+    29 => 1, 30 => 2, 31 => 3,
 } },
 { array => [2,2000], hash => {
-	1 => 2, 2 => 3, 3 => 4, 4 => 5, 5 => 6, 6 => 0, 7 => 1,
-	8 => 2, 9 => 3, 10 => 4, 11 => 5, 12 => 6, 13 => 0, 14 => 1,
-	15 => 2, 16 => 3, 17 => 4, 18 => 5, 19 => 6, 20 => 0, 21 => 1,
-	22 => 2, 23 => 3, 24 => 4, 25 => 5, 26 => 6, 27 => 0, 28 => 1,
-	29 => 2,
+    1 => 2, 2 => 3, 3 => 4, 4 => 5, 5 => 6, 6 => 0, 7 => 1,
+    8 => 2, 9 => 3, 10 => 4, 11 => 5, 12 => 6, 13 => 0, 14 => 1,
+    15 => 2, 16 => 3, 17 => 4, 18 => 5, 19 => 6, 20 => 0, 21 => 1,
+    22 => 2, 23 => 3, 24 => 4, 25 => 5, 26 => 6, 27 => 0, 28 => 1,
+    29 => 2,
 } },
 { array => [2,1999], hash => {
-	1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 0,
-	8 => 1, 9 => 2, 10 => 3, 11 => 4, 12 => 5, 13 => 6, 14 => 0,
-	15 => 1, 16 => 2, 17 => 3, 18 => 4, 19 => 5, 20 => 6, 21 => 0,
-	22 => 1, 23 => 2, 24 => 3, 25 => 4, 26 => 5, 27 => 6, 28 => 0,
+    1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 0,
+    8 => 1, 9 => 2, 10 => 3, 11 => 4, 12 => 5, 13 => 6, 14 => 0,
+    15 => 1, 16 => 2, 17 => 3, 18 => 4, 19 => 5, 20 => 6, 21 => 0,
+    22 => 1, 23 => 2, 24 => 3, 25 => 4, 26 => 5, 27 => 6, 28 => 0,
 } },
 );
 
 @format01 = (
-	{	array => [ 'YYYY-MM-DD', 0,9,1965 ],
-		result => undef },
-	{	array => [ 'YYYY-MM-DD', 13,0,1965 ],
-		result => undef },
-	{	array => [ 'YYYY-MM-DD', 13,9,0 ],
-		result => undef },
+    {   array => [ 'YYYY-MM-DD', 0,9,1965 ],
+        result => undef },
+    {   array => [ 'YYYY-MM-DD', 13,0,1965 ],
+        result => undef },
+    {   array => [ 'YYYY-MM-DD', 13,9,0 ],
+        result => undef },
 
-    {	array => [ 'YYYY-MM-DD', 13,9,1965 ],
-		result => '1965-09-13' },
-	{	array => [ 'DAY, DDEXT MONTH YYYY', 13,9,1965,1 ],
-		result => 'Monday, 13th September 1965' },
-	{	array => [ 'DMY', 13,9,1965 ],
-		result => '13-09-1965' },
-	{	array => [ 'MDY', 13,9,1965 ],
-		result => '09-13-1965' },
-	{	array => [ 'YMD', 13,9,1965 ],
-		result => '1965-09-13' },
-	{	array => [ 'DABV, DD MABV YYYY', 13,9,1965,1 ],
-		result => 'Mon, 13 Sep 1965' },
-#	{	array => [ 'EPOCH', 13,9,1965 ],
-#		result => '9999' },
+    {   array => [ 'YYYY-MM-DD', 13,9,1965 ],
+        result => '1965-09-13' },
+    {   array => [ 'DAY, DDEXT MONTH YYYY', 13,9,1965,1 ],
+        result => 'Monday, 13th September 1965' },
+    {   array => [ 'DMY', 13,9,1965 ],
+        result => '13-09-1965' },
+    {   array => [ 'MDY', 13,9,1965 ],
+        result => '09-13-1965' },
+    {   array => [ 'YMD', 13,9,1965 ],
+        result => '1965-09-13' },
+    {   array => [ 'DABV, DD MABV YYYY', 13,9,1965,1 ],
+        result => 'Mon, 13 Sep 1965' },
+#   {   array => [ 'EPOCH', 13,9,1965 ],
+#       result => '9999' },
 );
 
 @format02 = (
-	{	array => [ '1965-09-00', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
-		result => '1965-09-00' },
-	{	array => [ '1965-00-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
-		result => '1965-00-13' },
-	{	array => [ '0000-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
-		result => '0000-09-13' },
+    {   array => [ '1965-09-00', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+        result => '1965-09-00' },
+    {   array => [ '1965-00-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+        result => '1965-00-13' },
+    {   array => [ '0000-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+        result => '0000-09-13' },
 
-    {	array => [ '1965-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
-		result => 'Monday, 13th September 1965' },
-	{	array => [ 'Monday, 13th September 1965', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
-		result => '1965-09-13' },
-    {	array => [ '1965-09-13', 'YYYY-MM-DD', 'DDEXT MONTH YYYY' ],
-		result => '13th September 1965' },
+    {   array => [ '1965-09-13', 'YYYY-MM-DD', 'DAY, DDEXT MONTH YYYY' ],
+        result => 'Monday, 13th September 1965' },
+    {   array => [ 'Monday, 13th September 1965', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
+        result => '1965-09-13' },
+    {   array => [ '1965-09-13', 'YYYY-MM-DD', 'DDEXT MONTH YYYY' ],
+        result => '13th September 1965' },
 
-	{	array => [ 'Tuesday, 3rd November 2015', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
-		result => '2015-11-03' },
-	{	array => [ 'Wednesday, 8th February 2015', 'DAY, DDEXT MONTH YYYY', 'DDEXT MONTH YYYY, DAY' ],
-		result => '8th February 2015, Wednesday' },
+    {   array => [ 'Tuesday, 3rd November 2015', 'DAY, DDEXT MONTH YYYY', 'YYYY-MM-DD' ],
+        result => '2015-11-03' },
+    {   array => [ 'Wednesday, 8th February 2015', 'DAY, DDEXT MONTH YYYY', 'DDEXT MONTH YYYY, DAY' ],
+        result => '8th February 2015, Wednesday' },
 
 );
 
 @format03 = (
-	{	array => [ 'EPOCH', 13,9,1965 ],
-		result => '-1' },
-	{	array => [ 'EPOCH', 24,3,1976 ],
-		result => '196516800' },
-	{	array => [ 'EPOCH', 3,11,2000 ],
-		result => '973252800' },
-	{	array => [ 'EPOCH', 1,1,1970 ],
-		result => '43200' },
-	{	array => [ 'EPOCH', 1,1,1900 ],
-		result => '-1' },
-	{	array => [ 'EPOCH', 5,7,2056 ],
-		result => '-1' },
-	{	array => [ 'EPOCH', 1,1,2038 ],
-		result => '-1' },
+    {   array => [ 'EPOCH', 13,9,1965 ],
+        result => '-1' },
+    {   array => [ 'EPOCH', 24,3,1976 ],
+        result => '196516800' },
+    {   array => [ 'EPOCH', 3,11,2000 ],
+        result => '973252800' },
+    {   array => [ 'EPOCH', 1,1,1970 ],
+        result => '43200' },
+    {   array => [ 'EPOCH', 1,1,1900 ],
+        result => '-1' },
+    {   array => [ 'EPOCH', 5,7,2056 ],
+        result => '-1' },
+    {   array => [ 'EPOCH', 1,1,2038 ],
+        result => '-1' },
 );
 
 __END__
