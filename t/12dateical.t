@@ -47,6 +47,7 @@ foreach my $test (@diffs) {
 }
 
 # fail_range
+is(fail_range(0),1);
 is(fail_range(1899),0);
 is(fail_range(1965),0);
 is(fail_range(1999),0);
