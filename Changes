@@ -8,6 +8,7 @@ Revision history for Calendar-List
         - fixed DDEXT and dotw bugs.
         - simplified logic for holidays and exclusions.
         - SELECTED now switched XHTML format of selected="selected".
+        - added support for excluding full months.
 
 0.26    2012-11-18
         - change file dates changed to meet W3CDTF standards.

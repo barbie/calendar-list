@@ -94,22 +94,31 @@ use Tie::IxHash;
 #############################################################################
 
 # prime our print out names
-my @dotw = qw( Sunday Monday Tuesday Wednesday Thursday Friday Saturday );
+my @months  = qw(   NULL January February March April May June July
+                    August September October November December );
+my @dotw    = qw(   Sunday Monday Tuesday Wednesday Thursday Friday Saturday );
+
+my (%months,%dotw);
+for my $key (1..12) { $months{lc $months[$key]} = $key }
+for my $key (0..6)  { $dotw{  lc $dotw[$key]  } = $key }
 
 # THE DEFAULTS
 my $Format      = 'DD-MM-YYYY';
 my @order       = qw( day month year );
 
 my %Defaults = (
-    maxcount => 30,
-    selectname => 'calendar',
-    selected => [],
-    startdate => undef,
-    enddate => undef,
-    start => [1,1,1970],
-    end => [31,12,2037],
-    exclude => [ 0,0,0,0,0,0,0,0 ],
-    holidays => {},
+    maxcount    => 30,
+    selectname  => 'calendar',
+    selected    => [],
+    startdate   => undef,
+    enddate     => undef,
+    start       => [1,1,1970],
+    end         => [31,12,2037],
+    holidays    => {},
+    exclude     => { 
+        days        => [ 0,0,0,0,0,0,0 ],
+        months      => [ 0,0,0,0,0,0,0,0,0,0,0,0,0 ],
+    },
 );
 
 my (%Settings);
@@ -198,7 +207,8 @@ sub _thelist {
         my ($nowday,$nowmon,$nowyear,$nowdow) = decode_date($Settings{nowdate});
 
         # ignore days we're not interested in
-        unless($Settings{exclude}->[$nowdow]) {
+        unless(     $Settings{exclude}{days}->[$nowdow]
+                ||  $Settings{exclude}{months}->[$nowmon]) {
 
             # store the date, unless its a holiday
             my $fdate = sprintf "%02d-%02d-%04d", $nowday,$nowmon,$nowyear;
@@ -297,7 +307,7 @@ sub _calselect {
 # desc: Sets defaults, then deciphers user defined settings.
 
 sub _setargs {
-    my $hash = shift;
+    my $hash    = shift;
     my $format1 = shift;
 
     # set the current date
@@ -311,66 +321,72 @@ sub _setargs {
     # if no user hash table provided, lets go
     return  unless($hash);
 
+    for my $key1 (keys %$hash) {
 
-    # store excluded days
-    if($hash->{'exclude'}) {
-        my $hash2 = $hash->{'exclude'};
-        foreach my $inx (0..6) {
-            my $key = lc($dotw[$inx]);
-            $Settings{exclude}->[$inx] = 1  if $hash2->{"$key"};
+        # store excluded days
+        if(lc $key1 eq 'exclude') {
+            for my $key2 (keys %{$hash->{$key1}}) {
+                my $inx = $dotw{lc $key2};
+
+                # exclude days of the week
+                if(defined $inx) {
+                    $Settings{exclude}{days}->[$inx] = $hash->{$key1}{$key2};
+
+                # exclude months
+                } elsif($inx = $months{lc $key2}) {
+                    $Settings{exclude}{months}->[$inx] = $hash->{$key1}{$key2};
+
+                # exclude weekends
+                } elsif(lc $key2 eq 'weekend') {
+                    $Settings{exclude}{days}->[0] = $hash->{$key1}{$key2};
+                    $Settings{exclude}{days}->[6] = $hash->{$key1}{$key2};
+        
+                # exclude weekdays
+                } elsif(lc $key2 eq 'weekday') {
+                    for $inx (1..5) { $Settings{exclude}{days}->[$inx] = $hash->{$key1}{$key2}; }
+        
+                # check for holiday setting
+                } elsif(lc $key2 eq 'holidays' and ref($hash->{$key1}{$key2}) eq 'ARRAY') {
+                    %{$Settings{holidays}} = map {$_ => 1} @{$hash->{$key1}{$key2}};
+                }
+            }
+
+            # ensure we aren't wasting time
+            my $count = 0;
+            foreach my $inx (0..6)  { $count++  if($Settings{exclude}{days}->[$inx]) }
+            return 1    if($count == 7);
+            $count = 0;
+            foreach my $inx (1..12) { $count++  if($Settings{exclude}{months}->[$inx]) }
+            return 1    if($count == 12);
+
+        # store selected date
+        } elsif(lc $key1 eq 'select') {
+            my @dates = ($hash->{$key1} =~ /(\d+)/g);
+            $Settings{selected} = \@dates;
+
+        # store start date
+        } elsif(lc $key1 eq 'start') {
+            my @dates = ($hash->{$key1} =~ /(\d+)/g);
+            $Settings{startdate} = encode_date(@dates);
+
+        # store end date
+        } elsif(lc $key1 eq 'end') {
+            $Settings{maxcount}=9999;
+            my @dates = ($hash->{$key1} =~ /(\d+)/g);
+            $Settings{enddate} = encode_date(@dates);
+
+        # store user defined values
+        } elsif(lc $key1 eq 'options') {
+            $Settings{maxcount} = $hash->{$key1};
+        } elsif(lc $key1 eq 'name') {
+            $Settings{selectname} = $hash->{$key1};
         }
-
-        # check for weekend setting
-        if($hash2->{'weekend'}) {
-            $Settings{exclude}->[0] = 1;
-            $Settings{exclude}->[6] = 1;
-        }
-
-        # check for weekday setting
-        if($hash2->{'weekday'}) {
-            foreach my $inx (1..5) { $Settings{exclude}->[$inx] = 1; }
-        }
-
-        # check for holiday setting
-        if($hash2->{'holidays'} and ref($hash2->{'holidays'}) eq 'ARRAY') {
-            %{$Settings{holidays}} = map {$_ => 1} @{$hash2->{'holidays'}};
-        }
-
-        # ensure we aren't wasting time
-        my $count = 0;
-        foreach my $inx (0..6) { $count++   if($Settings{exclude}->[$inx]) }
-        die "all days ignore\n" if($count == 7);
     }
 
-
-    # store selected date
-    if($hash->{'select'}) {
-        my @dates = ($hash->{'select'} =~ /(\d+)/g);
-        $Settings{selected} = \@dates;
-    }
-
-
-    # store start date
-    if($hash->{'start'}) {
-        my @dates = ($hash->{'start'} =~ /(\d+)/g);
-        $Settings{startdate} = encode_date(@dates);
-    }
-
-
-    # store end date
-    if($hash->{'end'}) {
-        $Settings{maxcount}=9999;
-        my @dates = ($hash->{'end'} =~ /(\d+)/g);
-        $Settings{enddate} = encode_date(@dates);
-
-        # check whether we have a bad start/end dates
-        return 1    if(compare_dates($Settings{enddate},$Settings{startdate}) < 0);
-    }
-
-
-    # store user defined values
-    $Settings{maxcount}     = $hash->{'options'}    if($hash->{'options'});
-    $Settings{selectname}   = $hash->{'name'}       if($hash->{'name'});
+    # check whether we have a bad start/end dates
+    return 1    if(!$Settings{startdate});
+    return 1    if( $Settings{enddate} && compare_dates($Settings{enddate},$Settings{startdate}) < 0);
+    return 1    if(!$Settings{maxcount});
 
     return 0;
 }
