@@ -245,7 +245,7 @@ sub format_date {
     my $fmon    = sprintf "%02d", $mon;
     my $fyear   = sprintf "%04d", $year;
     my $fmonth  = sprintf "%s",   $months[$mon];
-    my $fdotw   = sprintf "%s",   (defined $dotw ? $dotw[$dotw] : '');
+    my $fdotw   = sprintf "%s",   $dotw[$dotw];
     my $fddext  = sprintf "%d%s", $day, ext($day);
     my $amonth  = substr($fmonth,0,3);
     my $adotw   = substr($fdotw,0,3);
@@ -369,7 +369,7 @@ name if passed a numeric.
 sub dotw {
     return $dotw[$_[0]] if($_[0] =~ /\d/);
 
-    foreach my $inx (1..12) {
+    foreach my $inx (0..6) {
         return $inx if($_[0] =~ /$dotw[$inx]/i);
     }
 

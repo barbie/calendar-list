@@ -692,7 +692,7 @@ q|<select name='TestTest'>
 31 => 'st',
 );
 
-my %monthtest = (
+%monthtest = (
 1 => 'January',
 2 => 'February',
 3 => 'March',
@@ -719,7 +719,7 @@ my %monthtest = (
 'December' => 12,
 );
 
-my %daytest = (
+%daytest = (
 0 => 'Sunday',
 1 => 'Monday',
 2 => 'Tuesday',

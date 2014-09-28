@@ -10,9 +10,9 @@ use Calendar::Functions qw(:form);
 # Note this test is for the base functions that don't rely on other modules
 
 # The basic functions
-foreach my $test (keys %exts)       { is(ext($test),$exts{$test})       }
-foreach my $test (keys %monthtest)  { is(moty($test),$monthtest{$test}) }
-foreach my $test (keys %daytest)    { is(dotw($test),$daytest{$test})   }
+for my $test (sort keys %exts)       { is(ext($test), $exts{$test},      ".. passed ext test $test")  }
+for my $test (sort keys %monthtest)  { is(moty($test),$monthtest{$test}, ".. passed moty test $test") }
+for my $test (sort keys %daytest)    { is(dotw($test),$daytest{$test},   ".. passed dotw test $test") }
 
 # date formatting
 foreach my $test (@format01) {
