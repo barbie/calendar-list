@@ -26,6 +26,7 @@ require Exporter;
 
 %EXPORT_TAGS = ( 'all' => [ qw(
 	@datetest @diffs
+    %hash07
 	%tests %expected02 %expected03 %setargs
 	%exts %monthtest %daytest
 	@monthlists
