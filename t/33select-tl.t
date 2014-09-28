@@ -18,7 +18,7 @@ _caltest(0,0);
 # -------------------------------------------------------------------------
 # The tests
 
-my @tests = (1..10,14);
+my @tests = (1..10,14,15);
 push @tests, 11,12,13	if($on_unix);
 
 # 1. testing the returned string
@@ -35,7 +35,7 @@ foreach my $test (@tests) {
 		my @array1 = split("\n",$str);
 		my @array2 = split("\n",$expected03{$test});
 #		is_deeply(\@array1,\@array2);
-		is(scalar(@array1),scalar(@array2));
+		is(scalar(@array1),scalar(@array2),".. matches $test count");
 #		is(length $str,length $expected03{$test});
 	}
 }

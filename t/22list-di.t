@@ -9,7 +9,7 @@ use Calendar::List;
 # check we can load the module
 eval "use Date::ICal";
 if($@) { plan skip_all => "Date::ICal not installed." }
-plan tests => 14;
+plan tests => 15;
 
 # switch off DateTime if loaded
 use Calendar::Functions qw(:test);
@@ -24,7 +24,7 @@ _caltest(0,1);
 # The tests
 
 # 1. testing the returned array
-foreach my $test (1..4,9,10,11,13,14) {
+foreach my $test (1..4,9,10,11,13,14,15) {
 	my @args = ();
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
@@ -33,9 +33,9 @@ foreach my $test (1..4,9,10,11,13,14) {
 	my @array = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
-		is_deeply(\@array,$expected02{$test});
+		is_deeply(\@array,$expected02{$test},".. matches $test index");
 	} else {
-		is(scalar(@array),scalar(@{$expected02{$test}}));
+		is(scalar(@array),scalar(@{$expected02{$test}}),".. matches $test count");
 	}
 }
 
@@ -49,8 +49,8 @@ foreach my $test (5..8,12) {
     my %hash = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
-		is_deeply(\%hash,$expected02{$test});
+		is_deeply(\%hash,$expected02{$test},".. matches $test index");
 	} else {
-		is(scalar(keys %hash),scalar(keys %{$expected02{$test}}));
+		is(scalar(keys %hash),scalar(keys %{$expected02{$test}}),".. matches $test count");
 	}
 }

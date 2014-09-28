@@ -12,7 +12,7 @@ if($@) {
 	plan skip_all => "DateTime not installed.";
 }
 
-plan tests => 14;
+plan tests => 15;
 
 ###########################################################################
 # name: 31select-dt.t
@@ -23,7 +23,7 @@ plan tests => 14;
 # The tests
 
 # 1. testing the returned string
-foreach my $test (1..14) {
+foreach my $test (1..15) {
 	my @args = ();
 	push @args, $tests{$test}->{f1}		if $tests{$test}->{f1};
 	push @args, $tests{$test}->{f2}		if $tests{$test}->{f2};
@@ -33,7 +33,7 @@ foreach my $test (1..14) {
 	if($tests{$test}->{hash}) {
 		is($str,$expected03{$test},".. matches $test index");
 	} else {
-		is(length $str,length $expected03{$test});
+		is(length $str,length $expected03{$test},".. matches $test count");
 	}
 }
 

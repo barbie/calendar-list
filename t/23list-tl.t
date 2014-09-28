@@ -18,7 +18,7 @@ _caltest(0,0);
 # -------------------------------------------------------------------------
 # The tests
 
-my @tests = (1..4,9,10,14);
+my @tests = (1..4,9,10,14,15);
 push @tests, 11,13	if($on_unix);
 
 # 1. testing the returned array
@@ -31,9 +31,9 @@ foreach my $test (@tests) {
 	my @array = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
-		is_deeply(\@array,$expected02{$test});
+		is_deeply(\@array,$expected02{$test},".. matches $test index");
 	} else {
-		is(scalar(@array),scalar(@{$expected02{$test}}));
+		is(scalar(@array),scalar(@{$expected02{$test}}),".. matches $test count");
 	}
 }
 
@@ -50,8 +50,8 @@ foreach my $test (@tests) {
     my %hash = calendar_list(@args);
 
 	if($tests{$test}->{hash}) {
-		is_deeply(\%hash,$expected02{$test});
+		is_deeply(\%hash,$expected02{$test},".. matches $test index");
 	} else {
-		is(scalar(keys %hash),scalar(keys %{$expected02{$test}}));
+		is(scalar(keys %hash),scalar(keys %{$expected02{$test}}),".. matches $test count");
 	}
 }
