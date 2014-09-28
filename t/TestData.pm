@@ -10,8 +10,8 @@ use strict;
 use vars qw(
     $VERSION @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK
 	@datetest @diffs
-	%hash01 %hash02 %hash03 %hash04 %hash05 %hash06
-	%tests %expected02 %expected03
+	%hash01 %hash02 %hash03 %hash04 %hash05 %hash06 %hash07 %hash08 %hash09 %hash10 %hash11 %hash12 %hash13
+	%tests %expected02 %expected03 %setargs
 	%exts %monthtest %daytest
 	@monthlists
 	@format01 @format02 @format03
@@ -26,7 +26,7 @@ require Exporter;
 
 %EXPORT_TAGS = ( 'all' => [ qw(
 	@datetest @diffs
-	%tests %expected02 %expected03
+	%tests %expected02 %expected03 %setargs
 	%exts %monthtest %daytest
 	@monthlists
 	@format01 @format02 @format03
@@ -121,6 +121,61 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
 	'end'		=> '01-01-2015',
 	'name'		=> 'TestTest',
 	'exclude'	=> { 'december' => 1 },
+);
+
+%hash07 = (
+	'start'		=> '30-11-2014',
+    'options'   => 0
+);
+
+%hash08 = (
+	'start'		=> '30-11-2014',
+	'end'		=> '01-01-2014',
+);
+
+%hash09 = (
+	'end'		=> '01-01-2014',
+	'start'		=> '',
+);
+
+%hash10 = (
+	'exclude'	=> { 'blah' => 1 },
+	'start'		=> '01-05-2003',
+	'end'		=> '10-05-2003',
+);
+
+%hash11 = (
+	'start'		=> '01-05-2003',
+	'end'		=> '10-05-2003',
+    'blah'      => 1
+);
+
+%hash12 = (
+	'exclude'	=> { 'weekday' => 1, 'weekend' => 1 },
+	'start'		=> '01-05-2003',
+	'end'		=> '10-05-2003',
+);
+
+%hash13 = (
+	'exclude'	=> { 'january' => 1, 'february' => 1, 'march' => 1, 'april' => 1, 'may' => 1, 'june' => 1, 'july' => 1, 'august' => 1, 'september' => 1, 'october' => 1, 'november' => 1, 'december' => 1 },
+	'start'		=> '01-05-2003',
+	'end'		=> '10-05-2003',
+);
+
+%setargs = (
+    1 => { hash => \%hash01, result => 0 },
+    2 => { hash => \%hash02, result => 0 },
+    3 => { hash => \%hash03, result => 0 },
+    4 => { hash => \%hash04, result => 0 },
+    5 => { hash => \%hash05, result => 0 },
+    6 => { hash => \%hash06, result => 0 },
+    7 => { hash => \%hash07, result => 1 },
+    8 => { hash => \%hash08, result => 1 },
+    9 => { hash => \%hash09, result => 1 },
+   10 => { hash => \%hash10, result => 0 },
+   11 => { hash => \%hash11, result => 0 },
+   12 => { hash => \%hash12, result => 1 },
+   13 => { hash => \%hash13, result => 1 },
 );
 
 %tests = (

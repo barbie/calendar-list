@@ -18,6 +18,7 @@ t/21list-dt.t
 t/22list-di.t
 t/23list-tl.t
 t/24list-holidays.t
+t/25list-functions.t
 t/31select-dt.t
 t/32select-di.t
 t/33select-tl.t

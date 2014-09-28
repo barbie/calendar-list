@@ -9,6 +9,7 @@ Revision history for Calendar-List
         - simplified logic for holidays and exclusions.
         - SELECTED now switched XHTML format of selected="selected".
         - added support for excluding full months.
+        - added tests for list function coverage.
 
 0.26    2012-11-18
         - change file dates changed to meet W3CDTF standards.
