@@ -1,13 +1,14 @@
 Revision history for Calendar-List
 ==================================
 
+0.27    2014-10-01
         - fixed license fields in META.json to be lists.
         - extended META and functional test suites.
         - compare_dates and encode_date undefined logic reworked.
         - reformat_date day/month/year validation must be numeric.
         - fixed DDEXT and dotw bugs.
         - simplified logic for holidays and exclusions.
-        - SELECTED now switched XHTML format of selected="selected".
+        - SELECTED now switched to XHTML format of selected="selected".
         - added support for excluding full months.
         - added tests for list function coverage.
 
