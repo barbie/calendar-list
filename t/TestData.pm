@@ -257,13 +257,7 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
           '10-May-2003',
           '11-May-2003',
           '15-May-2003',
-          '16-May-2003',
-          '17-May-2003',
-          '18-May-2003',
-          '22-May-2003',
-          '23-May-2003',
-          '24-May-2003',
-          '25-May-2003'
+          '16-May-2003'
         ],
 5 => {
           '2003-06-01' => '01-06-2003',
@@ -319,22 +313,12 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
           '02-May-2003' => 'Friday 2nd May, 2003',
           '03-May-2003' => 'Saturday 3rd May, 2003',
           '04-May-2003' => 'Sunday 4th May, 2003',
-
           '08-May-2003' => 'Thursday 8th May, 2003',
           '09-May-2003' => 'Friday 9th May, 2003',
           '10-May-2003' => 'Saturday 10th May, 2003',
           '11-May-2003' => 'Sunday 11th May, 2003',
-
           '15-May-2003' => 'Thursday 15th May, 2003',
-          '16-May-2003' => 'Friday 16th May, 2003',
-          '17-May-2003' => 'Saturday 17th May, 2003',
-          '18-May-2003' => 'Sunday 18th May, 2003',
-
-          '22-May-2003' => 'Thursday 22nd May, 2003',
-          '23-May-2003' => 'Friday 23rd May, 2003',
-          '24-May-2003' => 'Saturday 24th May, 2003',
-          '25-May-2003' => 'Sunday 25th May, 2003',
-
+          '16-May-2003' => 'Friday 16th May, 2003'
         },
 9 => [
           '24-05-2003',
@@ -378,14 +362,7 @@ $on_unix = (exists $os{$^O} ? 0 : 1);
           '10-05-2003',
           '11-05-2003',
           '15-05-2003',
-          '16-05-2003',
-          '17-05-2003',
-          '18-05-2003',
-          '22-05-2003',
-          '23-05-2003',
-          '24-05-2003',
-          '25-05-2003'
-
+          '16-05-2003'
         ],
 11 => [
           '13-September-1965',
@@ -483,12 +460,6 @@ q|<select name='calendar'>
 <option value='11-May-2003'>11-May-2003</option>
 <option value='15-May-2003'>15-May-2003</option>
 <option value='16-May-2003'>16-May-2003</option>
-<option value='17-May-2003'>17-May-2003</option>
-<option value='18-May-2003'>18-May-2003</option>
-<option value='22-May-2003'>22-May-2003</option>
-<option value='23-May-2003'>23-May-2003</option>
-<option value='24-May-2003'>24-May-2003</option>
-<option value='25-May-2003'>25-May-2003</option>
 </select>
 |,
 5 =>
@@ -558,12 +529,6 @@ q|<select name='calendar'>
 <option value='11-May-2003'>Sunday 11th May, 2003</option>
 <option value='15-May-2003'>Thursday 15th May, 2003</option>
 <option value='16-May-2003'>Friday 16th May, 2003</option>
-<option value='17-May-2003'>Saturday 17th May, 2003</option>
-<option value='18-May-2003'>Sunday 18th May, 2003</option>
-<option value='22-May-2003'>Thursday 22nd May, 2003</option>
-<option value='23-May-2003'>Friday 23rd May, 2003</option>
-<option value='24-May-2003'>Saturday 24th May, 2003</option>
-<option value='25-May-2003'>Sunday 25th May, 2003</option>
 </select>
 |,
 9 =>
@@ -612,12 +577,6 @@ q|<select name='calendar'>
 <option value='11-05-2003'>11-05-2003</option>
 <option value='15-05-2003'>15-05-2003</option>
 <option value='16-05-2003'>16-05-2003</option>
-<option value='17-05-2003'>17-05-2003</option>
-<option value='18-05-2003'>18-05-2003</option>
-<option value='22-05-2003'>22-05-2003</option>
-<option value='23-05-2003'>23-05-2003</option>
-<option value='24-05-2003'>24-05-2003</option>
-<option value='25-05-2003'>25-05-2003</option>
 </select>
 |,
 11 =>
