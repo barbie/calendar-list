@@ -371,7 +371,7 @@ sub _setargs {
 
         # store end date
         } elsif(lc $key1 eq 'end') {
-            $Settings{maxcount}=9999;
+            $Settings{maxcount} ||= 9999;
             my @dates = ($hash->{$key1} =~ /(\d+)/g);
             $Settings{enddate} = encode_date(@dates);
 
@@ -453,6 +453,9 @@ conflicts, which will result in an undefined reference being returned.
 
 The maximum number of items to be returned in the list.
 
+Note that where 'options' and 'end' are both specified, 'options' takes 
+precedence.
+
 =item name
 
 Used by calendar_selectbox. Names the select box form field.
@@ -486,7 +489,10 @@ References a start date in the format DD-MM-YYYY.
 
 References an end date in the format DD-MM-YYYY. Note that if an end
 date has been set alongside a setting for the maximum number of options,
-the limit will be defined by which one is reached first.
+the limit will be defined by which one is reached first.  
+
+Note that where 'options' and 'end' are both specified, 'options' takes 
+precedence.
 
 =back
 

@@ -1,6 +1,9 @@
 Revision history for Calendar-List
 ==================================
 
+        - fixed maxcount setting when options and end date are both used.
+          (RT#99247, thanks to Slaven Rezić).
+
 0.27    2014-10-01
         - fixed license fields in META.json to be lists.
         - extended META and functional test suites.
