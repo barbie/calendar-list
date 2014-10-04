@@ -15,7 +15,7 @@ if($@) {
 DateTime->import;
 plan qw|no_plan|;
 
-diag("using DateTime version " . $DateTime::VERSION);
+diag("$^V: using DateTime version " . $DateTime::VERSION);
 
 ###########################################################################
 # name: 11datetime.t
