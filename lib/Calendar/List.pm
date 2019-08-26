@@ -343,7 +343,7 @@ sub _setargs {
         
                 # exclude weekdays
                 } elsif(lc $key2 eq 'weekday') {
-                    for $inx (1..5) { $Settings{exclude}{days}->[$inx] = $hash->{$key1}{$key2}; }
+                    for my $index (1..5) { $Settings{exclude}{days}->[$index] = $hash->{$key1}{$key2}; }
         
                 # check for holiday setting
                 } elsif(lc $key2 eq 'holidays' and ref($hash->{$key1}{$key2}) eq 'ARRAY') {
