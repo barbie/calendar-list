@@ -2,6 +2,7 @@ Revision history for Calendar-List
 ==================================
 
         - fixes suggested by Kritika.io.
+        - fixed suggesed via coveralls.io.
 
 0.28    2014-10-05
         - fixed maxcount setting when options and end date are both used.
