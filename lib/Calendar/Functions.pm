@@ -473,10 +473,10 @@ of 1st January 1902 to 31st December 2037 are passed, an undef is returned.
 
 =head1 SEE ALSO
 
-  Date::ICal
-  DateTime
-  Time::Local
-  Time::Piece
+  L<Date::ICal>
+  L<DateTime>
+  L<Time::Local>
+  L<Time::Piece>
 
   The Calendar FAQ at http://www.tondering.dk/claus/calendar.html
 
