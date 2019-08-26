@@ -177,7 +177,7 @@ sub decode_date {
 
 =item compare_dates( date, date )
 
-Using the appropriate method, determines ther ordering of the two given dates.
+Using the appropriate method, determines the ordering of the two given dates.
 
 =cut
 
