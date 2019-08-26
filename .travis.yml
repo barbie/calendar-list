@@ -16,5 +16,7 @@ dist: trusty
 
 before_install:
   cpanm -n Devel::Cover::Report::Coveralls
+  cpanm -n Date::ICal
+  cpanm -n DateTime
 script:
   perl Makefile.PL && make && cover -test -report coveralls
