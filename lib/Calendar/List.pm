@@ -540,11 +540,11 @@ other modules.
 
 =over 4
 
-=item L<The Calendar FAQ>
+=item C<The Calendar FAQ>
 
 L<http://www.tondering.dk/claus/calendar.html>
 
-=item L<The Perl Advent Entry>
+=item C<The Perl Advent Entry>
 
 2018-12-01 : L<http://perladvent.org/2018/2018-12-01.html>
 
